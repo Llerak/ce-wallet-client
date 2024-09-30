@@ -4,15 +4,15 @@ import LoginView from '@/views/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
 import UnauthorizedView from '@/views/UnauthorizedView.vue';
 import { roles } from '@/store/RolesAndPermission';
+import { clearStatusUserLog } from '@/store/StatusUserLog';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'login',
     component: LoginView,
-    beforeEnter: (to, from, next) => {
-      sessionStorage.clear();
-      next();
+    beforeEnter: () => {
+      clearStatusUserLog();
     },
   },
   {

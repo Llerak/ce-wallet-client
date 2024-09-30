@@ -1,4 +1,5 @@
 import IUserLogin from '@/interfaces/IUserLogin';
+import { clearStatusUserLog, StatusUserLog } from '@/store/StatusUserLog';
 import axios from 'axios';
 
 const API_URL = 'https://apidev.cewallet.org/auth/';
@@ -11,15 +12,15 @@ class AuthService {
     });
     if (response.data) {
       const data = response.data.data;
-      sessionStorage.setItem('bearer', data.token);
-      sessionStorage.setItem('role', data.role);
+      StatusUserLog.name = user.name;
+      StatusUserLog.role = data.role;
+      StatusUserLog.token = data.token;
     }
     return response.data;
   }
 
   logout() {
-    sessionStorage.removeItem('bearer');
-    sessionStorage.removeItem('role');
+    clearStatusUserLog();
   }
 }
 

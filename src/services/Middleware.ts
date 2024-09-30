@@ -1,3 +1,4 @@
+import { StatusUserLog } from '@/store/StatusUserLog';
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 
 const authGuard = (
@@ -5,7 +6,7 @@ const authGuard = (
   from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  const userRole = sessionStorage.getItem('role') || '';
+  const userRole = StatusUserLog.role;
   const roles = to.meta.roles as string[];
   if (roles && !roles.includes(userRole)) {
     next({ name: 'unauthorized' });
