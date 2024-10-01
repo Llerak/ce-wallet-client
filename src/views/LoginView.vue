@@ -42,7 +42,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import InputCustom from '@/components/InputCustom.vue';
-import UsersServices from '@/services/Users.Services';
+import usersServices from '@/services/usersServices';
 import router from '@/router';
 
 const username = ref('');
@@ -60,7 +60,7 @@ const handleLogin = async () => {
         name: username.value,
         password: password.value,
       };
-      await UsersServices.login(user);
+      await usersServices.login(user);
       console.log('Login successful');
       router.push('/home');
     } catch (error) {

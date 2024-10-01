@@ -1,17 +1,30 @@
-import { StatusUserLog } from '@/store/StatusUserLog';
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+import usersServices from './usersServices';
+import { roleGlobal } from '@/store/RolesAndPermission';
 
-const authGuard = (
+const authGuard = async (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  const userRole = StatusUserLog.role;
   const roles = to.meta.roles as string[];
-  if (roles && !roles.includes(userRole)) {
-    next({ name: 'unauthorized' });
-  } else {
-    next();
+  roleGlobal.role = sessionStorage.getItem('Role') || 'User';
+  try {
+    const isValidToken = await usersServices.validationToken();
+
+    if (!isValidToken) {
+      next({ name: 'login' });
+      return;
+    }
+
+    if (roles && !roles.includes(roleGlobal.role)) {
+      next({ name: 'unauthorized' });
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.error('Error during token validation:', error);
+    next({ name: 'login' });
   }
 };
 
