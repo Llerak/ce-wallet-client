@@ -1,7 +1,8 @@
 import { reactive } from 'vue';
 
-export const roleGlobal = reactive({
+export const roleAndUserGlobal = reactive({
   role: 'User',
+  name: '',
 });
 export const roles = {
   admin: 'Administrador',
@@ -19,6 +20,6 @@ export const permissionsRole = {
 };
 
 export function hasPermission(permission: string) {
-  const rolePermissions = permissionsRole[roleGlobal.role] || [];
+  const rolePermissions = permissionsRole[roleAndUserGlobal.role] || [];
   return rolePermissions.includes(permission);
 }

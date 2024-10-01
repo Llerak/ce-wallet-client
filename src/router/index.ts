@@ -3,7 +3,7 @@ import authGuard from '@/services/Middleware';
 import LoginView from '@/views/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
 import UnauthorizedView from '@/views/UnauthorizedView.vue';
-import { roleGlobal, roles } from '@/store/RolesAndPermission';
+import { roleAndUserGlobal, roles } from '@/store/RolesAndPermission';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component: LoginView,
     beforeEnter: () => {
       sessionStorage.clear();
-      roleGlobal.role = 'User';
+      roleAndUserGlobal.role = 'User';
     },
   },
   {

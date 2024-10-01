@@ -1,6 +1,7 @@
 import axiosInstance from './axiosInterceptor';
 import IUserLogin from '@/interfaces/IUserLogin';
 import { routeServices } from './routeServices';
+import { roleAndUserGlobal } from '@/store/RolesAndPermission';
 
 const API_URL = 'https://apidev.cewallet.org/auth/';
 
@@ -13,8 +14,8 @@ class AuthService {
       });
       if (response.data) {
         const data = response.data.data;
-        sessionStorage.setItem('Name', data.name);
-        sessionStorage.setItem('Role', data.role);
+        roleAndUserGlobal.name = data.name;
+        roleAndUserGlobal.role = data.role;
         sessionStorage.setItem('Bearer', data.token);
       }
       return response.data;
