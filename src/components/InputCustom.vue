@@ -20,7 +20,6 @@ import { defineProps, defineEmits, ref, watch } from 'vue';
 const props = defineProps({
   title: {
     type: String,
-    required: true,
   },
   type: {
     type: String,

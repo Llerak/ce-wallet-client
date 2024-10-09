@@ -116,7 +116,7 @@ const data = [
           AGREGAR FONDO
         </button>
         <div class="flex gap-3 items-center flex-wrap">
-          <InputCustom placeholder="Buscar..." />
+          <InputCustom placeholder="Buscar..." type="text" />
           <button
             class="bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] w-min text-nowrap"
           >
