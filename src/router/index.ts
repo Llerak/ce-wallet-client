@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import authGuard from '@/services/Middleware';
+import authGuard from '@/router/Middleware';
 import LoginView from '@/views/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
 import UnauthorizedView from '@/views/UnauthorizedView.vue';
@@ -13,10 +13,11 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: () => {
       sessionStorage.clear();
       roleAndUserGlobal.role = 'User';
+      roleAndUserGlobal.name = '';
     },
   },
   {
-    path: '/',
+    path: '/unauthorized',
     name: 'unauthorized',
     component: UnauthorizedView,
   },

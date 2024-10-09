@@ -1,10 +1,10 @@
 <template>
   <div
-    class="flex h-[100vh] w-[100vw] items-center justify-center bg-[100deg] bg-gradient-to-r from-[rgba(14,223,115,0.75)] via-[rgba(14,223,115,0.75)] to-[rgba(4,150,212,0.6)] bg-[length:100%_100%] p-4"
+    class="flex h-[100vh] w-[100vw] items-center justify-center p-4 bg-[#f8f9fa]"
   >
     <form
       @submit.prevent="handleLogin"
-      class="flex w-[360px] flex-col gap-6 bg-white p-12"
+      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow"
       autocomplete="off"
     >
       <h2 class="text-xl text-[#F58D71]">Iniciar Sesión</h2>

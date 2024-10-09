@@ -1,5 +1,5 @@
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import usersServices from './usersServices';
+import usersServices from '../services/usersServices';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
 
 const authGuard = async (
@@ -16,8 +16,8 @@ const authGuard = async (
       next({ name: 'login' });
       return;
     } else {
-      roleAndUserGlobal.name = isValidToken.data.name;
       roleAndUserGlobal.role = isValidToken.data.role;
+      roleAndUserGlobal.name = sessionStorage.getItem('Name') || '';
     }
 
     if (roles && !roles.includes(roleAndUserGlobal.role)) {

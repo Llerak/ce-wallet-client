@@ -20,8 +20,11 @@ h5{
   font-weight: 700;
   font-size: 20px;
 }
+h6{
+  font-size: 18px;
+  font-weight: 600;
+}
 /* h1{}
-h4{}
 h6{} */
 
 button {
