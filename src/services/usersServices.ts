@@ -36,15 +36,11 @@ class AuthService {
   }
 
   async validationToken() {
-    statusApi.isLoading = true;
-
     try {
       const response = await axiosInstance.get(routeServices.auth.auth);
-      statusApi.isLoading = false;
       return response.data;
     } catch (error) {
       console.error('Error during validation:', error);
-      statusApi.isLoading = false;
       throw error;
     }
   }

@@ -23,5 +23,3 @@ export function hasPermission(permission: string) {
   const rolePermissions = permissionsRole[roleAndUserGlobal.role] || [];
   return rolePermissions.includes(permission);
 }
-
-export const statusApi = reactive({ isLoading: false });

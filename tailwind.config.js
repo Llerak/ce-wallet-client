@@ -5,7 +5,14 @@ module.exports = {
     extend: {
       boxShadow: {
         'custom-shadow': '0 20px 27px 0 rgba(0,0,0,.05)',
-        'custom-gray': '-6px -6px 12px #F0F0F0, 6px 6px 12px #D9D9D9',
+        'custom-shadow-icon': '0 .3125rem .625rem 0 rgba(0, 0, 0, .12)',
+      },
+      backgroundImage: {
+        'custom-gradient-linear':
+          'linear-gradient(90deg, transparent, rgba(0, 0, 0, .2), transparent)',
+        'custom-gradient-icon-active':
+          'linear-gradient(135deg, #eb6b48, #f58d71)',
+        'custom-gradient-icon': 'linear-gradient(310deg,#e9ecef,#e9ecef)',
       },
     },
   },

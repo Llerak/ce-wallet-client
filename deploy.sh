@@ -3,6 +3,9 @@
 # abort on errors
 set -e
 
+#delete branch
+git push origin --delete gh-pages
+
 # build
 npm run build
 
