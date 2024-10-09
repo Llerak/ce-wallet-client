@@ -1,18 +1,11 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" class="p-10" />
+  <div class="bg-[#F0F0F0] flex flex-1 pl-8 pr-8 pb-14 pt-14 gap-12">
+    <div
+      class="shadow-custom-gray flex w-[304px] bg-[#FCFCFC] rounded-sm"
+    ></div>
+    <div class="shadow-custom-gray flex flex-1 bg-[#FCFCFC] rounded-sm"></div>
+    <div
+      class="shadow-custom-gray flex w-[400px] bg-[#FCFCFC] rounded-sm"
+    ></div>
   </div>
 </template>
-
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import HelloWorld from '@/components/HelloWorld.vue';
-
-@Options({
-  components: {
-    HelloWorld,
-  },
-})
-export default class HomeView extends Vue {}
-</script>

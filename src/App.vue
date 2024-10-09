@@ -1,30 +1,41 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <LoadingView v-show="statusApi.isLoading" />
+  <div class="flex w-[100vw] h-[100vh] relative bg-[#f8f9fa]">
+    <SideBarView
+      v-if="hasPermission(permissions.viewDashboard) && !isLoginRoute"
+      class="absolute top-0 left-0"
+    />
+    <div
+      class="flex flex-col w-full pl-0"
+      :class="{ 'pl-[280px]': !isLoginRoute, 'pl-0': isLoginRoute }"
+    >
+      <HeaderView
+        v-if="hasPermission(permissions.viewDashboard) && !isLoginRoute"
+      />
+
+      <router-view />
+    </div>
+  </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script setup lang="ts">
+import {
+  hasPermission,
+  permissions,
+  statusApi,
+} from './store/RolesAndPermission';
+import SideBarView from './views/SideBarView.vue';
+import LoadingView from './views/LoadingView.vue';
+import HeaderView from './views/HeaderView.vue';
+import router from './router';
+import { ref, watch } from 'vue';
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+watch(
+  () => router.currentRoute.value.name,
+  (newRouteName) => {
+    isLoginRoute.value = newRouteName === 'login';
   }
-}
-</style>
+);
+
+const isLoginRoute = ref(router.currentRoute.value.name == 'login');
+</script>
