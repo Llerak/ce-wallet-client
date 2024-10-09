@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <label class="ml-1 mb-2">{{ title }}</label>
+    <label class="ml-1 mb-2" v-if="title">{{ title }}</label>
     <input
       class="w-full"
       :type="type"

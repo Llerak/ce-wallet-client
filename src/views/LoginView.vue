@@ -69,7 +69,7 @@ const handleLogin = async () => {
       };
       await usersServices.login(user);
       console.log('Login successful');
-      router.push('/dashboard');
+      router.push('/funds');
     } catch (error) {
       showErrorGeneral.value = true;
       console.error('Login failed:', error);

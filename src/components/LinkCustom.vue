@@ -1,7 +1,7 @@
 <template>
   <a
     @click="router.push(link)"
-    class="ml-4 mr-4 pl-2 pr-2 pb-4 pt-4 flex gap-2 w-full items-center"
+    class="ml-4 mr-4 pl-2 pr-2 pb-4 pt-4 flex gap-2 w-full items-center cursor-pointer"
     :class="{
       'bg-white shadow-custom-shadow font-semibold text-[#344767]': isActive,
     }"

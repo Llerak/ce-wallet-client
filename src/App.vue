@@ -6,8 +6,8 @@
       class="absolute top-0 left-0"
     />
     <div
-      class="flex flex-col w-full pl-0"
-      :class="{ 'pl-[280px]': !isLoginRoute, 'pl-0': isLoginRoute }"
+      class="flex flex-col w-full p-6"
+      :class="{ 'pl-[304px]': !isLoginRoute, 'pl-0': isLoginRoute }"
     >
       <HeaderView v-if="!isLoginRoute" />
 

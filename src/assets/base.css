@@ -4,11 +4,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 section {
   -webkit-user-select: none;
   user-select: none;
 }
+
 h1,
 h2,
 h3,
@@ -32,6 +36,8 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html {
@@ -42,4 +48,6 @@ html,
 body,
 #app {
   height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

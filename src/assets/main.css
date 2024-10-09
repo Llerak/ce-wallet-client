@@ -37,15 +37,16 @@ h5 {
   font-weight: 700;
 }
 label {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   color: #344767;
 }
 button {
-  font-size: 12px;
-  padding: 11px 24px;
+  font-size: 13px;
+  padding: 9px 24px;
   border-radius: 4px;
-  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-weight: 600;
 }
 input {
   display: block;
