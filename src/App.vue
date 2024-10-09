@@ -16,9 +16,9 @@
       @click="statusSideBar.visible = false"
     ></div>
     <div
-      class="flex flex-col w-full min-[1200px]:p-6 p-3"
+      class="flex flex-col w-full min-[1200px]:p-6"
       :class="{
-        'min-[1200px]:pl-[304px]': !isLoginRoute,
+        'min-[1200px]:pl-[304px] p-3': !isLoginRoute,
         'p-0': isLoginRoute,
       }"
     >
