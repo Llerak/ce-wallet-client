@@ -7,16 +7,21 @@
       class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow"
       autocomplete="off"
     >
-      <h2 class="text-xl text-[#F58D71]">Iniciar Sesión</h2>
+      <div class="flex flex-col gap-2">
+        <h4 class="text-[#F58D71]">Bienvenido</h4>
+        <p>Ingrese su usuario y contraseña para iniciar sesión</p>
+      </div>
       <div class="flex flex-col gap-4">
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-4">
           <InputCustom
+            title="Usuario"
             v-model="username"
             type="text"
             placeholder="Usuario"
             :show-error="showErrorUserName"
           />
           <InputCustom
+            title="Contraseña"
             v-model="password"
             type="password"
             placeholder="Contraseña"
@@ -32,7 +37,9 @@
             }"
             >Usuario o contraseña incorrecto</span
           >
-          <button type="submit" class="w-full">Iniciar</button>
+          <button type="submit" class="w-full bg-[#F58D71] text-white">
+            INICIAR
+          </button>
         </div>
       </div>
     </form>
@@ -62,7 +69,7 @@ const handleLogin = async () => {
       };
       await usersServices.login(user);
       console.log('Login successful');
-      router.push('/home');
+      router.push('/dashboard');
     } catch (error) {
       showErrorGeneral.value = true;
       console.error('Login failed:', error);

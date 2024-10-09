@@ -2,13 +2,11 @@ import axiosInstance from './axiosInterceptor';
 import IUserLogin from '@/interfaces/IUserLogin';
 import { routeServices } from '../router/routeServices';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
-import { statusApi } from '@/store/global';
 
 const API_URL = 'https://apidev.cewallet.org/auth/';
 
 class AuthService {
   async login(user: IUserLogin) {
-    statusApi.isLoading = true;
     try {
       const response = await axiosInstance.post(API_URL + 'login', {
         username: user.name,
@@ -22,11 +20,9 @@ class AuthService {
         sessionStorage.setItem('Bearer', data.token);
         sessionStorage.setItem('Name', user.name);
       }
-      statusApi.isLoading = false;
       return response.data;
     } catch (error) {
       console.error('Error during login:', error);
-      statusApi.isLoading = false;
       throw error;
     }
   }
@@ -36,15 +32,11 @@ class AuthService {
   }
 
   async validationToken() {
-    statusApi.isLoading = true;
-
     try {
       const response = await axiosInstance.get(routeServices.auth.auth);
-      statusApi.isLoading = false;
       return response.data;
     } catch (error) {
       console.error('Error during validation:', error);
-      statusApi.isLoading = false;
       throw error;
     }
   }

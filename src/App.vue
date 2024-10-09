@@ -1,5 +1,5 @@
 <template>
-  <LoadingView v-show="statusApi.isLoading" />
+  <LoadingView />
   <div class="flex w-[100vw] h-[100vh] relative bg-[#f8f9fa]">
     <SideBarView
       v-if="hasPermission(permissions.viewDashboard) && !isLoginRoute"
@@ -9,9 +9,7 @@
       class="flex flex-col w-full pl-0"
       :class="{ 'pl-[280px]': !isLoginRoute, 'pl-0': isLoginRoute }"
     >
-      <HeaderView
-        v-if="hasPermission(permissions.viewDashboard) && !isLoginRoute"
-      />
+      <HeaderView v-if="!isLoginRoute" />
 
       <router-view />
     </div>
@@ -19,11 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  hasPermission,
-  permissions,
-  statusApi,
-} from './store/RolesAndPermission';
+import { hasPermission, permissions } from './store/RolesAndPermission';
 import SideBarView from './views/SideBarView.vue';
 import LoadingView from './views/LoadingView.vue';
 import HeaderView from './views/HeaderView.vue';
