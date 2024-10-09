@@ -14,9 +14,8 @@
           <LinkCustom
             :icon="item.icon"
             :text="item.text"
-            :is-active="activeIndex === index"
+            :is-active="router.currentRoute.value.name === item.link"
             :link="item.link"
-            @click="setActive(index)"
           />
           <template v-if="index === links.length - 2">
             <label class="pl-4 mb-1 mt-4 opacity-[0.6]">PERFIL</label>
@@ -53,10 +52,4 @@ const links = ref([
   { icon: SettingIcon, text: 'Configuraciones', link: 'settings' },
   { icon: ProfileIcon, text: 'Opciones de usuario', link: 'profile' },
 ]);
-
-const activeIndex = ref(0);
-
-const setActive = (index: number) => {
-  activeIndex.value = index;
-};
 </script>
