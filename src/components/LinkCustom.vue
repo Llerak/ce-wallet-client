@@ -1,7 +1,10 @@
 <template>
   <a
-    @click="router.push(link)"
-    class="ml-4 mr-4 pl-2 pr-2 pb-4 pt-4 flex gap-2 w-full items-center cursor-pointer"
+    @click="
+      router.push(link);
+      statusSideBar.visible = false;
+    "
+    class="ml-4 mr-4 pl-2 pr-2 pb-4 pt-4 flex gap-2 flex-1 items-center cursor-pointer"
     :class="{
       'bg-white shadow-custom-shadow font-semibold text-[#344767]': isActive,
     }"
@@ -22,6 +25,7 @@
 
 <script lang="ts" setup>
 import router from '@/router';
+import { statusSideBar } from '@/store/global';
 import { defineProps } from 'vue';
 
 defineProps({

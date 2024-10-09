@@ -1,13 +1,26 @@
 <template>
   <LoadingView />
-  <div class="flex w-[100vw] h-[100vh] relative bg-[#f8f9fa]">
+  <div class="flex w-[100vw] min-h-[100vh] h-auto relative bg-[#f8f9fa]">
     <SideBarView
       v-if="hasPermission(permissions.viewDashboard) && !isLoginRoute"
-      class="absolute top-0 left-0"
+      class="fixed top-0 min-[1200px]:left-0 z-50 transition-all"
+      :class="{
+        '-left-full': !statusSideBar.visible,
+        'left-0': statusSideBar.visible,
+      }"
     />
+
     <div
-      class="flex flex-col w-full p-6"
-      :class="{ 'pl-[304px]': !isLoginRoute, 'pl-0': isLoginRoute }"
+      class="w-[100vw] h-full z-40 absolute backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
+      v-if="statusSideBar.visible"
+      @click="statusSideBar.visible = false"
+    ></div>
+    <div
+      class="flex flex-col w-full min-[1200px]:p-6 p-3"
+      :class="{
+        'min-[1200px]:pl-[304px]': !isLoginRoute,
+        'p-0': isLoginRoute,
+      }"
     >
       <HeaderView v-if="!isLoginRoute" />
 
@@ -23,6 +36,7 @@ import LoadingView from './views/LoadingView.vue';
 import HeaderView from './views/HeaderView.vue';
 import router from './router';
 import { ref, watch } from 'vue';
+import { statusSideBar } from './store/global';
 
 watch(
   () => router.currentRoute.value.name,

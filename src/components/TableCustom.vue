@@ -24,7 +24,7 @@ const reduceObject = (obj: any, path: string[]) => {
     class="relative overflow-x-auto shadow-custom-shadow bg-white sm:rounded-lg"
   >
     <table class="w-full text-sm text-left">
-      <thead class="text-[14px] text-[#344767]">
+      <thead class="text-[14px] text-[#344767] text-nowrap">
         <tr>
           <th
             v-for="(header, i) in headers"
@@ -59,3 +59,20 @@ const reduceObject = (obj: any, path: string[]) => {
     </table>
   </div>
 </template>
+
+<style scoped>
+@media (max-width: 760px) {
+  th:nth-child(3),
+  th:nth-child(4),
+  th:nth-child(5),
+  th:nth-child(6),
+  th:nth-child(7),
+  td:nth-child(3),
+  td:nth-child(4),
+  td:nth-child(5),
+  td:nth-child(6),
+  td:nth-child(7) {
+    display: none;
+  }
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-[250px] h-[100vh] pt-4 pb-4 pl-4 flex-col flex bg-transparent justify-between"
+    class="w-[250px] h-[100vh] pt-4 pb-4 pl-4 flex-col flex justify-between bg-[#f8f9fa]"
   >
     <div class="flex flex-col">
       <div class="pl-8 pr-8 pt-6 pb-6">
@@ -23,13 +23,19 @@
         </template>
       </div>
     </div>
-    <button
-      type="submit"
-      class="w-full bg-[#F58D71] text-white"
-      @click="router.push('/')"
-    >
-      CERRAR SESIÓN
-    </button>
+    <div class="flex flex-col gap-3 text-end flex-[0 1 0%] mr-4">
+      <p>{{ roleAndUserGlobal.name }}</p>
+      <button
+        type="submit"
+        class="bg-[#F58D71] text-white"
+        @click="
+          router.push('/');
+          statusSideBar.visible = false;
+        "
+      >
+        CERRAR SESIÓN
+      </button>
+    </div>
   </div>
 </template>
 
@@ -43,6 +49,8 @@ import RegisterIcon from '@/components/icons/RegisterIcon.vue';
 import SettingIcon from '@/components/icons/SettingIcon.vue';
 import UsersIcon from '@/components/icons/UsersIcon.vue';
 import router from '@/router';
+import { roleAndUserGlobal } from '@/store/RolesAndPermission';
+import { statusSideBar } from '@/store/global';
 
 const links = ref([
   { icon: DashBoardIcon, text: 'Dashboard', link: 'dashboard' },
