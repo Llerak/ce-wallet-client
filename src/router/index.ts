@@ -5,7 +5,7 @@ import HomeView from '@/views/HomeView.vue';
 import FundView from '@/views/FundView.vue';
 import UnauthorizedView from '@/views/UnauthorizedView.vue';
 import { roleAndUserGlobal, roles } from '@/store/RolesAndPermission';
-import { statusApi } from '@/store/global';
+import { statusApi, statusSideBar } from '@/store/global';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -16,6 +16,7 @@ const routes: Array<RouteRecordRaw> = [
       sessionStorage.clear();
       roleAndUserGlobal.role = 'User';
       roleAndUserGlobal.name = '';
+      statusSideBar.visible = false;
     },
   },
   {
