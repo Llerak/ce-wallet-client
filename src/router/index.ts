@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import authGuard from '@/router/Middleware';
+import authGuard from '@/router/middleware';
 import LoginView from '@/views/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
 import FundView from '@/views/fundsView/FundView.vue';

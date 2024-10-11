@@ -1,6 +1,6 @@
 import axiosInstance from './axiosInterceptor';
 import IUserLogin from '@/interfaces/IUserLogin';
-import { routeServices } from '../router/routeServices';
+import { routeServices } from '@/router/routeServices';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
 import { statusApi } from '@/store/global';
 
@@ -37,7 +37,7 @@ class AuthService {
 
   async validationToken() {
     try {
-      const response = await axiosInstance.get(routeServices.auth.auth);
+      const response = await axiosInstance.get(routeServices.auth.validate);
       return response.data;
     } catch (error) {
       console.error('Error during validation:', error);
