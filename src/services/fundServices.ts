@@ -2,20 +2,14 @@ import { api } from '@/services';
 import routeServices from '@/router/routeServices';
 import { AxiosError, AxiosResponse } from 'axios';
 import { IResponse } from '@/interfaces';
-import {
-  IFundDto,
-  IFundFilter,
-  ITransferDto,
-  IFundInfo,
-  ITransferInfoDto,
-  ITransactionInfoDto,
-} from '@/interfaces/dto';
+import { IFundDto, IFundFilter, IFundInfo, ITransactionInfoDto, ITransferDto, ITransferInfoDto } from '@/interfaces/dto';
+import { IPaginationResponse } from '@/interfaces/IPaginationResponse';
 
 class Service {
   async list(filter: IFundFilter) {
     return await api
       .post(routeServices.funds.list, filter)
-      .then((res: AxiosResponse<IResponse<IFundDto[]>>) => res.data.response)
+      .then((res: AxiosResponse<IResponse<IPaginationResponse<IFundDto>>>) => res.data.response)
       .catch((err: AxiosError) => console.log(err.message));
   }
 
