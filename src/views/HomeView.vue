@@ -2,6 +2,7 @@
   <div>
     <InputSelect title="Select Input" :model-value="test" :options="testArray" :default-value="testArray[1]" />
     <InputMultiSelect title="MultiSelect Input" :model-value="[testArray[1]]" :options="testArray" />
+    <!-- <PostCustom></PostCustom> -->
   </div>
 </template>
 
