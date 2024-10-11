@@ -3,7 +3,7 @@ const routeServices = {
     validate: '/auth',
     login: '/auth/login',
     refresh: '/auth/refresh',
-    register: '/auth/refresh',
+    register: '/auth/register',
   },
   funds: {
     list: '/fund',
@@ -14,6 +14,12 @@ const routeServices = {
     withdrawal: '/fund/withdrawal',
     deposit: '/fund/deposit',
     attachUser: (id: string, userid: string) => `/fund/attach-user/${id}/${userid}`,
+  },
+  currencies: {
+    list: (includeFunds: boolean) => `/currency/?funds=${includeFunds}`,
+    create: '/currency',
+    currency: (id: string) => `/currency/${id}`,
+    informalForeignExchange: '/currency/informal-foreign-exchange',
   },
 };
 
