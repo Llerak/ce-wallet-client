@@ -1,6 +1,6 @@
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import usersServices from '../services/authServices';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
+import { authService } from '@/services';
 
 const authGuard = async (
   to: RouteLocationNormalized,
@@ -10,7 +10,7 @@ const authGuard = async (
   const roles = to.meta.roles as string[];
   roleAndUserGlobal.role = sessionStorage.getItem('Role') || 'User';
   try {
-    const isValidToken = await usersServices.validationToken();
+    const isValidToken = await authService.validationToken();
     if (!isValidToken) {
       next({ name: 'login' });
       return;
