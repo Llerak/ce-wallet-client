@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { routeServices } from '@/router/routeServices';
+import routeServices from '@/router/routeServices';
 
-const instance = axios.create({
+export const api = axios.create({
   baseURL: 'https://apidev.cewallet.org',
 });
 
-instance.interceptors.request.use(
+api.interceptors.request.use(
   async (config) => {
     const token = sessionStorage.getItem('Bearer');
     if (token && config.url !== routeServices.auth.login) {
@@ -18,7 +18,7 @@ instance.interceptors.request.use(
   }
 );
 
-instance.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -46,5 +46,3 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export default instance;

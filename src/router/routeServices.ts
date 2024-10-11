@@ -1,4 +1,4 @@
-export const routeServices = {
+const routeServices = {
   auth: {
     validate: '/auth',
     login: '/auth/login',
@@ -13,6 +13,9 @@ export const routeServices = {
     transfer: '/fund/transfer',
     withdrawal: '/fund/withdrawal',
     deposit: '/fund/deposit',
-    attachUser: (id: string, userid: string) => `/fund/attach-user/${id}/${userid}`,
+    attachUser: (id: string, userid: string) =>
+      `/fund/attach-user/${id}/${userid}`,
   },
 };
+
+export default routeServices;

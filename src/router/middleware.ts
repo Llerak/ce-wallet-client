@@ -1,5 +1,5 @@
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import usersServices from '../services/usersServices';
+import usersServices from '../services/authServices';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
 
 const authGuard = async (

@@ -49,7 +49,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import InputCustom from '@/components/InputCustom.vue';
-import usersServices from '@/services/usersServices';
+import { authService } from '@/services';
 import router from '@/router';
 
 const username = ref('');
@@ -67,7 +67,7 @@ const handleLogin = async () => {
         name: username.value,
         password: password.value,
       };
-      await usersServices.login(user);
+      await authService.login(user);
       router.push('/funds');
     } catch (error) {
       showErrorGeneral.value = true;

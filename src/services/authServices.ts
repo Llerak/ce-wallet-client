@@ -1,16 +1,14 @@
-import axiosInstance from './axiosInterceptor';
-import IUserLogin from '@/interfaces/IUserLogin';
-import { routeServices } from '@/router/routeServices';
+import routeServices from '@/router/routeServices';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
 import { statusApi } from '@/store/global';
-
-const API_URL = 'https://apidev.cewallet.org/auth/';
+import { IUserLogin } from '@/interfaces';
+import { api } from '@/services';
 
 class AuthService {
   async login(user: IUserLogin) {
     statusApi.isLoading = true;
     try {
-      const response = await axiosInstance.post(API_URL + 'login', {
+      const response = await api.post(routeServices.auth.login, {
         username: user.name,
         password: user.password,
       });
@@ -37,7 +35,7 @@ class AuthService {
 
   async validationToken() {
     try {
-      const response = await axiosInstance.get(routeServices.auth.validate);
+      const response = await api.get(routeServices.auth.validate);
       return response.data;
     } catch (error) {
       console.error('Error during validation:', error);
@@ -45,5 +43,4 @@ class AuthService {
     }
   }
 }
-
-export default new AuthService();
+export const authService = new AuthService();

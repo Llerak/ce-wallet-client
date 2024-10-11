@@ -1,4 +1,4 @@
-export default interface IUserLogin {
+export interface IUserLogin {
   name: string;
   password: string;
 }
