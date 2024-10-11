@@ -26,19 +26,13 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       const singinBearer = sessionStorage.getItem('Bearer');
       const refreshBearer = sessionStorage.getItem('RefreshBearer');
-      const response = await axios.post(
-        'https://apidev.cewallet.org/auth/refresh',
-        {
-          signinToken: singinBearer,
-          refreshToken: refreshBearer,
-        }
-      );
+      const response = await axios.post('https://apidev.cewallet.org/auth/refresh', {
+        signinToken: singinBearer,
+        refreshToken: refreshBearer,
+      });
       if (response.status === 200) {
         sessionStorage.setItem('Bearer', response.data.response.signinToken);
-        sessionStorage.setItem(
-          'RefreshBearer',
-          response.data.response.refreshToken
-        );
+        sessionStorage.setItem('RefreshBearer', response.data.response.refreshToken);
         originalRequest.headers.Authorization = `Bearer ${response.data.response.signinToken}`;
         return axios(originalRequest);
       }

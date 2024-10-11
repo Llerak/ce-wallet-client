@@ -2,11 +2,7 @@ import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
 import { authService } from '@/services';
 
-const authGuard = async (
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext
-) => {
+const authGuard = async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const roles = to.meta.roles as string[];
   roleAndUserGlobal.role = sessionStorage.getItem('Role') || 'User';
   try {

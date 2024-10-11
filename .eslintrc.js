@@ -9,6 +9,6 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   rules: {
-    'prettier/prettier': ['error', { singleQuote: true, semi: true }],
+    'prettier/prettier': ['error', { singleQuote: true, semi: true, printWidth: 120 }],
   },
 };

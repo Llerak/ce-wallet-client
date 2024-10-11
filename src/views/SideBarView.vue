@@ -1,14 +1,10 @@
 <template>
-  <div
-    class="w-[250px] h-[100vh] pt-4 pb-4 pl-4 flex-col flex justify-between bg-[#f8f9fa]"
-  >
+  <div class="w-[250px] h-[100vh] pt-4 pb-4 pl-4 flex-col flex justify-between bg-[#f8f9fa]">
     <div class="flex flex-col">
       <div class="pl-8 pr-8 pt-6 pb-6">
         <img src="../../public/logo.png" alt="logo" />
       </div>
-      <hr
-        class="border-none h-[1px] flex w-full mb-4 bg-custom-gradient-linear"
-      />
+      <hr class="border-none h-[1px] flex w-full mb-4 bg-custom-gradient-linear" />
       <div class="flex flex-col">
         <template v-for="(item, index) in links" :key="index">
           <LinkCustom

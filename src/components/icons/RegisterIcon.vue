@@ -9,11 +9,7 @@
   >
     <title>document</title>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <g
-        transform="translate(-1870.000000, -591.000000)"
-        fill="currentColor"
-        fill-rule="nonzero"
-      >
+      <g transform="translate(-1870.000000, -591.000000)" fill="currentColor" fill-rule="nonzero">
         <g transform="translate(1716.000000, 291.000000)">
           <g transform="translate(154.000000, 300.000000)">
             <path

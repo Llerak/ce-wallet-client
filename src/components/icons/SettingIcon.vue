@@ -9,11 +9,7 @@
   >
     <title>settings</title>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <g
-        transform="translate(-2020.000000, -442.000000)"
-        fill="currentColor"
-        fill-rule="nonzero"
-      >
+      <g transform="translate(-2020.000000, -442.000000)" fill="currentColor" fill-rule="nonzero">
         <g transform="translate(1716.000000, 291.000000)">
           <g transform="translate(304.000000, 151.000000)">
             <polygon

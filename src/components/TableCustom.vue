@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
+import ArrowDownIcon from './icons/ArrowDownIcon.vue';
 import SpinnerLoanding from '@/components/SpinnerLoanding.vue'; // Asegúrate de importar el componente SpinnerLoanding
 
 const props = defineProps<{
@@ -21,49 +22,56 @@ const reduceObject = (obj: any, path: string[]) => {
 </script>
 
 <template>
-  <div
-    class="relative overflow-x-auto shadow-custom-shadow bg-white sm:rounded-lg"
-  >
-    <table class="w-full text-sm text-left">
-      <thead class="text-[14px] text-[#344767] text-nowrap">
-        <tr>
-          <th
-            v-for="(header, i) in headers"
-            :key="i"
-            scope="col"
-            class="px-6 py-3"
-            :class="{ hiddenCol: props.hiddenMobile.includes(i) }"
-          >
-            {{ header }}
-          </th>
-          <slot name="th" />
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="data.length < 1">
-          <td :colspan="headers.length" class="align-center">
-            <div class="flex justify-center p-4">
-              <SpinnerLoanding v-if="loading" />
-              <p v-else>{{ props.noDataMessage || 'No data available' }}</p>
-            </div>
-          </td>
-        </tr>
-        <tr v-else class="border-b" v-for="(item, i) in data" :key="i">
-          <td
-            v-for="(key, j) in keys"
-            :key="j"
-            class="px-6 py-4"
-            :class="{ hiddenCol: props.hiddenMobile.includes(j) }"
-          >
-            <span v-if="typeof key === 'object'">
-              {{ reduceObject(item, key) }}
-            </span>
-            <span v-else>{{ item[key] }}</span>
-          </td>
-          <slot name="td" :item="item" />
-        </tr>
-      </tbody>
-    </table>
+  <div class="flex flex-col gap-2">
+    <div class="relative overflow-x-auto shadow-custom-shadow bg-white sm:rounded-lg">
+      <table class="w-full text-sm text-left">
+        <thead class="text-[14px] text-[#344767] text-nowrap">
+          <tr>
+            <th
+              v-for="(header, i) in headers"
+              :key="i"
+              scope="col"
+              class="px-6 py-3"
+              :class="{ hiddenCol: props.hiddenMobile.includes(i) }"
+            >
+              {{ header }}
+            </th>
+            <slot name="th" />
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="data.length < 1">
+            <td :colspan="headers.length" class="align-center">
+              <div class="flex justify-center p-4">
+                <SpinnerLoanding v-if="loading" />
+                <p v-else>{{ props.noDataMessage || 'No data available' }}</p>
+              </div>
+            </td>
+          </tr>
+          <tr v-else class="border-b" v-for="(item, i) in data" :key="i">
+            <td
+              v-for="(key, j) in keys"
+              :key="j"
+              class="px-6 py-4"
+              :class="{ hiddenCol: props.hiddenMobile.includes(j) }"
+            >
+              <span v-if="typeof key === 'object'">
+                {{ reduceObject(item, key) }}
+              </span>
+              <span v-else>{{ item[key] }}</span>
+            </td>
+            <slot name="td" :item="item" />
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="w-full justify-end flex">
+      <div class="shadow-custom-shadow bg-white w-min flex flex-row items-center sm:rounded-lg">
+        <button class="text-[#344767]"><ArrowDownIcon class="rotate-90 w-4 h-4" /></button>
+        <span>1</span>
+        <button class="text-[#344767]"><ArrowDownIcon class="-rotate-90 w-4 h-4" /></button>
+      </div>
+    </div>
   </div>
 </template>
 

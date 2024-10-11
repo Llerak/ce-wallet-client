@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex h-[100vh] w-[100vw] items-center justify-center p-4 bg-[#f8f9fa]"
-  >
+  <div class="flex h-[100vh] w-[100vw] items-center justify-center p-4 bg-[#f8f9fa]">
     <form
       @submit.prevent="handleLogin"
       class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow"
@@ -37,9 +35,7 @@
             }"
             >Usuario o contraseña incorrecto</span
           >
-          <button type="submit" class="w-full bg-[#F58D71] text-white">
-            INICIAR
-          </button>
+          <button type="submit" class="w-full bg-[#F58D71] text-white">INICIAR</button>
         </div>
       </div>
     </form>

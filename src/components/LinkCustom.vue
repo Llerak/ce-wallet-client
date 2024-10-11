@@ -13,8 +13,7 @@
       class="w-8 h-8 p-[10px] flex items-center justify-center rounded-lg"
       :class="{
         'shadow-none bg-custom-gradient-icon-active text-white': isActive,
-        'shadow-custom-shadow-icon bg-custom-gradient-icon text-[#344767]':
-          !isActive,
+        'shadow-custom-shadow-icon bg-custom-gradient-icon text-[#344767]': !isActive,
       }"
     >
       <component :is="icon" class="w-3 h-3" />

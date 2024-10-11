@@ -9,11 +9,7 @@
   >
     <title>customer-support</title>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <g
-        transform="translate(-1717.000000, -291.000000)"
-        fill="currentColor"
-        fill-rule="nonzero"
-      >
+      <g transform="translate(-1717.000000, -291.000000)" fill="currentColor" fill-rule="nonzero">
         <g transform="translate(1716.000000, 291.000000)">
           <g transform="translate(1.000000, 0.000000)">
             <path

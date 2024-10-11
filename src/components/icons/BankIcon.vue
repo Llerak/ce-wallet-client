@@ -9,11 +9,7 @@
   >
     <title>credit-card</title>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <g
-        transform="translate(-2169.000000, -745.000000)"
-        fill="currentColor"
-        fill-rule="nonzero"
-      >
+      <g transform="translate(-2169.000000, -745.000000)" fill="currentColor" fill-rule="nonzero">
         <g transform="translate(1716.000000, 291.000000)">
           <g transform="translate(453.000000, 454.000000)">
             <path
