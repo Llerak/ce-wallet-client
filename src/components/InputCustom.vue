@@ -9,7 +9,7 @@
       :placeholder="placeholder"
     />
     <span v-if="showError" class="text-sm text-red-600">
-      Este campo es requerido
+      {{ ErrorText }}
     </span>
   </div>
 </template>
@@ -34,6 +34,10 @@ const props = defineProps({
   showError: {
     type: Boolean,
     default: false,
+  },
+  ErrorText: {
+    type: String,
+    default: 'Este campo es requerido',
   },
 });
 

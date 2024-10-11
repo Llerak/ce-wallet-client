@@ -9,6 +9,7 @@ const props = defineProps<{
   keys: string[];
   noDataMessage?: string;
   loading: boolean;
+  hiddenMobile: number[]; // Nueva propiedad para columnas ocultas en móvil
 }>();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,6 +32,7 @@ const reduceObject = (obj: any, path: string[]) => {
             :key="i"
             scope="col"
             class="px-6 py-3"
+            :class="{ hiddenCol: props.hiddenMobile.includes(i) }"
           >
             {{ header }}
           </th>
@@ -47,7 +49,12 @@ const reduceObject = (obj: any, path: string[]) => {
           </td>
         </tr>
         <tr v-else class="border-b" v-for="(item, i) in data" :key="i">
-          <td v-for="(key, i) in keys" :key="i" class="px-6 py-4">
+          <td
+            v-for="(key, j) in keys"
+            :key="j"
+            class="px-6 py-4"
+            :class="{ hiddenCol: props.hiddenMobile.includes(j) }"
+          >
             <span v-if="typeof key === 'object'">
               {{ reduceObject(item, key) }}
             </span>
@@ -62,16 +69,7 @@ const reduceObject = (obj: any, path: string[]) => {
 
 <style scoped>
 @media (max-width: 760px) {
-  th:nth-child(3),
-  th:nth-child(4),
-  th:nth-child(5),
-  th:nth-child(6),
-  th:nth-child(7),
-  td:nth-child(3),
-  td:nth-child(4),
-  td:nth-child(5),
-  td:nth-child(6),
-  td:nth-child(7) {
+  .hiddenCol {
     display: none;
   }
 }

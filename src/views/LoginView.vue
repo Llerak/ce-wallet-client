@@ -68,7 +68,6 @@ const handleLogin = async () => {
         password: password.value,
       };
       await usersServices.login(user);
-      console.log('Login successful');
       router.push('/funds');
     } catch (error) {
       showErrorGeneral.value = true;

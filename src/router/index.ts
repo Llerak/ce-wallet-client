@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import authGuard from '@/router/Middleware';
 import LoginView from '@/views/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
-import FundView from '@/views/FundView.vue';
+import FundView from '@/views/fundsView/FundView.vue';
 import UnauthorizedView from '@/views/UnauthorizedView.vue';
 import { roleAndUserGlobal, roles } from '@/store/RolesAndPermission';
 import { statusApi, statusSideBar } from '@/store/global';

@@ -11,12 +11,11 @@ const authGuard = async (
   roleAndUserGlobal.role = sessionStorage.getItem('Role') || 'User';
   try {
     const isValidToken = await usersServices.validationToken();
-
     if (!isValidToken) {
       next({ name: 'login' });
       return;
     } else {
-      roleAndUserGlobal.role = isValidToken.data.role;
+      roleAndUserGlobal.role = isValidToken.response.role;
       roleAndUserGlobal.name = sessionStorage.getItem('Name') || '';
     }
 

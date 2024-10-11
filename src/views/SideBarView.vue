@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, markRaw } from 'vue';
 import LinkCustom from '@/components/LinkCustom.vue';
 import ProfileIcon from '@/components/icons/ProfileIcon.vue';
 import DashBoardIcon from '@/components/icons/DashBoardIcon.vue';
@@ -53,11 +53,11 @@ import { roleAndUserGlobal } from '@/store/RolesAndPermission';
 import { statusSideBar } from '@/store/global';
 
 const links = ref([
-  { icon: DashBoardIcon, text: 'Dashboard', link: 'dashboard' },
-  { icon: BankIcon, text: 'Fondos', link: 'funds' },
-  { icon: RegisterIcon, text: 'Registro', link: 'register' },
-  { icon: UsersIcon, text: 'Usuarios', link: 'users' },
-  { icon: SettingIcon, text: 'Configuraciones', link: 'settings' },
-  { icon: ProfileIcon, text: 'Opciones de usuario', link: 'profile' },
+  { icon: markRaw(DashBoardIcon), text: 'Dashboard', link: 'dashboard' },
+  { icon: markRaw(BankIcon), text: 'Fondos', link: 'funds' },
+  { icon: markRaw(RegisterIcon), text: 'Registro', link: 'register' },
+  { icon: markRaw(UsersIcon), text: 'Usuarios', link: 'users' },
+  { icon: markRaw(SettingIcon), text: 'Configuraciones', link: 'settings' },
+  { icon: markRaw(ProfileIcon), text: 'Opciones de usuario', link: 'profile' },
 ]);
 </script>

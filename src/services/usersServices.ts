@@ -15,11 +15,11 @@ class AuthService {
         password: user.password,
       });
       if (response.data) {
-        const data = response.data.data;
+        const data = response.data.response;
         roleAndUserGlobal.name = user.name;
-        console.log(user.name);
         roleAndUserGlobal.role = data.role;
-        sessionStorage.setItem('Bearer', data.token);
+        sessionStorage.setItem('Bearer', data.signinToken);
+        sessionStorage.setItem('RefreshBearer', data.refreshToken);
         sessionStorage.setItem('Name', user.name);
       }
       statusApi.isLoading = false;
