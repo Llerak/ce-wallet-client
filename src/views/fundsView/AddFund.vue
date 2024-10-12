@@ -1,11 +1,10 @@
 <template>
   <div
-    v-if="isVisible"
     class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
     <form
       @submit.prevent="handleLogin"
-      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow"
+      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
       autocomplete="off"
     >
       <div class="flex flex-col gap-2">
@@ -42,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref, defineProps } from 'vue';
+import { ref, Ref, defineProps, onBeforeMount } from 'vue';
 import { fundService } from '@/services';
 import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';
@@ -59,7 +58,6 @@ const errorText: Ref<string> = ref('Hubo un error creando el fondo');
 
 defineProps<{
   closeAdd: () => void;
-  isVisible: boolean;
 }>();
 
 const handleLogin = async () => {
@@ -89,4 +87,13 @@ function validationFundCreate() {
   if (showErrorFundName.value) return false;
   return true;
 }
+
+onBeforeMount(() => {
+  name.value = '';
+  showErrorFundName.value = false;
+  showErrorGeneral.value = false;
+  locationUrl.value = '';
+  address.value = '';
+  details.value = '';
+});
 </script>

@@ -53,7 +53,7 @@ const props = defineProps({
 
 <template>
   <div class="flex flex-col gap-6">
-    <div class="flex flex-col gap-8 shadow-custom-shadow bg-white p-3 sm:rounded-lg">
+    <div class="flex flex-col gap-8 shadow-custom-shadow bg-white p-3 rounded-lg">
       <h4>Fondos</h4>
       <div class="flex w-full justify-between items-center flex-wrap gap-3">
         <button @click="showAdd" v-if="props.addEnabled" class="bg-[#F58D71] text-white w-min text-nowrap">

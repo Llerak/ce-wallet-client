@@ -2,7 +2,7 @@
   <div class="flex h-[100vh] w-[100vw] items-center justify-center p-4 bg-[#f8f9fa]">
     <form
       @submit.prevent="handleLogin"
-      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow"
+      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
       autocomplete="off"
     >
       <div class="flex flex-col gap-2">

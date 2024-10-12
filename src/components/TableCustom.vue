@@ -23,7 +23,7 @@ const reduceObject = (obj: any, path: string[]) => {
 
 <template>
   <div class="flex flex-col gap-2">
-    <div class="relative overflow-x-auto shadow-custom-shadow bg-white sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow-custom-shadow bg-white rounded-lg">
       <table class="w-full text-sm text-left">
         <thead class="text-[14px] text-[#344767] text-nowrap">
           <tr>
@@ -66,7 +66,7 @@ const reduceObject = (obj: any, path: string[]) => {
       </table>
     </div>
     <div class="w-full justify-end flex">
-      <div class="shadow-custom-shadow bg-white w-min flex flex-row items-center sm:rounded-lg">
+      <div class="shadow-custom-shadow bg-white w-min flex flex-row items-center rounded-lg">
         <button class="text-[#344767]"><ArrowDownIcon class="rotate-90 w-4 h-4" /></button>
         <span>1</span>
         <button class="text-[#344767]"><ArrowDownIcon class="-rotate-90 w-4 h-4" /></button>

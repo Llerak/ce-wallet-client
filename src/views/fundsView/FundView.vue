@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <AddFund :is-visible="showAdd" :close-add="closeAddFunct" />
+  <AddFund v-if="showAdd" :close-add="closeAddFunct" />
 </template>
 
 <script lang="ts" setup>
