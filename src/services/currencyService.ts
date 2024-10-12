@@ -36,7 +36,7 @@ class Service {
   async getInformalForeignExchange() {
     return await api
       .get(routeServices.currencies.informalForeignExchange)
-      .then((res: AxiosResponse<IResponse<{}>>) => res.data.response)
+      .then((res: AxiosResponse<IResponse<{ [key: string]: number }>>) => res.data.response)
       .catch((err: AxiosError) => console.log(err));
   }
 }

@@ -1,4 +1,4 @@
-export interface IPaginationResponse<T> {
+export interface IPagination<T> {
   data: T[];
   page: number;
   size: number;

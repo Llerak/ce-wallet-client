@@ -4,7 +4,7 @@
       name="Fondos"
       :add-enabled="true"
       :hidden-mobile="[2, 3, 4, 5]"
-      :is-loading="false"
+      :is-loading="statusApi.isLoading"
       :header="header"
       :keys="keys"
       :data="data"
@@ -21,9 +21,14 @@
 <script lang="ts" setup>
 import ListModal from '../default/ListModal.vue';
 import PostCustom from '@/components/PostCustom.vue';
+import { IFundDto } from '@/interfaces/dto';
+import { onMounted, ref } from 'vue';
+import { fundService } from '@/services';
+import { statusApi } from '@/store/global';
 
-const header = ['Nombre', 'Balance Total', 'EUR', 'USD', 'MLC', 'MXN'];
-const keys = ['currency', 'totalBalance', 'EUR', 'USD', 'MLC', 'MXN'];
+const Currencies = ['CUP', 'USD', 'MLC', 'EUR'];
+const header = ['Fondo', ...Currencies];
+const keys = ['name', ...Currencies];
 const detailsKey = ['Nombre', 'Usuario', 'Creado en', 'EUR', 'USD', 'MLC', 'CUP', 'Dirección', 'Detalles'];
 const detailsValue = [
   'Test',
@@ -36,87 +41,27 @@ const detailsValue = [
   'carretera Fontanar wajay km 2 y 1/2 sin # de ksa',
   'Son muchos detalles',
 ];
+let data = ref<any[]>([]);
 
-const data = [
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-  {
-    currency: 'Test',
-    totalBalance: 106000,
-    EUR: 340,
-    USD: 323,
-    MLC: 265,
-    MXN: 18,
-  },
-];
+const formatFundDataIntoTableInput = (data: IFundDto) => {
+  const tableInput = { name: data.name } as any;
+  const currencyDataIsNull = data.currencies === null;
+  const fundCurrencies = data.currencies as { currency: string; amount: number }[];
+
+  for (const currency of Currencies) {
+    tableInput[currency] = 0;
+    if (currencyDataIsNull) continue;
+    let fundCurrency = fundCurrencies.find((fundCurrency) => fundCurrency.currency == currency);
+    if (fundCurrency === undefined) continue;
+    tableInput[currency] = fundCurrency.amount;
+  }
+
+  return tableInput;
+};
+
+onMounted(async () => {
+  const res = await fundService.list();
+  if (res === undefined) return;
+  data.value = res.data.map(formatFundDataIntoTableInput);
+});
 </script>
