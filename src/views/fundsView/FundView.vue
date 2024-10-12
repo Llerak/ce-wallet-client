@@ -41,7 +41,14 @@ const detailsValue = [
   'carretera Fontanar wajay km 2 y 1/2 sin # de ksa',
   'Son muchos detalles',
 ];
+
 let data = ref<any[]>([]);
+
+onMounted(async () => {
+  const res = await fundService.list();
+  if (res === undefined) return;
+  data.value = res.data.map(formatFundDataIntoTableInput);
+});
 
 const formatFundDataIntoTableInput = (data: IFundDto) => {
   const tableInput = { name: data.name } as any;
@@ -58,10 +65,4 @@ const formatFundDataIntoTableInput = (data: IFundDto) => {
 
   return tableInput;
 };
-
-onMounted(async () => {
-  const res = await fundService.list();
-  if (res === undefined) return;
-  data.value = res.data.map(formatFundDataIntoTableInput);
-});
 </script>

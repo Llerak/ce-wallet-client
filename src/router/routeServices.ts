@@ -6,7 +6,7 @@ const routeServices = {
     register: '/auth/register',
   },
   funds: {
-    list: '/fund',
+    list: (page: number, size: number) => `/fund?page=${page}&size=${size}`,
     fund: (id: string) => `/fund/${id}`,
     user: (id: string) => `/fund/user/${id}`,
     create: '/fund/create',
@@ -21,6 +21,7 @@ const routeServices = {
     currency: (id: string) => `/currency/${id}`,
     informalForeignExchange: '/currency/informal-foreign-exchange',
   },
+  logs: (page: number, size: number) => `/logs/funds?page=${page}&limit=${size}`,
 };
 
 export default routeServices;

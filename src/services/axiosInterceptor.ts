@@ -2,7 +2,7 @@ import axios from 'axios';
 import routeServices from '@/router/routeServices';
 
 export const api = axios.create({
-  baseURL: 'https://apidev.cewallet.org',
+  baseURL: 'http://localhost:5000',
 });
 
 api.interceptors.request.use(

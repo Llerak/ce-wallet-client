@@ -1,14 +1,13 @@
 import { api } from '@/services';
 import routeServices from '@/router/routeServices';
 import { AxiosError, AxiosResponse } from 'axios';
-import { IResponse } from '@/interfaces';
+import { IPagination, IResponse } from '@/interfaces';
 import { IFundDto, IFundFilter, IFundInfo, ITransactionInfoDto, ITransferDto, ITransferInfoDto } from '@/interfaces/dto';
-import { IPagination } from '@/interfaces/IPagination';
 
 class Service {
-  async list(filter?: IFundFilter) {
+  async list(filter?: IFundFilter, page = 0, size = 10) {
     return await api
-      .post(routeServices.funds.list, filter)
+      .post(routeServices.funds.list(page, size), filter)
       .then((res: AxiosResponse<IResponse<IPagination<IFundDto>>>) => res.data.response)
       .catch((err: AxiosError) => {
         console.log(err.message);
