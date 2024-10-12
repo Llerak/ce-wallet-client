@@ -1,5 +1,5 @@
-export * from './authServices';
-export * from './fundServices';
+export * from './authService';
+export * from './fundService';
 export * from './axiosInterceptor';
 export * from './roleService';
 export * from './fundLogsService';
