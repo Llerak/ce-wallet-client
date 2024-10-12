@@ -64,7 +64,8 @@ const props = defineProps({
     required: true,
   },
   modelValue: {
-    type: Array as () => any[],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    type: Array as () => { value: any; text: string }[],
     default: () => [],
   },
   showError: {
@@ -89,8 +90,9 @@ const dropdown = ref<HTMLElement | null>(null);
 
 const checkDefaultValue = () => {
   selectedOptionsText.value = props.options
-    .filter((option) => internalValue.value.includes(option.value))
+    .filter((option) => internalValue.value.some((val) => val.value === option.value))
     .map((option) => option.text);
+  console.log(internalValue.value);
 };
 
 const handleClickOutside = (event: MouseEvent) => {
@@ -111,7 +113,7 @@ onBeforeUnmount(() => {
 watch(internalValue, (newValue) => {
   emit('update:modelValue', newValue);
   selectedOptionsText.value = props.options
-    .filter((option) => newValue.includes(option.value))
+    .filter((option) => newValue.some((val) => val.value === option.value))
     .map((option) => option.text);
 });
 
@@ -119,20 +121,21 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-const toggleOption = (option: { value: any }) => {
-  if (internalValue.value.includes(option.value)) {
-    internalValue.value = internalValue.value.filter((val) => val !== option.value);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const toggleOption = (option: { value: any; text: string }) => {
+  if (internalValue.value.some((val) => val.value === option.value)) {
+    internalValue.value = internalValue.value.filter((val) => val.value !== option.value);
   } else {
-    internalValue.value.push(option.value);
+    internalValue.value.push(option);
   }
   selectedOptionsText.value = props.options
-    .filter((option) => internalValue.value.includes(option.value))
+    .filter((option) => internalValue.value.some((val) => val.value === option.value))
     .map((option) => option.text);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isSelected = (option: { value: any }) => {
-  return internalValue.value.includes(option.value);
+  return internalValue.value.some((val) => val.value === option.value);
 };
 </script>
 

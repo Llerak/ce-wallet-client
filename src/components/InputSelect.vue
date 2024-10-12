@@ -55,7 +55,9 @@ const props = defineProps({
     required: true,
   },
   modelValue: {
-    type: String,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    type: Object as () => { value: any; text: string },
+    default: () => ({ value: '', text: '' }),
   },
   showError: {
     type: Boolean,
@@ -65,11 +67,6 @@ const props = defineProps({
     type: String,
     default: 'Este campo es requerido',
   },
-  defaultValue: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    type: Object as () => { value: any; text: string },
-    default: () => ({ value: '', text: '' }),
-  },
   placeholder: {
     type: String,
     default: 'Seleccione una opción',
@@ -77,15 +74,15 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue']);
-const internalValue = ref(props.modelValue || props.defaultValue.value);
+const internalValue = ref(props.modelValue.value);
 const isOpen = ref(false);
-const selectedOptionText = ref(props.defaultValue.text);
+const selectedOptionText = ref(props.modelValue.text);
 const dropdown = ref<HTMLElement | null>(null);
 
 const checkDefaultValue = () => {
-  const selectedOption = props.options.find((option) => option.value === props.defaultValue.value);
+  const selectedOption = props.options.find((option) => option.value === props.modelValue.value);
   if (selectedOption) {
-    internalValue.value = props.defaultValue.value;
+    internalValue.value = props.modelValue.value;
     selectedOptionText.value = selectedOption.text;
   }
 };

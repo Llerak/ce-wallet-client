@@ -17,7 +17,8 @@
       </div>
     </div>
   </div>
-  <AddFund v-if="showAdd" :close-add="closeAddFunct" />
+  <AddFund v-if="showAdd" @fundAdded="handleFundAdded" :close-add="closeAddFunct" />
+  <!-- <FiltersFund v-if="showFilter" @fundFilter="handleFundFilter" :close-filter="closeFilterFunct" /> -->
 </template>
 
 <script lang="ts" setup>
@@ -28,6 +29,7 @@ import { onMounted, Ref, ref } from 'vue';
 import { fundService } from '@/services';
 import { statusApi } from '@/store/global';
 import AddFund from './AddFund.vue';
+import FiltersFund from './FiltersFund.vue';
 
 const Currencies = ['CUP', 'USD', 'MLC', 'EUR'];
 const header = ['Fondo', ...Currencies];
@@ -45,7 +47,7 @@ const detailsValue = [
   'Son muchos detalles',
 ];
 
-let showAdd: Ref<boolean> = ref(true);
+let showAdd: Ref<boolean> = ref(false);
 const showAddFunct = () => {
   showAdd.value = true;
 };
@@ -53,13 +55,25 @@ const closeAddFunct = () => {
   showAdd.value = false;
 };
 
+let showFilter: Ref<boolean> = ref(true);
+const showFilterFunct = () => {
+  showFilter.value = true;
+};
+const closeFilterFunct = () => {
+  showFilter.value = false;
+};
+
 let data = ref<any[]>([]);
 
 onMounted(async () => {
+  await fetchData();
+});
+
+const fetchData = async () => {
   const res = await fundService.list();
   if (res === undefined) return;
   data.value = res.data.map(formatFundDataIntoTableInput);
-});
+};
 
 const formatFundDataIntoTableInput = (data: IFundDto) => {
   const tableInput = { name: data.name } as any;
@@ -75,5 +89,10 @@ const formatFundDataIntoTableInput = (data: IFundDto) => {
   }
 
   return tableInput;
+};
+
+const handleFundAdded = async () => {
+  closeAddFunct();
+  await fetchData();
 };
 </script>
