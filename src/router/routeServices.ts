@@ -22,6 +22,10 @@ const routeServices = {
     informalForeignExchange: '/currency/informal-foreign-exchange',
   },
   logs: (page: number, size: number) => `/logs/funds?page=${page}&limit=${size}`,
+  roles: {
+    list: '/role',
+    find: (id: string) => `/role/${id}`,
+  },
 };
 
 export default routeServices;
