@@ -12,6 +12,9 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  showAdd: {
+    type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
+  },
   header: {
     type: Array as () => string[],
     required: true,
@@ -53,7 +56,7 @@ const props = defineProps({
     <div class="flex flex-col gap-8 shadow-custom-shadow bg-white p-3 sm:rounded-lg">
       <h4>Fondos</h4>
       <div class="flex w-full justify-between items-center flex-wrap gap-3">
-        <button v-if="props.addEnabled" class="bg-[#F58D71] text-white w-min text-nowrap">
+        <button @click="showAdd" v-if="props.addEnabled" class="bg-[#F58D71] text-white w-min text-nowrap">
           {{ props.buttonLabel }}
         </button>
         <div class="flex gap-3 items-center flex-wrap">

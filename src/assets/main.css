@@ -50,6 +50,7 @@ button {
 }
 input,
 select,
+textarea,
 .selectInput {
   display: block;
   width: 100%;
@@ -66,6 +67,7 @@ select,
 }
 input:focus,
 select:focus,
+textarea:focus,
 .selectInput:focus {
   color: #495057;
   background-color: #fff;

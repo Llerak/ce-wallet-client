@@ -2,7 +2,14 @@ import { api } from '@/services';
 import routeServices from '@/router/routeServices';
 import { AxiosError, AxiosResponse } from 'axios';
 import { IPagination, IResponse } from '@/interfaces';
-import { IFundDto, IFundFilter, IFundInfo, ITransactionInfoDto, ITransferDto, ITransferInfoDto } from '@/interfaces/dto';
+import {
+  IFundDto,
+  IFundFilter,
+  IFundInfo,
+  ITransactionInfoDto,
+  ITransferDto,
+  ITransferInfoDto,
+} from '@/interfaces/dto';
 
 class Service {
   async list(filter?: IFundFilter, page = 0, size = 10) {

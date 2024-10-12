@@ -3,6 +3,7 @@
     <ListModal
       name="Fondos"
       :add-enabled="true"
+      :show-add="showAddFunct"
       :hidden-mobile="[2, 3, 4, 5]"
       :is-loading="statusApi.isLoading"
       :header="header"
@@ -16,15 +17,17 @@
       </div>
     </div>
   </div>
+  <AddFund :is-visible="showAdd" :close-add="closeAddFunct" />
 </template>
 
 <script lang="ts" setup>
 import ListModal from '../default/ListModal.vue';
 import PostCustom from '@/components/PostCustom.vue';
 import { IFundDto } from '@/interfaces/dto';
-import { onMounted, ref } from 'vue';
+import { onMounted, Ref, ref } from 'vue';
 import { fundService } from '@/services';
 import { statusApi } from '@/store/global';
+import AddFund from './AddFund.vue';
 
 const Currencies = ['CUP', 'USD', 'MLC', 'EUR'];
 const header = ['Fondo', ...Currencies];
@@ -41,6 +44,14 @@ const detailsValue = [
   'carretera Fontanar wajay km 2 y 1/2 sin # de ksa',
   'Son muchos detalles',
 ];
+
+let showAdd: Ref<boolean> = ref(true);
+const showAddFunct = () => {
+  showAdd.value = true;
+};
+const closeAddFunct = () => {
+  showAdd.value = false;
+};
 
 let data = ref<any[]>([]);
 
