@@ -10,8 +10,8 @@ class Service {
       .post(routeServices.logs(page, size), filter)
       .then((res: AxiosResponse<IResponse<IPagination<IFundLogDto>>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 }

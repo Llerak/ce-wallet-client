@@ -26,6 +26,28 @@ const routeServices = {
     list: '/role',
     find: (id: string) => `/role/${id}`,
   },
+  users: {
+    root: '/user',
+    resetPassword: '/user/reset-password',
+    delete: (id: string) => `/user/${id}`,
+    find: (id?: string, name?: string, email?: string) => {
+      let route = '/user/find-by';
+      let cond = true;
+      const first = () => (cond ? '?' : '&');
+      if (id !== undefined) {
+        cond = false;
+        route += `${first()}id=${id}`;
+      }
+      if (name !== undefined) {
+        cond = false;
+        route += `${first()}name=${name}`;
+      }
+      if (email !== undefined) {
+        route += `${first()}email=${email}`;
+      }
+      return route;
+    },
+  },
 };
 
 export default routeServices;

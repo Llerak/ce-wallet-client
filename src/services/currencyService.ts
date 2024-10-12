@@ -10,8 +10,8 @@ class Service {
       .get(routeServices.currencies.list(includeFunds))
       .then((res: AxiosResponse<IResponse<ICurrencyDto[]>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -20,8 +20,8 @@ class Service {
       .post(routeServices.currencies.create, { name })
       .then((res: AxiosResponse<IResponse<ICurrencyDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -30,8 +30,8 @@ class Service {
       .put(routeServices.currencies.currency(id), { name })
       .then((res: AxiosResponse<IResponse<ICurrencyDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -40,8 +40,8 @@ class Service {
       .delete(routeServices.currencies.currency(id))
       .then((res: AxiosResponse<IResponse<ICurrencyDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -50,8 +50,8 @@ class Service {
       .get(routeServices.currencies.informalForeignExchange)
       .then((res: AxiosResponse<IResponse<{ [key: string]: number }>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 }

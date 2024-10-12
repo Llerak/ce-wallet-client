@@ -10,8 +10,8 @@ class Service {
       .post(routeServices.funds.list(page, size), filter)
       .then((res: AxiosResponse<IResponse<IPagination<IFundDto>>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -20,8 +20,8 @@ class Service {
       .get(routeServices.funds.fund(id))
       .then((res: AxiosResponse<IResponse<IFundDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -30,8 +30,8 @@ class Service {
       .patch(routeServices.funds.fund(id), info)
       .then((res: AxiosResponse<IResponse<IFundDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -40,8 +40,8 @@ class Service {
       .delete(routeServices.funds.fund(id))
       .then((res: AxiosResponse<IResponse<IFundDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -50,8 +50,8 @@ class Service {
       .get(routeServices.funds.user(id))
       .then((res: AxiosResponse<IResponse<IFundDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -60,8 +60,8 @@ class Service {
       .post(routeServices.funds.create, info)
       .then((res: AxiosResponse<IResponse<IFundDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -70,8 +70,8 @@ class Service {
       .post(routeServices.funds.transfer, info)
       .then((res: AxiosResponse<IResponse<ITransferDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -80,8 +80,8 @@ class Service {
       .post(routeServices.funds.withdrawal, info)
       .then((res: AxiosResponse<IResponse<ITransferDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -90,8 +90,8 @@ class Service {
       .post(routeServices.funds.deposit, info)
       .then((res: AxiosResponse<IResponse<ITransferDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -100,8 +100,8 @@ class Service {
       .patch(routeServices.funds.attachUser(fundId, userId))
       .then((res: AxiosResponse<IResponse<IFundDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 }

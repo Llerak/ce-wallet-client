@@ -10,8 +10,8 @@ class Service {
       .get(routeServices.roles.list)
       .then((res: AxiosResponse<IResponse<IRoleDto[]>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 
@@ -20,8 +20,8 @@ class Service {
       .get(routeServices.roles.find(id))
       .then((res: AxiosResponse<IResponse<IRoleDto>>) => res.data.response)
       .catch((err: AxiosError) => {
-        console.log(err.message);
-        return undefined;
+        console.log(err.message, err);
+        throw err.message;
       });
   }
 }
