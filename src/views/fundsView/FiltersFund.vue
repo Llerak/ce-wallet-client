@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div
     class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
@@ -86,5 +86,14 @@ const handleLogin = async () => {
   }
 };
 
+/* validation */
+function validationFundCreate() {
+  showErrorFundName.value = false;
+  if (name.value === '') {
+    showErrorFundName.value = true;
+  }
+
+  if (showErrorFundName.value) return false;
+  return true;
+}
 </script>
- -->
