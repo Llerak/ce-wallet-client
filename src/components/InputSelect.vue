@@ -113,7 +113,7 @@ const toggleDropdown = () => {
 };
 
 const selectOption = (option: { value: string | undefined }) => {
-  internalValue.value = option.value;
+  internalValue.value = internalValue.value == option.value ? { value: '', text: '' } : option.value;
   isOpen.value = false;
 };
 </script>

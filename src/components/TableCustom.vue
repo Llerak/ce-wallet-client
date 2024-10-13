@@ -7,6 +7,11 @@ const props = defineProps<{
   headers: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
+  pageCurrent?: number;
+  enabledNext: boolean;
+  enabledBack: boolean;
+  nextPage: ((payload: MouseEvent) => void) | undefined;
+  backPage: ((payload: MouseEvent) => void) | undefined;
   keys: string[];
   noDataMessage?: string;
   loading: boolean;
@@ -24,7 +29,7 @@ const reduceObject = (obj: any, path: string[]) => {
 <template>
   <div class="flex flex-col gap-2">
     <div class="relative overflow-x-auto shadow-custom-shadow bg-white rounded-lg">
-      <table class="w-full text-sm text-left">
+      <table class="w-full text-sm text-left min-h-[540px]">
         <thead class="text-[14px] text-[#344767] text-nowrap">
           <tr>
             <th
@@ -52,7 +57,7 @@ const reduceObject = (obj: any, path: string[]) => {
             <td
               v-for="(key, j) in keys"
               :key="j"
-              class="px-6 py-4"
+              class="px-6 py-4 max-h-[50px]"
               :class="{ hiddenCol: props.hiddenMobile.includes(j) }"
             >
               <span v-if="typeof key === 'object'">
@@ -62,14 +67,34 @@ const reduceObject = (obj: any, path: string[]) => {
             </td>
             <slot name="td" :item="item" />
           </tr>
+          <tr
+            v-show="!props.loading && data.length > 0"
+            v-for="i in 10 - data.length"
+            :key="'empty-' + i"
+            class="border-b"
+          >
+            <td :colspan="headers.length" class="px-6 py-4">&nbsp;</td>
+          </tr>
         </tbody>
       </table>
     </div>
     <div class="w-full justify-end flex">
       <div class="shadow-custom-shadow bg-white w-min flex flex-row items-center rounded-lg">
-        <button class="text-[#344767]"><ArrowDownIcon class="rotate-90 w-4 h-4" /></button>
-        <span>1</span>
-        <button class="text-[#344767]"><ArrowDownIcon class="-rotate-90 w-4 h-4" /></button>
+        <button
+          @click="backPage"
+          class="text-[#344767]"
+          :class="{ 'opacity-60 cursor-default pointer-events-none': !enabledBack }"
+        >
+          <ArrowDownIcon class="rotate-90 w-4 h-4" />
+        </button>
+        <span>{{ pageCurrent }}</span>
+        <button
+          @click="nextPage"
+          class="text-[#344767]"
+          :class="{ 'opacity-60 cursor-default pointer-events-none': !enabledNext }"
+        >
+          <ArrowDownIcon class="-rotate-90 w-4 h-4" />
+        </button>
       </div>
     </div>
   </div>

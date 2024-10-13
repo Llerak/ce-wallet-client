@@ -13,7 +13,7 @@
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-4">
           <InputCustom title="Nombre" v-model="name" type="text" placeholder="Nombre" :show-error="showErrorFundName" />
-          <InputCustom title="Localización" v-model="locationUrl" type="text" placeholder="Localización" />
+          <!-- <InputCustom title="Localización" v-model="locationUrl" type="text" placeholder="Localización" /> -->
           <InputCustom title="Dirección" v-model="address" type="text" placeholder="Dirección" />
           <InputTextArea title="Detalles" v-model="details" placeholder="Detalles" />
         </div>
@@ -41,27 +41,32 @@
 </template>
 
 <script lang="ts" setup>
+/* import */
 import { ref, Ref, defineProps, onBeforeMount, defineEmits } from 'vue';
 import { fundService } from '@/services';
 import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';
 import { IFundInfo } from '@/interfaces/dto';
 
+/* fund model */
 const name: Ref<string> = ref('');
 const showErrorFundName: Ref<boolean> = ref(false);
 const locationUrl: Ref<string> = ref('');
 const address: Ref<string> = ref('');
 const details: Ref<string> = ref('');
 
+/* Validation const */
 const showErrorGeneral: Ref<boolean> = ref(false);
 const errorText: Ref<string> = ref('Hubo un error creando el fondo');
 
+/* props and emits*/
 defineProps<{
   closeAdd: () => void;
 }>();
 
 const emit = defineEmits(['fundAdded']);
 
+/* login */
 const handleLogin = async () => {
   showErrorGeneral.value = false;
   if (validationFundCreate()) {
@@ -81,6 +86,7 @@ const handleLogin = async () => {
   }
 };
 
+/* validation */
 function validationFundCreate() {
   showErrorFundName.value = false;
   if (name.value === '') {
@@ -91,6 +97,7 @@ function validationFundCreate() {
   return true;
 }
 
+/* reset */
 onBeforeMount(() => {
   name.value = '';
   showErrorFundName.value = false;

@@ -12,7 +12,19 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  enabledNext: {
+    type: Boolean,
+  },
+  enabledBack: {
+    type: Boolean,
+  },
   showAdd: {
+    type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
+  },
+  nextPage: {
+    type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
+  },
+  backPage: {
     type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
   },
   header: {
@@ -26,6 +38,9 @@ const props = defineProps({
   hiddenMobile: {
     type: Array as () => number[],
     required: true,
+  },
+  pageCurrent: {
+    type: Number,
   },
   data: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,6 +88,11 @@ const props = defineProps({
       :keys="props.keys"
       :loading="props.isLoading"
       :hidden-mobile="props.hiddenMobile"
+      :next-page="nextPage"
+      :back-page="backPage"
+      :page-current="pageCurrent"
+      :enabled-next="enabledNext"
+      :enabled-back="enabledBack"
     />
   </div>
 </template>
