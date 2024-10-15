@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TableCustom from '@/components/TableCustom.vue';
 import InputCustom from '@/components/InputCustom.vue';
-import { defineProps } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   name: {
@@ -64,6 +64,11 @@ const props = defineProps({
     default: 'FILTROS',
   },
 });
+
+const emit = defineEmits(['returnId']);
+const idValue = (id: string) => {
+  emit('returnId', id);
+};
 </script>
 
 <template>
@@ -93,6 +98,7 @@ const props = defineProps({
       :page-current="pageCurrent"
       :enabled-next="enabledNext"
       :enabled-back="enabledBack"
+      @return-id="idValue"
     />
   </div>
 </template>

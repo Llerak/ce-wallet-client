@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 /* import */
-import { ref, Ref, defineProps, onBeforeMount, defineEmits } from 'vue';
+import { ref, Ref, defineProps, defineEmits } from 'vue';
 import { fundService } from '@/services';
 import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';

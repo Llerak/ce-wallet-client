@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 import ArrowDownIcon from './icons/ArrowDownIcon.vue';
+import router from '@/router';
 import SpinnerLoanding from '@/components/SpinnerLoanding.vue'; // Asegúrate de importar el componente SpinnerLoanding
+
+const emit = defineEmits(['returnId']);
+const watchClickInObject = (id: string) => {
+  emit('returnId', id);
+};
 
 const props = defineProps<{
   headers: string[];
@@ -53,7 +59,13 @@ const reduceObject = (obj: any, path: string[]) => {
               </div>
             </td>
           </tr>
-          <tr v-else class="border-b" v-for="(item, i) in data" :key="i">
+          <tr
+            v-else
+            class="border-b cursor-pointer relative"
+            v-for="(item, i) in data"
+            :key="i"
+            @click="watchClickInObject(item.id)"
+          >
             <td
               v-for="(key, j) in keys"
               :key="j"
