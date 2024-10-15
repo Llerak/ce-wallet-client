@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
 import ArrowDownIcon from './icons/ArrowDownIcon.vue';
-import router from '@/router';
 import SpinnerLoanding from '@/components/SpinnerLoanding.vue'; // Asegúrate de importar el componente SpinnerLoanding
 
 const emit = defineEmits(['returnId']);
