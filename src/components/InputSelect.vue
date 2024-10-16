@@ -2,7 +2,7 @@
   <div class="flex flex-col relative" ref="dropdown">
     <label class="ml-1 mb-2" v-if="title">{{ title }}</label>
     <div class="relative">
-      <button @click="toggleDropdown" class="text text-start selectInput">
+      <button type="button" @click="toggleDropdown" class="text text-start selectInput">
         {{ selectedOptionText || placeholder }}
         <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
@@ -73,7 +73,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'emitValue']);
 const internalValue = ref(props.modelValue.value);
 const isOpen = ref(false);
 const selectedOptionText = ref(props.modelValue.text);
@@ -104,9 +104,20 @@ onBeforeUnmount(() => {
 
 watch(internalValue, (newValue) => {
   emit('update:modelValue', newValue);
+  emit('emitValue', newValue); // Emit the value when it changes
   const selectedOption = props.options.find((option) => option.value === newValue);
   selectedOptionText.value = selectedOption ? selectedOption.text : '';
 });
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    internalValue.value = newValue.value;
+    selectedOptionText.value = newValue.text;
+    checkDefaultValue();
+  },
+  { deep: true }
+);
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
