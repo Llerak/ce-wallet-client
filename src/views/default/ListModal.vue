@@ -21,6 +21,9 @@ const props = defineProps({
   showAdd: {
     type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
   },
+  showFilter: {
+    type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
+  },
   nextPage: {
     type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
   },
@@ -81,7 +84,10 @@ const idValue = (id: string) => {
         </button>
         <div class="flex gap-3 items-center flex-wrap">
           <InputCustom :placeholder="props.placeholder" type="text" />
-          <button class="bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] w-min text-nowrap">
+          <button
+            @click="showFilter"
+            class="bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] w-min text-nowrap"
+          >
             {{ props.filterLabel }}
           </button>
         </div>

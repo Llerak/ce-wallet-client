@@ -11,6 +11,7 @@ module.exports = {
         'custom-gradient-linear': 'linear-gradient(90deg, transparent, rgba(0, 0, 0, .2), transparent)',
         'custom-gradient-icon-active': 'linear-gradient(135deg, #eb6b48, #f58d71)',
         'custom-gradient-icon': 'linear-gradient(310deg,#e9ecef,#e9ecef)',
+        'custom-gradient-dark': 'linear-gradient(310deg, #141727, #3a416f)',
       },
     },
   },

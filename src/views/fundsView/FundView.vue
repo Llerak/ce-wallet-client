@@ -16,20 +16,32 @@
       :page-current="pageCurrent"
       button-label="AGREGAR FONDO"
       @return-id="test"
+      :show-filter="showFilterFunct"
     />
     <DetailsFund :id="idFund" v-if="idFund !== ''" />
   </div>
+  <FiltersFund
+    :show-filter="showFilter"
+    :close-filter="closeFilterFunct"
+    @filter-value="
+      (filters) => {
+        handleFilter(filters);
+      }
+    "
+    @restartfilter-value="(filters: IFundFilter) => handleResetFilter(filters)"
+  />
   <AddFund v-if="showAdd" @fundAdded="handleFundAdded" :close-add="closeAddFunct" />
 </template>
 
 <script lang="ts" setup>
 /* imports */
 import ListModal from '../default/ListModal.vue';
-import { IFundDto } from '@/interfaces/dto';
+import { IFundDto, IFundFilter } from '@/interfaces/dto';
 import { onMounted, Ref, ref } from 'vue';
 import { currencyService, fundService } from '@/services';
 import AddFund from './AddFund.vue';
 import DetailsFund from './DetailsFund.vue';
+import FiltersFund from './FiltersFund.vue';
 
 /* add Functionality*/
 const showAdd: Ref<boolean> = ref(false);
@@ -44,6 +56,27 @@ const handleFundAdded = async () => {
   await fetchData();
 };
 
+/* filter Functionality*/
+const showFilter: Ref<boolean> = ref(false);
+const showFilterFunct = () => {
+  showFilter.value = true;
+};
+const closeFilterFunct = () => {
+  showFilter.value = false;
+};
+const handleFilter = async (filterValue: IFundFilter) => {
+  closeFilterFunct();
+  filter.value = filterValue;
+  pageCurrent.value = 1;
+  await fetchData();
+};
+const handleResetFilter = async (filterValue: IFundFilter) => {
+  closeFilterFunct();
+  filter.value = filterValue;
+  pageCurrent.value = 1;
+  await fetchData();
+};
+
 /* table Functionality*/
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const data = ref<any[]>([]);
@@ -55,7 +88,7 @@ const fetchData = async () => {
   loading.value = true;
   data.value = [];
   await fetchDataCurrency();
-  const res = await fundService.list(undefined, pageCurrent.value - 1);
+  const res = await fundService.list(filter.value, pageCurrent.value - 1);
   if (res === undefined) return;
   totalPageCurrent.value = Math.ceil(res.totalLenght / 10);
   data.value = res.data.map(formatFundDataIntoTableInput);
@@ -91,16 +124,15 @@ const nextPage = () => {
     pageCurrent.value++;
     fetchData();
   }
-  console.log(pageCurrent.value - 1);
 };
 const backPage = () => {
   if (pageCurrent.value > 1) {
     pageCurrent.value--;
     fetchData();
   }
-
-  console.log(pageCurrent.value - 1);
 };
+/* filter */
+const filter: Ref<IFundFilter> = ref({});
 
 /* currency */
 const currencyName = ref<string[]>([]);
@@ -116,7 +148,6 @@ const fetchDataCurrency = async () => {
 /* hooks */
 onMounted(async () => {
   await fetchData();
-  console.log(currencyName.value);
 });
 
 /* emit test */

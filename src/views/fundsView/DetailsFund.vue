@@ -1,5 +1,6 @@
 <template>
-  <div class="flex max-w-xl flex-col gap-4">
+  <h4>Detalles</h4>
+  <div class="flex max-w-xl flex-col gap-4 p-4 bg-custom-gradient-dark rounded-lg shadow-custom-shadow">
     <div class="flex flex-wrap gap-3">
       <PostCustom title="Nombre" :content="data.name || 'No disponible'" />
       <PostCustom title="Usuario" :content="data.user?.username || 'No disponible'" />

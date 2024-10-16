@@ -130,6 +130,16 @@ onBeforeUnmount(() => {
 watch(internalValue, (newValue) => {
   emit('update:modelValue', newValue);
 });
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    internalValue.value = newValue;
+    selectedOptionsText.value = props.options
+      .filter((option) => internalValue.value.some((val) => val.value === option.value))
+      .map((option) => option.text);
+  },
+  { deep: true }
+);
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;

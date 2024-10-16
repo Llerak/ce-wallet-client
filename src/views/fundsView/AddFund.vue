@@ -3,7 +3,7 @@
     class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
     <form
-      @submit.prevent="handleLogin"
+      @submit.prevent="handleAdd"
       class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
       autocomplete="off"
     >
@@ -66,8 +66,8 @@ defineProps<{
 
 const emit = defineEmits(['fundAdded']);
 
-/* login */
-const handleLogin = async () => {
+/* Add */
+const handleAdd = async () => {
   showErrorGeneral.value = false;
   if (validationFundCreate()) {
     try {
