@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import TableCustom from '@/components/TableCustom.vue';
-import InputCustom from '@/components/InputCustom.vue';
-import { defineProps, defineEmits } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 
 const props = defineProps({
   name: {
@@ -10,7 +9,7 @@ const props = defineProps({
   },
   addEnabled: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   enabledNext: {
     type: Boolean,
@@ -40,7 +39,7 @@ const props = defineProps({
   },
   hiddenMobile: {
     type: Array as () => number[],
-    required: true,
+    default: Array as () => number[],
   },
   pageCurrent: {
     type: Number,
@@ -77,13 +76,13 @@ const idValue = (id: string) => {
 <template>
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-8 shadow-custom-shadow bg-white p-3 rounded-lg">
-      <h4>Fondos</h4>
+      <h4>{{ props.name }}</h4>
       <div class="flex w-full justify-between items-center flex-wrap gap-3">
         <button @click="showAdd" v-if="props.addEnabled" class="bg-[#F58D71] text-white w-min text-nowrap">
           {{ props.buttonLabel }}
         </button>
         <div class="flex gap-3 items-center flex-wrap">
-          <InputCustom :placeholder="props.placeholder" type="text" />
+          <!-- <InputCustom :placeholder="props.placeholder" type="text" />-->
           <button
             @click="showFilter"
             class="bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] w-min text-nowrap"
