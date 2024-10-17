@@ -9,7 +9,7 @@
       autocomplete="off"
     >
       <div class="flex flex-col gap-2">
-        <h4 class="text-[#F58D71]">Filtrar Fondos</h4>
+        <h4 class="text-primary">Filtrar Fondos</h4>
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-4">
@@ -66,7 +66,7 @@
             <button
               @click="closeFilter"
               type="button"
-              class="w-full bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] text-nowrap flex-1"
+              class="w-full bg-white text-primary border-[#F58D71] border-solid border-[1px] text-nowrap flex-1"
             >
               CERRAR
             </button>
@@ -79,7 +79,7 @@
 
 <script lang="ts" setup>
 /* import */
-import { ref, Ref, defineProps, defineEmits, onMounted } from 'vue';
+import { defineEmits, defineProps, onMounted, Ref, ref } from 'vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputMultiSelect from '@/components/InputMultiSelect.vue';
 import { currencyService, fundService } from '@/services';

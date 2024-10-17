@@ -89,7 +89,7 @@ const value = (item: any) => {
           <!-- <InputCustom :placeholder="props.placeholder" type="text" />-->
           <button
             @click="showFilter"
-            class="bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] w-min text-nowrap"
+            class="bg-white text-primary border-[#F58D71] border-solid border-[1px] w-min text-nowrap"
           >
             {{ props.filterLabel }}
           </button>

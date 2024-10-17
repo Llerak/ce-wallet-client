@@ -8,7 +8,7 @@
       autocomplete="off"
     >
       <div class="flex flex-col gap-2">
-        <h4 class="text-[#F58D71]">Agregar Fondo</h4>
+        <h4 class="text-primary">Agregar Fondo</h4>
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-4">
@@ -30,7 +30,7 @@
           <button
             @click="closeAdd"
             type="button"
-            class="w-full bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] text-nowrap"
+            class="w-full bg-white text-primary border-[#F58D71] border-solid border-[1px] text-nowrap"
           >
             CERRAR
           </button>
@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 /* import */
-import { ref, Ref, defineProps, onBeforeMount, defineEmits } from 'vue';
+import { defineEmits, defineProps, onBeforeMount, Ref, ref } from 'vue';
 import { fundService } from '@/services';
 import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';

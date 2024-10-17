@@ -9,7 +9,7 @@
       @submit.prevent="handleFilter"
     >
       <div class="flex flex-col gap-2">
-        <h4 class="text-[#F58D71]">Filtrar Fondos</h4>
+        <h4 class="text-primary">Filtrar Fondos</h4>
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-4">
@@ -64,7 +64,7 @@
               RESTABLECER
             </button>
             <button
-              class="w-full bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] text-nowrap flex-1"
+              class="w-full bg-white text-primary border-[#F58D71] border-solid border-[1px] text-nowrap flex-1"
               type="button"
               @click="closeFilter"
             >
