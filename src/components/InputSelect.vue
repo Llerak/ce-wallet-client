@@ -14,10 +14,19 @@
           </svg>
         </span>
       </button>
+
       <ul
         v-show="isOpen"
         class="absolute z-10 mt-1 w-full bg-white shadow-custom-shadow max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
       >
+        <input
+          v-if="showSearch"
+          v-model="searchQuery"
+          @input="emitSearch"
+          type="text"
+          placeholder="Buscar..."
+          class="w-full border-none focus:border-none focus:shadow-none"
+        />
         <li
           v-for="option in options"
           :key="option.value"
@@ -71,13 +80,18 @@ const props = defineProps({
     type: String,
     default: 'Seleccione una opción',
   },
+  showSearch: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const emit = defineEmits(['update:modelValue', 'emitValue']);
+const emit = defineEmits(['update:modelValue', 'emitValue', 'emitValues']);
 const internalValue = ref(props.modelValue.value);
 const isOpen = ref(false);
 const selectedOptionText = ref(props.modelValue.text);
 const dropdown = ref<HTMLElement | null>(null);
+const searchQuery = ref('');
 
 const checkDefaultValue = () => {
   const selectedOption = props.options.find((option) => option.value === props.modelValue.value);
@@ -88,8 +102,9 @@ const checkDefaultValue = () => {
 };
 
 const handleClickOutside = (event: MouseEvent) => {
-  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
+  if (dropdown.value && !dropdown.value.contains(event.target as Node) && isOpen.value) {
     isOpen.value = false;
+    searchQuery.value = '';
   }
 };
 
@@ -119,6 +134,19 @@ watch(internalValue, (newValue) => {
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
+  searchQuery.value = '';
+  if (selectedOptionText.value != '') {
+    emit('emitValues', [selectedOptionText.value, searchQuery.value]);
+  } else {
+    emit('emitValues', [searchQuery.value]);
+  }
+};
+const emitSearch = () => {
+  if (selectedOptionText.value != '') {
+    emit('emitValues', [selectedOptionText.value, searchQuery.value]);
+  } else {
+    emit('emitValues', [searchQuery.value]);
+  }
 };
 
 const selectOption = (option: { value: string | undefined; text: string }) => {

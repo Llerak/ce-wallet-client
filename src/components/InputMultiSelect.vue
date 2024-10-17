@@ -114,7 +114,7 @@ const handleClickOutside = (event: MouseEvent) => {
       internalValue.value.map((values) => values.value)
     ); // Emitir solo los valores seleccionados
     isOpen.value = false;
-    searchQuery.value = ''; // Vaciar el valor del input al ocultar la lista
+    searchQuery.value = '';
   }
 };
 
@@ -163,7 +163,7 @@ const toggleOption = (option: { value: any; text: string }) => {
   selectedOptionsText.value = props.options
     .filter((option) => internalValue.value.some((val) => val.value === option.value))
     .map((option) => option.text);
-  emit('emitValues', [...internalValue.value.map((values) => values.value)], searchQuery.value);
+  emit('emitValues', [...internalValue.value.map((values) => values.value), searchQuery.value]);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

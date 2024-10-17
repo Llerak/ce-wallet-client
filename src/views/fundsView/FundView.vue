@@ -19,8 +19,7 @@
       :show-filter="showFilterFunct"
     />
     <section id="details" class="flex flex-wrap gap-6">
-      <DetailsFund :id="idFund" :key="detailsKey" v-if="idFund !== ''" @fund-delete="fetchData(), (idFund = '')" />
-      <DepositFund :id="idFund" v-if="idFund !== ''" @fund-deposit="fundDepositFunctional" />
+      <DetailsFund :id="idFund" v-if="idFund !== ''" @fund-delete="fetchData(), (idFund = '')" @refresh="fetchData()" />
     </section>
   </div>
   <FiltersFund
@@ -43,7 +42,6 @@ import { IFundDto, IFundFilter } from '@/interfaces/dto';
 import { onMounted, Ref, ref } from 'vue';
 import { currencyService, fundService } from '@/services';
 import AddFund from './AddFund.vue';
-import DepositFund from './DepositFund.vue';
 import DetailsFund from './DetailsFund.vue';
 import FiltersFund from './FiltersFund.vue';
 
@@ -102,7 +100,7 @@ const fetchData = async () => {
 };
 const formatFundDataIntoTableInput = (data: IFundDto) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tableInput = { id: data.id, name: data.name, user: data.user || ' --- ' } as any;
+  const tableInput = { id: data.id, name: data.name, user: data.user?.username || ' --- ' } as any;
   const currencyDataIsNull = data.currencies === null;
   const fundCurrencies = data.currencies as { currency: string; amount: number }[];
 
@@ -156,14 +154,7 @@ onMounted(async () => {
 
 /* emit test */
 const idFund = ref('');
-const detailsKey = ref(0);
 const idFundFunctional = (id: string) => {
   idFund.value = id;
-};
-
-/* deposit*/
-const fundDepositFunctional = async () => {
-  await fetchData();
-  detailsKey.value++; // Increment the key to force re-render
 };
 </script>

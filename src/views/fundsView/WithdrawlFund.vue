@@ -3,12 +3,12 @@
     class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
     <form
-      @submit.prevent="handleDeposit"
+      @submit.prevent="handleWithdrawal"
       class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
       autocomplete="off"
     >
       <div class="flex flex-col gap-2">
-        <h4 class="text-primary">Depositar</h4>
+        <h4 class="text-primary">Retirar</h4>
       </div>
       <div class="flex flex-col gap-4">
         <InputSelect
@@ -36,9 +36,9 @@
           }"
           >{{ errorText }}</span
         >
-        <button class="w-full bg-primary text-white" type="submit">DEPOSITAR</button>
+        <button class="w-full bg-primary text-white" type="submit">RETIRAR</button>
         <button
-          @click="closeDeposit()"
+          @click="closeWithdrawal()"
           type="button"
           class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap"
         >
@@ -69,31 +69,35 @@ const details = ref('');
 
 /* props and emits*/
 const props = defineProps<{
-  closeDeposit: () => void;
+  closeWithdrawal: () => void;
   id: string;
+  currencies: currency[] | null;
 }>();
+interface currency {
+  currency: string;
+  amount: number;
+}
 
-const emit = defineEmits(['fundDeposit']);
+const emit = defineEmits(['fundWithdrawal']);
 
-/* Deposit */
-const handleDeposit = async () => {
+/* Withdrawal */
+const handleWithdrawal = async () => {
   showErrorGeneral.value = false;
   if (validation()) {
     try {
-      const transaction: ITransactionInfoDto = {
+      const withdrawal: ITransactionInfoDto = {
         source: props.id,
         currency: optionSelectCurrenci.value.value,
         details: details.value == '' ? null : details.value,
         amount: inputCurrency.value,
       };
-      console.log(transaction);
-      await fundService.deposit(transaction);
+      await fundService.withdrawal(withdrawal);
       restart();
 
-      emit('fundDeposit');
+      emit('fundWithdrawal');
     } catch (error) {
       showErrorGeneral.value = true;
-      console.error('Deposit failed:', error);
+      console.error('Withdrawal failed:', error);
     }
   }
 };
@@ -102,13 +106,25 @@ const validation = () => {
   showErrorInputCurrency.value = false;
   showErrorSelectCurrency.value = false;
 
-  if (inputCurrency.value < 1) {
+  const selectedCurrency = props.currencies?.find((curr) => curr.currency === optionSelectCurrenci.value.text);
+  const maxAmount = selectedCurrency ? selectedCurrency.amount : 0;
+
+  if (maxAmount > 0) {
+    if (inputCurrency.value < 1 || inputCurrency.value > maxAmount) {
+      showErrorInputCurrency.value = true;
+      textErrorInputCurrency.value =
+        inputCurrency.value < 1 ? 'El valor debe ser mayor que 0' : 'El valor no puede sobrepasar ' + maxAmount;
+      inputCurrency.value = 0;
+    }
+  } else {
     showErrorInputCurrency.value = true;
-    inputCurrency.value = 0;
+    textErrorInputCurrency.value = 'Se requiere una moneda seleccionada';
   }
-  if (optionSelectCurrenci.value.value == '') {
+
+  if (optionSelectCurrenci.value.value === '') {
     showErrorSelectCurrency.value = true;
   }
+
   return !(showErrorInputCurrency.value || showErrorSelectCurrency.value);
 };
 
@@ -138,7 +154,9 @@ const fetchCurrencies = async () => {
         value: currency.id,
         text: currency.currency,
       }))
-      .filter((option) => option.value !== '');
+      .filter((option) => option.value !== '')
+      .filter((option) => option.text !== '')
+      .filter((option) => props.currencies?.some((curr) => curr.currency === option.text));
   } catch (error) {
     showErrorGeneral.value = true;
     console.error(error);
