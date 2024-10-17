@@ -1,53 +1,84 @@
 <template>
   <div
     v-if="showFilter"
-    class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
+    class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 max-sm:p-0 max-sm:rounded-none z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
     <form
       autocomplete="off"
-      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
-      @submit.prevent="handleFilter"
+      class="flex justify-center max-sm:h-[100vh] w-[600px] max-sm:w-full flex-col gap-6 bg-white p-12 max-sm:p-6 shadow-custom-shadow rounded-lg"
+      @submit.prevent="emit('filterValue', filter)"
     >
       <div class="flex flex-col gap-2">
-        <h4 class="text-primary">Filtrar Fondos</h4>
+        <h4 class="text-primary">Filtrar registros de fondos</h4>
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-4">
+          <div class="flex max-sm:flex-col gap-4">
+            <InputMultiSelect
+              :model-value="optionSelectFundName"
+              :options="optionsFundsNames"
+              :show-search="true"
+              placeholder="---"
+              title="Fondos"
+              @emit-values="async (values: any) => ((filter.funds = values), await fetchFundsNames())"
+            />
+            <InputMultiSelect
+              :model-value="optionSelectUsername"
+              :options="optionsUsernames"
+              :show-search="true"
+              placeholder="---"
+              title="Usuarios"
+              @emit-values="async (values: any) => ((filter.users = values), await fetchUsernames())"
+            />
+          </div>
+          <div class="flex max-sm:flex-col gap-4">
+            <InputMultiSelect
+              :model-value="optionSelectCurrency"
+              :options="optionsCurrencies"
+              placeholder="---"
+              title="Monedas"
+              @emit-values="(values: any) => (filter.currencies = values)"
+            />
+            <InputMultiSelect
+              :model-value="optionSelectTransaction"
+              :options="optionsTransactions"
+              placeholder="---"
+              title="Tipo de transacción"
+              @emit-values="(values: any) => (filter.fundTransactions = values)"
+            />
+          </div>
           <InputMultiSelect
-            :model-value="optionSelectFundName"
-            :options="optionsFundsNames"
-            :show-search="true"
-            placeholder="Opciones"
-            title="Fondos"
-            @emit-values="async (values) => ((fundNames = values), await fetchFundsNames())"
+            :model-value="optionSelectAction"
+            :options="optionsActions"
+            placeholder="---"
+            title="Acción"
+            @emit-values="(values: any) => (filter.activities = values)"
           />
-          <InputMultiSelect
-            :model-value="optionSelectUsername"
-            :options="optionsUsersnames"
-            :show-search="true"
-            placeholder="Opciones"
-            title="Nombres"
-            @emit-values="async (valuess) => ((usernames = valuess), await fetchUsersnames())"
-          />
-          <InputMultiSelect
-            :model-value="optionSelectCurrenci"
-            :options="optionsCurrencies"
-            placeholder="Opciones"
-            title="Monedas"
-            @emit-values="(values) => (currencies = values)"
-          />
-          <InputSelect
-            :model-value="optionSelectDescending"
-            :options="optionsDescending"
-            title="Ordenar descendiente"
-            @emit-value="(value) => (descending = value)"
-          ></InputSelect>
+          <div class="flex flex-col">
+            <label class="mb-2">Rango del Monto</label>
+            <div class="flex gap-4">
+              <input v-model="filter.amountMin" placeholder="Mínimo" type="number" />
+              <input v-model="filter.amountMax" placeholder="Máximo" type="number" />
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <label class="mb-2">Rango de la Fecha: Desde - Hasta</label>
+            <div class="flex max-sm:flex-col gap-4">
+              <input v-model="filter.since" class="w-[calc(50%-.5rem)] max-sm:w-full" type="datetime-local" />
+              <input v-model="filter.until" class="w-[calc(50%-.5rem)] max-sm:w-full" type="datetime-local" />
+            </div>
+          </div>
           <InputSelect
             :model-value="optionSelectOrderBy"
             :options="optionsOrderBy"
             title="Ordenar por"
-            @emit-value="(value) => (orderBy = value)"
+            @emit-value="(value: boolean) => (filter.amountOrCreateDate = value)"
           ></InputSelect>
+          <CustomCheckBox
+            title="Ordenar descendiente:"
+            :default-value="filter.desc"
+            @return-value="(value: boolean) => filter.desc = value"
+          />
         </div>
         <div class="flex flex-col gap-2">
           <span
@@ -60,7 +91,7 @@
           >
           <button class="w-full bg-primary text-white" type="submit">FILTRAR</button>
           <div class="flex gap-3">
-            <button class="w-full bg-[#717ef5] text-white flex-1" type="button" @click="resetFilters()">
+            <button class="w-full bg-[#717ef5] text-white flex-1" type="button" @click="resetFilters">
               RESTABLECER
             </button>
             <button
@@ -78,124 +109,94 @@
 </template>
 
 <script lang="ts" setup>
-/* import */
 import { defineEmits, defineProps, onMounted, Ref, ref } from 'vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputMultiSelect from '@/components/InputMultiSelect.vue';
 import { currencyService, fundService } from '@/services';
-import { IFundDto, IFundFilter } from '@/interfaces/dto';
+import { ActionType, IFundLogsFilter, TransactionType } from '@/interfaces/dto';
+import CustomCheckBox from '@/components/CustomCheckBox.vue';
+import { userService } from '@/services/userService';
 
-/* filter model */
-const fundNames: Ref<string[]> = ref([]);
-const usernames: Ref<string[]> = ref([]);
-const currencies: Ref<string[]> = ref([]);
-const descending: Ref<boolean | undefined> = ref();
-const orderBy: Ref<'usernames' | 'funds' | 'create_at' | undefined> = ref(undefined);
-
-interface option {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any;
-  text: string;
-}
-
-/* orderBy */
-const optionSelectOrderBy: Ref<option> = ref({ value: null, text: '' });
-const optionsOrderBy: Ref<option[]> = ref([
-  { value: 'funds', text: 'Fondos' },
-  { value: 'usernames', text: 'Usuarios' },
-  { value: 'create_at', text: 'Fecha de creacion' },
-]);
-
-/* descending */
-const optionSelectDescending: Ref<option> = ref({ value: null, text: '' });
-const optionsDescending: Ref<option[]> = ref([
-  { value: true, text: 'true' },
-  { value: false, text: 'false' },
-]);
-
-/* fundsNames */
-const optionSelectFundName: Ref<option[]> = ref([]);
-const optionsFundsNames: Ref<option[]> = ref([]);
-
-const fetchFundsNames = async () => {
-  try {
-    const res = await fundService.list({ fundNames: fundNames.value }, 0, 10);
-    optionsFundsNames.value = res.data
-      .map((fund: IFundDto) => ({
-        value: fund.name,
-        text: fund.name,
-      }))
-      .filter((option) => option.value !== '');
-  } catch (error) {
-    showErrorGeneral.value = true;
-    console.error(error);
-  }
-};
-
-/* usernames */
-const optionSelectUsername: Ref<option[]> = ref([]);
-const optionsUsersnames: Ref<option[]> = ref([]);
-
-const fetchUsersnames = async () => {
-  try {
-    const res = await fundService.list({ usernames: usernames.value }, 0, 10);
-
-    optionsUsersnames.value = res.data
-      .map((fund: IFundDto) => ({
-        value: fund.user?.username || '',
-        text: fund.user?.username || '',
-      }))
-      .filter((option) => option.value !== '');
-  } catch (error) {
-    showErrorGeneral.value = true;
-    console.error(error);
-  }
-};
-
-/* currencies */
-const optionSelectCurrenci: Ref<option[]> = ref([]);
-const optionsCurrencies: Ref<option[]> = ref([]);
-
-const fetchCurrencies = async () => {
-  try {
-    const res = await currencyService.list();
-    optionsCurrencies.value = res
-      .map((currency) => ({
-        value: currency.id,
-        text: currency.currency,
-      }))
-      .filter((option) => option.value !== '');
-  } catch (error) {
-    showErrorGeneral.value = true;
-    console.error(error);
-  }
-};
-
-/* Validation const */
-const showErrorGeneral: Ref<boolean> = ref(false);
-const errorText: Ref<string> = ref('Hubo un error obteniendo los datos');
-
-/* props and emits*/
 defineProps<{
   closeFilter: () => void;
   showFilter: boolean;
 }>();
+const emit = defineEmits(['filterValue', 'restartFilterValue']);
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const emit = defineEmits(['filterValue', 'restartfilterValue']);
+const defaultFilter = { desc: true };
+const filter: Ref<IFundLogsFilter> = ref(defaultFilter);
+const showErrorGeneral: Ref<boolean> = ref(false);
+const errorText: Ref<string> = ref('Hubo un error obteniendo los datos');
+interface option {
+  value: any;
+  text: string;
+}
 
-/* Filter */
-const handleFilter = async () => {
-  showErrorGeneral.value = false;
+const optionSelectFundName: Ref<option[]> = ref([]);
+const optionsFundsNames: Ref<option[]> = ref([]);
+const optionSelectUsername: Ref<option[]> = ref([]);
+const optionsUsernames: Ref<option[]> = ref([]);
+const optionSelectCurrency: Ref<option[]> = ref([]);
+const optionsCurrencies: Ref<option[]> = ref([]);
+const optionSelectOrderBy: Ref<option> = ref({ value: false, text: 'Fecha' });
+const optionsOrderBy: Ref<option[]> = ref([
+  { value: true, text: 'Monto' },
+  { value: false, text: 'Fecha' },
+]);
+const optionSelectTransaction: Ref<option[]> = ref([]);
+const optionsTransactions: Ref<option[]> = ref([
+  { value: ActionType.Deposit, text: ActionType.Deposit },
+  { value: ActionType.Withdrawal, text: ActionType.Withdrawal },
+]);
+const optionSelectAction: Ref<option[]> = ref([]);
+const optionsActions: Ref<option[]> = ref([
+  { value: TransactionType.CreateFund, text: TransactionType.CreateFund },
+  { value: TransactionType.DeleteCurrency, text: TransactionType.DeleteCurrency },
+  { value: TransactionType.DeleteFund, text: TransactionType.DeleteFund },
+  { value: TransactionType.Deposit, text: TransactionType.Deposit },
+  { value: TransactionType.Transfer, text: TransactionType.Transfer },
+  { value: TransactionType.Withdrawal, text: TransactionType.Withdrawal },
+]);
+
+onMounted(() => {
+  fetchCurrencies();
+  fetchFundsNames();
+  fetchUsernames();
+});
+
+const fetchFundsNames = async () => {
   try {
-    const filterModel: IFundFilter = {
-      fundNames: fundNames.value,
-      usernames: usernames.value,
-      currencies: currencies.value,
-      descending: descending.value,
-      orderBy: orderBy.value,
-    };
-    emit('filterValue', filterModel);
+    const res = await fundService.list({ fundNames: filter.value.funds }, 0, 10);
+    optionsFundsNames.value = res.data.map((fund) => ({
+      value: fund.name,
+      text: fund.name,
+    }));
+  } catch (error) {
+    showErrorGeneral.value = true;
+    console.error(error);
+  }
+};
+
+const fetchUsernames = async () => {
+  try {
+    const res = await userService.list(filter.value.users);
+    optionsUsernames.value = res.data.map((user) => ({
+      value: user.username,
+      text: user.username,
+    }));
+  } catch (error) {
+    showErrorGeneral.value = true;
+    console.error(error);
+  }
+};
+
+const fetchCurrencies = async () => {
+  try {
+    const res = await currencyService.list();
+    optionsCurrencies.value = res.map((currency) => ({
+      value: currency.id,
+      text: currency.currency,
+    }));
   } catch (error) {
     showErrorGeneral.value = true;
     console.error(error);
@@ -203,27 +204,14 @@ const handleFilter = async () => {
 };
 
 const resetFilters = () => {
-  fundNames.value = [];
-  usernames.value = [];
-  currencies.value = [];
-  descending.value = undefined;
-  orderBy.value = undefined;
+  filter.value = defaultFilter;
 
   optionSelectFundName.value = [];
   optionSelectUsername.value = [];
-  optionSelectCurrenci.value = [];
-  optionSelectDescending.value = { value: null, text: '' };
-  optionSelectOrderBy.value = { value: null, text: '' };
+  optionSelectCurrency.value = [];
+  optionSelectOrderBy.value = { value: false, text: 'Fecha' };
 
   showErrorGeneral.value = false;
-  console.log(optionSelectOrderBy.value);
-  emit('restartfilterValue', null);
+  emit('restartFilterValue', null);
 };
-
-/* hooks */
-onMounted(() => {
-  fetchCurrencies();
-  fetchFundsNames();
-  fetchUsersnames();
-});
 </script>

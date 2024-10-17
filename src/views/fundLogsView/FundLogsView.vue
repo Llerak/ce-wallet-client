@@ -21,17 +21,12 @@
   <FiltersFund
     :close-filter="closeFilterFunct"
     :show-filter="showFilter"
-    @filter-value="
-      (filters: IFundLogsFilter) => {
-        handleFilter(filters);
-      }
-    "
-    @restartfilter-value="(filters: IFundFilter) => handleResetFilter(filters)"
+    @filter-value="(filters: IFundLogsFilter) => handleFilter(filters)"
+    @restart-filter-value="(filters: IFundFilter) => handleResetFilter(filters)"
   />
 </template>
 
 <script lang="ts" setup>
-/* imports */
 import ListModal from '../default/ListModal.vue';
 import { IFundFilter, IFundLogDto, IFundLogsFilter, IFundLogTableInput } from '@/interfaces/dto';
 import { onMounted, Ref, ref } from 'vue';
@@ -48,12 +43,6 @@ const closeFilterFunct = () => {
   showFilter.value = false;
 };
 const handleFilter = async (filterValue: IFundLogsFilter) => {
-  closeFilterFunct();
-  filter.value = filterValue;
-  pageCurrent.value = 1;
-  await fetchData();
-};
-const handleResetFilter = async (filterValue: IFundFilter) => {
   closeFilterFunct();
   filter.value = filterValue;
   pageCurrent.value = 1;
@@ -77,6 +66,7 @@ const fetchData = async () => {
   enabledBack.value = pageCurrent.value > 1;
   loading.value = false;
 };
+
 const formatFundDataIntoTableInput = (data: IFundLogDto) => {
   const tableInput: IFundLogTableInput = {
     id: data.id,

@@ -3,11 +3,12 @@ import routeServices from '@/router/routeServices';
 
 export const api = axios.create({
   baseURL: 'https://apidev.cewallet.org/',
+  // baseURL: 'http://localhost:5000/',
 });
 
 api.interceptors.request.use(
   async (config) => {
-    const token = sessionStorage.getItem('Bearer');
+    const token = sessionStorage.getItem('tk');
     if (token && config.url !== routeServices.auth.login) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -24,15 +25,15 @@ api.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const singinBearer = sessionStorage.getItem('Bearer');
-      const refreshBearer = sessionStorage.getItem('RefreshBearer');
-      const response = await axios.post('https://apidev.cewallet.org/auth/refresh', {
-        signinToken: singinBearer,
-        refreshToken: refreshBearer,
+      const singInToken = sessionStorage.getItem('tk');
+      const refreshToken = sessionStorage.getItem('rsh_tk');
+      const response = await api.post(routeServices.auth.refresh, {
+        signinToken: singInToken,
+        refreshToken: refreshToken,
       });
       if (response.status === 200) {
-        sessionStorage.setItem('Bearer', response.data.response.signinToken);
-        sessionStorage.setItem('RefreshBearer', response.data.response.refreshToken);
+        sessionStorage.setItem('tk', response.data.response.signinToken);
+        sessionStorage.setItem('rsh_tk', response.data.response.refreshToken);
         originalRequest.headers.Authorization = `Bearer ${response.data.response.signinToken}`;
         return axios(originalRequest);
       }

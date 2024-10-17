@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col relative" ref="dropdown">
+  <div class="flex grow flex-col relative" ref="dropdown">
     <label class="ml-1 mb-2" v-if="title">{{ title }}</label>
     <div class="relative">
       <button type="button" @click="toggleDropdown" class="text text-start selectInput">

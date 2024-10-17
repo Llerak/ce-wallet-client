@@ -1,14 +1,14 @@
 import routeServices from '@/router/routeServices';
 import { api } from '@/services/axiosInterceptor';
 import { AxiosError, AxiosResponse } from 'axios';
-import { IResponse } from '@/interfaces';
+import { IPagination, IResponse } from '@/interfaces';
 import { IRegisterUserDto, IResetPasswordDto, IUserDto } from '@/interfaces/dto';
 
 class Service {
-  async list() {
+  async list(keywords: string[] | undefined, page = 0, size = 10, role = false) {
     return await api
-      .get(routeServices.users.root)
-      .then((res: AxiosResponse<IResponse<IUserDto>>) => res.data.response)
+      .post(routeServices.users.list(page, size, role), keywords)
+      .then((res: AxiosResponse<IResponse<IPagination<IUserDto>>>) => res.data.response)
       .catch((err: AxiosError) => {
         console.log(err.message, err);
         throw err.message;
