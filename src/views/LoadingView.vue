@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed flex items-center justify-center z-[100] top-0 left-0 w-[100vw] h-[100vh] bg-[rgba(0,0,0,0.4)]"
+    class="fixed flex items-center justify-center z-[100] top-0 left-0 w-[100vw] h-[100vh] bg-[rgba(255,255,255)]"
     v-show="statusApi.isLoading"
   >
     <ul>

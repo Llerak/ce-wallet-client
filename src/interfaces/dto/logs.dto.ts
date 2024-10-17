@@ -23,3 +23,14 @@ export interface IFundLogsFilter {
   users?: string[];
   currencies?: string[];
 }
+
+export interface IFundLogTableInput {
+  id: string;
+  user: string;
+  fund: string;
+  action: string;
+  transaction: string;
+  currency: string;
+  amount: number;
+  date: string;
+}

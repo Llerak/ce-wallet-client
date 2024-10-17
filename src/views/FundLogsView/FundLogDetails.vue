@@ -1,22 +1,14 @@
 <template>
   <h4>Detalles</h4>
-  <div class="flex max-w-xl flex-col gap-4 p-4 bg-custom-gradient-dark rounded-lg shadow-custom-shadow">
+  <div class="flex w-xl flex-col gap-4 p-4 bg-custom-gradient-dark rounded-lg shadow-custom-shadow">
     <div class="flex flex-wrap gap-3">
-      <PostCustom :content="data.name || 'No disponible'" title="Nombre" />
-      <PostCustom :content="data.user?.username || 'No disponible'" title="Usuario" />
-    </div>
-    <div class="flex flex-wrap gap-3">
-      <PostCustom
-        v-for="(currency, index) in data.currencies"
-        :key="index"
-        :content="currency.amount"
-        :title="currency.currency"
-      />
-    </div>
-    <div class="flex flex-wrap gap-3">
-      <PostCustom :content="data.address || 'No disponible'" title="Dirección" />
-    </div>
-    <div class="flex flex-wrap gap-3">
+      <PostCustom :content="data.user" title="Usuario" />
+      <PostCustom :content="data.fund" title="Fondo" />
+      <PostCustom :content="data.activity" title="Accion" />
+      <PostCustom v-if="data.transactionType" :content="data.transactionType" title="Transaccion" />
+      <PostCustom v-if="data.currency" :content="data.currency" title="Moneda" />
+      <PostCustom v-if="data.amount" :content="data.amount" title="Monto" />
+      <PostCustom :content="data.createdAt" title="Fecha" />
       <PostCustom :content="data.details || 'No disponible'" title="Detalles" />
     </div>
   </div>
@@ -24,49 +16,17 @@
 
 <script lang="ts" setup>
 import PostCustom from '@/components/PostCustom.vue';
-import { defineProps, onMounted, Ref, ref, watch } from 'vue';
-import { fundService } from '@/services';
-import { IFundDto } from '@/interfaces/dto';
-import { statusApi } from '@/store/global';
+import { defineProps, Ref, ref, watch } from 'vue';
+import { IFundLogDto } from '@/interfaces/dto';
 
-const props = defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-});
-
-const data: Ref<IFundDto> = ref({
-  id: '',
-  name: '',
-  createAt: '',
-  locationUrl: null,
-  address: null,
-  details: null,
-  currencies: [],
-  user: null,
-});
-
-const fetchData = async () => {
-  statusApi.isLoading = true;
-  const res = await fundService.getFund(props.id);
-  if (res) {
-    data.value = res;
-  }
-  statusApi.isLoading = false;
-};
-
-onMounted(() => {
-  fetchData();
-});
+const props = defineProps<{ log: IFundLogDto }>();
+const data: Ref<IFundLogDto> = ref(props.log);
 
 // Watch for changes in the id prop
 watch(
-  () => props.id,
-  (newId, oldId) => {
-    if (newId !== oldId) {
-      fetchData();
-    }
+  () => props.log,
+  () => {
+    data.value = props.log;
   }
 );
 </script>

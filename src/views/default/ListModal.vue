@@ -67,9 +67,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['returnId']);
+const emit = defineEmits(['returnId', 'returnItem']);
 const idValue = (id: string) => {
   emit('returnId', id);
+};
+const value = (item: any) => {
+  // console.log(item);
+  emit('returnItem', item);
 };
 </script>
 
@@ -104,6 +108,7 @@ const idValue = (id: string) => {
       :enabled-next="enabledNext"
       :enabled-back="enabledBack"
       @return-id="idValue"
+      @return-item="value"
     />
   </div>
 </template>
