@@ -26,12 +26,13 @@
         handleFilter(filters);
       }
     "
-    @restartfilter-value="(filters: IFundFilter) => handleResetFilter(filters)"
+    @restart-filter-value="(filters: IFundFilter) => handleResetFilter(filters)"
   />
 </template>
 
 <script lang="ts" setup>
 /* imports */
+import CustomCheckBox from '../../components/CustomCheckBox.vue';
 import ListModal from '../default/ListModal.vue';
 import { IFundFilter, IFundLogDto, IFundLogsFilter, IFundLogTableInput } from '@/interfaces/dto';
 import { onMounted, Ref, ref } from 'vue';
