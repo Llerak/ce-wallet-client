@@ -8,7 +8,7 @@
       autocomplete="off"
     >
       <div class="flex flex-col gap-2">
-        <h4 class="text-[#F58D71]">Eliminar Fondo</h4>
+        <h4 class="text-primary">Eliminar Fondo</h4>
       </div>
       <div class="flex flex-col gap-4">
         <p>Esta seguro que desea eliminar el fondo?</p>
@@ -22,11 +22,11 @@
           }"
           >{{ errorText }}</span
         >
-        <button type="submit" class="w-full bg-[#F58D71] text-white">ELIMINAR</button>
+        <button class="w-full bg-primary text-white" type="submit">ELIMINAR</button>
         <button
           @click="closeDelete"
           type="button"
-          class="w-full bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] text-nowrap"
+          class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap"
         >
           CANCELAR
         </button>
@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 /* import */
-import { ref, Ref, defineProps, defineEmits } from 'vue';
+import { defineEmits, defineProps, ref, Ref } from 'vue';
 import { fundService } from '@/services';
 
 /* Validation const */

@@ -33,11 +33,11 @@
           }"
           >{{ errorText }}</span
         >
-        <button type="submit" class="w-full bg-[#F58D71] text-white">DEPOSITAR</button>
+        <button class="w-full bg-primary text-white" type="submit">DEPOSITAR</button>
         <button
           @click="restart()"
           type="button"
-          class="w-full bg-white text-[#F58D71] border-[#F58D71] border-solid border-[1px] text-nowrap"
+          class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap"
         >
           RESTABLECER
         </button>
@@ -48,8 +48,8 @@
 
 <script lang="ts" setup>
 /* import */
-import { ref, Ref, defineProps, defineEmits, onMounted, watch } from 'vue';
-import { currencyService, fundService } from '@/services';
+import { defineEmits, defineProps, onMounted, Ref, ref, watch } from 'vue';
+import { currencyService } from '@/services';
 import InputSelect from '@/components/InputSelect.vue';
 import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';

@@ -6,7 +6,7 @@
       autocomplete="off"
     >
       <div class="flex flex-col gap-2">
-        <h4 class="text-[#F58D71]">Bienvenido</h4>
+        <h4 class="text-primary">Bienvenido</h4>
         <p>Ingrese su usuario y contraseña para iniciar sesión</p>
       </div>
       <div class="flex flex-col gap-4">
@@ -35,7 +35,7 @@
             }"
             >Usuario o contraseña incorrecto</span
           >
-          <button type="submit" class="w-full bg-[#F58D71] text-white">INICIAR</button>
+          <button class="w-full bg-primary text-white" type="submit">INICIAR</button>
         </div>
       </div>
     </form>

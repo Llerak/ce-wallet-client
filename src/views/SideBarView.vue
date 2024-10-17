@@ -23,7 +23,7 @@
       <p>{{ roleAndUserGlobal.name }}</p>
       <button
         type="submit"
-        class="bg-[#F58D71] text-white"
+        class="bg-primary text-white"
         @click="
           router.push('/');
           statusSideBar.visible = false;
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, markRaw } from 'vue';
+import { markRaw, ref } from 'vue';
 import LinkCustom from '@/components/LinkCustom.vue';
 import ProfileIcon from '@/components/icons/ProfileIcon.vue';
 import DashBoardIcon from '@/components/icons/DashBoardIcon.vue';

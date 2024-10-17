@@ -13,6 +13,9 @@ module.exports = {
         'custom-gradient-icon': 'linear-gradient(310deg,#e9ecef,#e9ecef)',
         'custom-gradient-dark': 'linear-gradient(310deg, #141727, #3a416f)',
       },
+      colors: {
+        primary: '#F58D71',
+      },
     },
   },
   variants: {

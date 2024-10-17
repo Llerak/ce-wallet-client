@@ -30,7 +30,7 @@
             class="border-b cursor-pointer relative h-[50px]"
             v-for="(item, i) in data"
             :key="i"
-            @click="watchClickInObject(item.id)"
+            @click="watchClickInObject(item)"
           >
             <td
               v-for="(key, j) in keys"
@@ -79,13 +79,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 import ArrowDownIcon from './icons/ArrowDownIcon.vue';
 import SpinnerLoanding from '@/components/SpinnerLoanding.vue'; // Asegúrate de importar el componente SpinnerLoanding
 
-const emit = defineEmits(['returnId']);
-const watchClickInObject = (id: string) => {
-  emit('returnId', id);
+const emit = defineEmits(['returnId', 'returnItem']);
+const watchClickInObject = (item: any) => {
+  emit('returnId', item.id);
+  emit('returnItem', item);
 };
 
 const props = defineProps<{

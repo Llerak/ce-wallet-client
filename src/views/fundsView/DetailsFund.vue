@@ -41,7 +41,7 @@
       </div>
       <div v-else class="flex justify-center items-center w-full h-full">
         <div
-          class="inline-block h-8 w-8 animate-spin rounded-full border-2 border-solid border-[#F58D71] border-r-transparent align-[-0.125em] text-primary motion-reduce:animate-[spin_1.5s_linear_infinite]"
+          class="inline-block h-8 w-8 animate-spin rounded-full border-2 border-solid border-primary border-r-transparent align-[-0.125em] text-primary motion-reduce:animate-[spin_1.5s_linear_infinite]"
           role="status"
         >
           <span
@@ -57,7 +57,7 @@
 
 <script lang="ts" setup>
 import PostCustom from '@/components/PostCustom.vue';
-import { defineProps, ref, Ref, onMounted, watch, defineEmits } from 'vue';
+import { defineEmits, defineProps, onMounted, ref, Ref, watch } from 'vue';
 import { fundService } from '@/services';
 import { IFundDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';

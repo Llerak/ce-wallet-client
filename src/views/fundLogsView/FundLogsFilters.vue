@@ -4,9 +4,9 @@
     class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
     <form
-      @submit.prevent="handleFilter"
-      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
       autocomplete="off"
+      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
+      @submit.prevent="handleFilter"
     >
       <div class="flex flex-col gap-2">
         <h4 class="text-primary">Filtrar Fondos</h4>
@@ -17,61 +17,56 @@
             :model-value="optionSelectFundName"
             :options="optionsFundsNames"
             :show-search="true"
-            title="Fondos"
             placeholder="Opciones"
+            title="Fondos"
             @emit-values="async (values) => ((fundNames = values), await fetchFundsNames())"
-            @update:model-value="(value) => (optionSelectFundName = value)"
           />
           <InputMultiSelect
             :model-value="optionSelectUsername"
             :options="optionsUsersnames"
             :show-search="true"
-            title="Nombres"
             placeholder="Opciones"
+            title="Nombres"
             @emit-values="async (valuess) => ((usernames = valuess), await fetchUsersnames())"
-            @update:model-value="(value) => (optionSelectUsername = value)"
           />
           <InputMultiSelect
-            title="Monedas"
             :model-value="optionSelectCurrenci"
             :options="optionsCurrencies"
             placeholder="Opciones"
+            title="Monedas"
             @emit-values="(values) => (currencies = values)"
-            @update:model-value="(value) => (optionSelectCurrenci = value)"
           />
           <InputSelect
-            title="Ordenar descendiente"
             :model-value="optionSelectDescending"
             :options="optionsDescending"
+            title="Ordenar descendiente"
             @emit-value="(value) => (descending = value)"
-            @update:model-value="(value) => (optionSelectDescending = value)"
           ></InputSelect>
           <InputSelect
-            title="Ordenar por"
             :model-value="optionSelectOrderBy"
             :options="optionsOrderBy"
+            title="Ordenar por"
             @emit-value="(value) => (orderBy = value)"
-            @update:model-value="(value) => (optionSelectOrderBy = value)"
           ></InputSelect>
         </div>
         <div class="flex flex-col gap-2">
           <span
-            class="text-sm text-red-600 transition-all"
             :class="{
               'scale-100': showErrorGeneral,
               'scale-0': !showErrorGeneral,
             }"
+            class="text-sm text-red-600 transition-all"
             >{{ errorText }}</span
           >
           <button class="w-full bg-primary text-white" type="submit">FILTRAR</button>
           <div class="flex gap-3">
-            <button @click="resetFilters()" type="button" class="w-full bg-[#717ef5] text-white flex-1">
+            <button class="w-full bg-[#717ef5] text-white flex-1" type="button" @click="resetFilters()">
               RESTABLECER
             </button>
             <button
-              @click="closeFilter"
-              type="button"
               class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap flex-1"
+              type="button"
+              @click="closeFilter"
             >
               CERRAR
             </button>
