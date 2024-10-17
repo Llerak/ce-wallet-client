@@ -54,6 +54,7 @@ import InputSelect from '@/components/InputSelect.vue';
 import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';
 import { ITransactionInfoDto } from '@/interfaces/dto';
+import { statusApi } from '@/store/global';
 
 /* Validation const */
 const showErrorGeneral: Ref<boolean> = ref(false);
@@ -75,6 +76,7 @@ const emit = defineEmits(['fundDeposit']);
 const handleDeposit = async () => {
   showErrorGeneral.value = false;
   if (validation()) {
+    statusApi.isLoading = true;
     try {
       const transaction: ITransactionInfoDto = {
         source: props.id,
@@ -85,10 +87,13 @@ const handleDeposit = async () => {
       console.log(transaction);
       await fundService.deposit(transaction);
       restart();
+      statusApi.isLoading = false;
+
       emit('fundDeposit');
     } catch (error) {
       showErrorGeneral.value = true;
       console.error('Deposit failed:', error);
+      statusApi.isLoading = false;
     }
   }
 };
@@ -110,6 +115,7 @@ const validation = () => {
 const restart = () => {
   inputCurrency.value = 0;
   showErrorInputCurrency.value = false;
+  showErrorSelectCurrency.value = false;
   details.value = '';
   optionSelectCurrenci.value = { value: '', text: '' };
   showErrorGeneral.value = false;
