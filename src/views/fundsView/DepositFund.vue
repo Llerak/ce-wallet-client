@@ -15,7 +15,7 @@
           :show-error="showErrorInputCurrency"
           :-error-text="textErrorInputCurrency"
         />
-        <InputTextArea :model-value="" />
+        <InputTextArea :model-value="details" />
       </div>
       <div class="flex flex-col gap-2">
         <span
@@ -53,6 +53,7 @@ const errorText: Ref<string> = ref('Ocurrio un error');
 const inputCurrency = ref(0);
 const showErrorInputCurrency = ref(false);
 const textErrorInputCurrency = ref('El valor debe ser mayor que 0');
+const details = ref('');
 
 /* props and emits*/
 const props = defineProps<{
@@ -70,7 +71,7 @@ const handleDeposit = async () => {
   showErrorGeneral.value = false;
 
   try {
-    await fundService.deposit(props.id);
+    /* await fundService.deposit(props.id); */
     emit('fundDeposit');
   } catch (error) {
     showErrorGeneral.value = true;
