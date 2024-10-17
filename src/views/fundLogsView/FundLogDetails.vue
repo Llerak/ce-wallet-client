@@ -27,6 +27,7 @@ watch(
   () => props.log,
   () => {
     data.value = props.log;
+    window.location.href = `${window.location.pathname}#details`;
   }
 );
 </script>

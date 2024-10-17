@@ -14,7 +14,9 @@
       name="Registro de las actividades de los fondos"
       @return-item="emitFund"
     />
-    <FundLogDetails v-if="fund !== null" :log="fund" />
+    <section id="details">
+      <FundLogDetails v-if="fund !== null" :log="fund" />
+    </section>
   </div>
   <FiltersFund
     :close-filter="closeFilterFunct"
@@ -35,7 +37,7 @@ import { IFundFilter, IFundLogDto, IFundLogsFilter, IFundLogTableInput } from '@
 import { onMounted, Ref, ref } from 'vue';
 import { fundLogsService } from '@/services';
 import FiltersFund from './FundLogsFilters.vue';
-import FundLogDetails from '@/views/FundLogsView/FundLogDetails.vue';
+import FundLogDetails from '@/views/fundLogsView/FundLogDetails.vue';
 
 /* filter Functionality*/
 const showFilter: Ref<boolean> = ref(false);

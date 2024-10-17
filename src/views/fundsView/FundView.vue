@@ -27,7 +27,7 @@
     :show-filter="showFilter"
     :close-filter="closeFilterFunct"
     @filter-value="
-      (filters) => {
+      (filters: any) => {
         handleFilter(filters);
       }
     "

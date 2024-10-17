@@ -6,7 +6,7 @@ import FundView from '@/views/fundsView/FundView.vue';
 import UnauthorizedView from '@/views/UnauthorizedView.vue';
 import { roleAndUserGlobal, roles } from '@/store/RolesAndPermission';
 import { statusApi, statusSideBar } from '@/store/global';
-import FundLogsView from '@/views/FundLogsView/FundLogsView.vue';
+import FundLogsView from '@/views/fundLogsView/FundLogsView.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
