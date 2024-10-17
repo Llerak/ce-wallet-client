@@ -15,10 +15,12 @@
       :back-page="backPage"
       :page-current="pageCurrent"
       button-label="AGREGAR FONDO"
-      @return-id="test"
+      @return-id="idFundFunctional"
       :show-filter="showFilterFunct"
     />
-    <DetailsFund :id="idFund" v-if="idFund !== ''" />
+    <section id="details" class="flex">
+      <DetailsFund :id="idFund" v-if="idFund !== ''" />
+    </section>
   </div>
   <FiltersFund
     :show-filter="showFilter"
@@ -152,5 +154,7 @@ onMounted(async () => {
 
 /* emit test */
 const idFund = ref('');
-const test = (id: string) => (idFund.value = id);
+const idFundFunctional = (id: string) => {
+  idFund.value = id;
+};
 </script>

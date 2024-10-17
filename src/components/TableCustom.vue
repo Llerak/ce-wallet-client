@@ -1,36 +1,3 @@
-<script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
-import ArrowDownIcon from './icons/ArrowDownIcon.vue';
-import SpinnerLoanding from '@/components/SpinnerLoanding.vue'; // Asegúrate de importar el componente SpinnerLoanding
-
-const emit = defineEmits(['returnId']);
-const watchClickInObject = (id: string) => {
-  emit('returnId', id);
-};
-
-const props = defineProps<{
-  headers: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any[];
-  pageCurrent?: number;
-  enabledNext: boolean;
-  enabledBack: boolean;
-  nextPage: ((payload: MouseEvent) => void) | undefined;
-  backPage: ((payload: MouseEvent) => void) | undefined;
-  keys: string[];
-  noDataMessage?: string;
-  loading: boolean;
-  hiddenMobile: number[]; // Nueva propiedad para columnas ocultas en móvil
-}>();
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const reduceObject = (obj: any, path: string[]) => {
-  return path.reduce((prev, key) => {
-    return prev?.[key];
-  }, obj);
-};
-</script>
-
 <template>
   <div class="flex flex-col gap-2">
     <div class="relative overflow-x-auto shadow-custom-shadow bg-white rounded-lg">
@@ -84,7 +51,7 @@ const reduceObject = (obj: any, path: string[]) => {
             :key="'empty-' + i"
             class="border-b"
           >
-            <td :colspan="headers.length" class="px-6 py-4">&nbsp;</td>
+            <td :colspan="headers.length" class="px-6 py-4" />
           </tr>
         </tbody>
       </table>
@@ -110,6 +77,39 @@ const reduceObject = (obj: any, path: string[]) => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { defineProps, defineEmits } from 'vue';
+import ArrowDownIcon from './icons/ArrowDownIcon.vue';
+import SpinnerLoanding from '@/components/SpinnerLoanding.vue'; // Asegúrate de importar el componente SpinnerLoanding
+
+const emit = defineEmits(['returnId']);
+const watchClickInObject = (id: string) => {
+  emit('returnId', id);
+};
+
+const props = defineProps<{
+  headers: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
+  pageCurrent?: number;
+  enabledNext: boolean;
+  enabledBack: boolean;
+  nextPage: ((payload: MouseEvent) => void) | undefined;
+  backPage: ((payload: MouseEvent) => void) | undefined;
+  keys: string[];
+  noDataMessage?: string;
+  loading: boolean;
+  hiddenMobile: number[]; // Nueva propiedad para columnas ocultas en móvil
+}>();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const reduceObject = (obj: any, path: string[]) => {
+  return path.reduce((prev, key) => {
+    return prev?.[key];
+  }, obj);
+};
+</script>
 
 <style scoped>
 @media (max-width: 760px) {

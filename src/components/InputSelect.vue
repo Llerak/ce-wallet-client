@@ -22,7 +22,7 @@
           v-for="option in options"
           :key="option.value"
           @click="selectOption(option)"
-          class="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-blue-200 hover:text-white"
+          class="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-[#f58e713a] hover:text-[#495057]"
         >
           <span
             :class="{
@@ -108,16 +108,6 @@ watch(internalValue, (newValue) => {
   const selectedOption = props.options.find((option) => option.value === newValue);
   selectedOptionText.value = selectedOption ? selectedOption.text : '';
 });
-
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    internalValue.value = newValue.value;
-    selectedOptionText.value = newValue.text;
-    checkDefaultValue();
-  },
-  { deep: true }
-);
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
