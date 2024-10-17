@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="showFilter"
-    class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
+    class="fixed flex h-[100vh] w-[100vw] items-center justify-center max-sm:p-0 max-sm:rounded-none p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
     <form
       class="flex justify-center max-sm:h-[100vh] w-[600px] max-sm:w-full flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"

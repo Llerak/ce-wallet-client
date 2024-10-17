@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="showFilter"
-    class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 max-md:p-0 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
+    class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 max-sm:p-0 max-sm:rounded-none z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
     <form
       autocomplete="off"
