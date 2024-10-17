@@ -91,8 +91,7 @@ import CustomCheckBox from '@/components/CustomCheckBox.vue';
 import { userService } from '@/services/userService';
 
 /* filter model */
-const defaultFilter = { descending: true };
-const filter = ref<IFundFilter>(defaultFilter);
+const filter = ref<IFundFilter>({ descending: true });
 
 interface option {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -173,7 +172,7 @@ defineProps<{
 const emit = defineEmits(['filterValue', 'restartFilterValue']);
 
 const resetFilters = () => {
-  filter.value = defaultFilter;
+  filter.value = { descending: true };
 
   optionSelectFundName.value = [];
   optionSelectUsername.value = [];

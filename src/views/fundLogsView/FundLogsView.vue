@@ -22,13 +22,12 @@
     :close-filter="closeFilterFunct"
     :show-filter="showFilter"
     @filter-value="(filters: IFundLogsFilter) => handleFilter(filters)"
-    @restart-filter-value="(filters: IFundFilter) => handleResetFilter(filters)"
   />
 </template>
 
 <script lang="ts" setup>
 import ListModal from '../default/ListModal.vue';
-import { IFundFilter, IFundLogDto, IFundLogsFilter, IFundLogTableInput } from '@/interfaces/dto';
+import { IFundLogDto, IFundLogsFilter, IFundLogTableInput } from '@/interfaces/dto';
 import { onMounted, Ref, ref } from 'vue';
 import { fundLogsService } from '@/services';
 import FiltersFund from './FundLogsFilters.vue';
