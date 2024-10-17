@@ -5,8 +5,8 @@
   >
     <form
       autocomplete="off"
-      class="flex justify-center max-sm:h-[100vh] w-[500px] max-sm:w-full flex-col gap-6 bg-white p-12 max-sm:p-6 shadow-custom-shadow rounded-lg"
-      @submit.prevent="handleFilter"
+      class="flex justify-center max-sm:h-[100vh] w-[600px] max-sm:w-full flex-col gap-6 bg-white p-12 max-sm:p-6 shadow-custom-shadow rounded-lg"
+      @submit.prevent="emit('filterValue', filter)"
     >
       <div class="flex flex-col gap-2">
         <h4 class="text-primary">Filtrar registros de fondos</h4>
@@ -37,35 +37,35 @@
               :options="optionsCurrencies"
               placeholder="---"
               title="Monedas"
-              @emit-values="(values: any) => (currencies = values)"
+              @emit-values="(values: any) => (filter.currencies = values)"
             />
             <InputMultiSelect
-              :model-value="optionSelectCurrency"
-              :options="optionsCurrencies"
+              :model-value="optionSelectTransaction"
+              :options="optionsTransactions"
               placeholder="---"
               title="Tipo de transacción"
-              @emit-values="(values: any) => (currencies = values)"
+              @emit-values="(values: any) => (filter.fundTransactions = values)"
             />
           </div>
           <InputMultiSelect
-            :model-value="optionSelectCurrency"
-            :options="optionsCurrencies"
+            :model-value="optionSelectAction"
+            :options="optionsActions"
             placeholder="---"
             title="Acción"
-            @emit-values="(values: any) => (currencies = values)"
+            @emit-values="(values: any) => (filter.activities = values)"
           />
           <div class="flex flex-col">
             <label class="mb-2">Rango del Monto</label>
             <div class="flex gap-4">
-              <input type="number" placeholder="Mínimo" />
-              <input type="number" placeholder="Máximo" />
+              <input v-model="filter.amountMin" placeholder="Mínimo" type="number" />
+              <input v-model="filter.amountMax" placeholder="Máximo" type="number" />
             </div>
           </div>
           <div class="flex flex-col">
-            <label class="mb-2">Rango de la Fecha</label>
+            <label class="mb-2">Rango de la Fecha: Desde - Hasta</label>
             <div class="flex max-sm:flex-col gap-4">
-              <input type="datetime-local" class="w-[calc(50%-.5rem)] max-sm:w-full" placeholder="Mínimo" />
-              <input type="datetime-local" class="w-[calc(50%-.5rem)] max-sm:w-full" placeholder="Máximo" />
+              <input v-model="filter.since" class="w-[calc(50%-.5rem)] max-sm:w-full" type="datetime-local" />
+              <input v-model="filter.until" class="w-[calc(50%-.5rem)] max-sm:w-full" type="datetime-local" />
             </div>
           </div>
           <InputSelect
@@ -113,7 +113,7 @@ import { defineEmits, defineProps, onMounted, Ref, ref } from 'vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputMultiSelect from '@/components/InputMultiSelect.vue';
 import { currencyService, fundService } from '@/services';
-import { IFundDto, IFundLogsFilter, IUserDto } from '@/interfaces/dto';
+import { ActionType, IFundDto, IFundLogsFilter, IUserDto, TransactionType } from '@/interfaces/dto';
 import CustomCheckBox from '@/components/CustomCheckBox.vue';
 import { userService } from '@/services/userService';
 
@@ -141,6 +141,20 @@ const optionSelectOrderBy: Ref<option> = ref({ value: false, text: 'Fecha' });
 const optionsOrderBy: Ref<option[]> = ref([
   { value: true, text: 'Monto' },
   { value: false, text: 'Fecha' },
+]);
+const optionSelectTransaction: Ref<option[]> = ref([]);
+const optionsTransactions: Ref<option[]> = ref([
+  { value: ActionType.Deposit, text: ActionType.Deposit },
+  { value: ActionType.Withdrawal, text: ActionType.Withdrawal },
+]);
+const optionSelectAction: Ref<option[]> = ref([]);
+const optionsActions: Ref<option[]> = ref([
+  { value: TransactionType.CreateFund, text: TransactionType.CreateFund },
+  { value: TransactionType.DeleteCurrency, text: TransactionType.DeleteCurrency },
+  { value: TransactionType.DeleteFund, text: TransactionType.DeleteFund },
+  { value: TransactionType.Deposit, text: TransactionType.Deposit },
+  { value: TransactionType.Transfer, text: TransactionType.Transfer },
+  { value: TransactionType.Withdrawal, text: TransactionType.Withdrawal },
 ]);
 
 onMounted(() => {
@@ -188,16 +202,6 @@ const fetchCurrencies = async () => {
         text: currency.currency,
       }))
       .filter((option) => option.value !== '');
-  } catch (error) {
-    showErrorGeneral.value = true;
-    console.error(error);
-  }
-};
-
-const handleFilter = async () => {
-  showErrorGeneral.value = false;
-  try {
-    emit('filterValue', filter.value);
   } catch (error) {
     showErrorGeneral.value = true;
     console.error(error);

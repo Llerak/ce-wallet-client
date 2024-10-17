@@ -34,3 +34,17 @@ export interface IFundLogTableInput {
   amount: number;
   date: string;
 }
+
+export enum TransactionType {
+  Deposit = 'Depósito',
+  Withdrawal = 'Egreso',
+  Transfer = 'Transferencia',
+  CreateFund = 'Creación de un Fondo',
+  DeleteFund = 'Eliminación de un Fondo',
+  DeleteCurrency = 'Eliminación de una Moneda',
+}
+
+export enum ActionType {
+  Deposit = 'Depósito',
+  Withdrawal = 'Egreso',
+}
