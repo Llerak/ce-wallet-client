@@ -102,9 +102,17 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
 });
 
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    internalValue.value = newValue.value;
+    selectedOptionText.value = newValue.text;
+    emit('emitValue', newValue.value); // Emit the value when it changes
+  }
+);
+
 watch(internalValue, (newValue) => {
-  emit('update:modelValue', newValue);
-  emit('emitValue', newValue); // Emit the value when it changes
+  emit('update:modelValue', { value: newValue, text: selectedOptionText.value });
   const selectedOption = props.options.find((option) => option.value === newValue);
   selectedOptionText.value = selectedOption ? selectedOption.text : '';
 });
@@ -113,8 +121,15 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-const selectOption = (option: { value: string | undefined }) => {
-  internalValue.value = internalValue.value == option.value ? { value: '', text: '' } : option.value;
+const selectOption = (option: { value: string | undefined; text: string }) => {
+  if (internalValue.value === option.value) {
+    internalValue.value = '';
+    selectedOptionText.value = '';
+  } else {
+    internalValue.value = option.value;
+    selectedOptionText.value = option.text;
+  }
+  emit('emitValue', option.value);
   isOpen.value = false;
 };
 </script>
