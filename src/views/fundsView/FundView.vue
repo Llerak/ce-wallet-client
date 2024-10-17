@@ -18,7 +18,7 @@
       @return-id="idFundFunctional"
       :show-filter="showFilterFunct"
     />
-    <section id="details" class="flex">
+    <section id="details" class="flex flex-wrap gap-6">
       <DetailsFund :id="idFund" v-if="idFund !== ''" @fund-delete="fetchData(), (idFund = '')" />
       <DepositFund :id="idFund" v-if="idFund !== ''" />
     </section>

@@ -23,7 +23,7 @@ const props = defineProps({
     type: String,
   },
   modelValue: {
-    type: String,
+    type: [String, Number], // Permitir tanto String como Number
   },
   showError: {
     type: Boolean,
