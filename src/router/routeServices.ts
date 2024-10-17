@@ -28,26 +28,28 @@ const routeServices = {
   },
   users: {
     root: '/user',
+    list: (page: number, size: number, role: boolean) => `/user?page=${page}&size=${size}&role=${role}`,
     resetPassword: '/user/reset-password',
     delete: (id: string) => `/user/${id}`,
     find: (id?: string, name?: string, email?: string) => {
       let route = '/user/find-by';
       let cond = true;
-      const first = () => (cond ? '?' : '&');
       if (id !== undefined) {
         cond = false;
-        route += `${first()}id=${id}`;
+        route += `${first(cond)}id=${id}`;
       }
       if (name !== undefined) {
         cond = false;
-        route += `${first()}name=${name}`;
+        route += `${first(cond)}name=${name}`;
       }
       if (email !== undefined) {
-        route += `${first()}email=${email}`;
+        route += `${first(cond)}email=${email}`;
       }
       return route;
     },
   },
 };
+
+const first = (cond: boolean) => (cond ? '?' : '&');
 
 export default routeServices;

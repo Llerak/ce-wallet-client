@@ -20,7 +20,7 @@
               :show-search="true"
               placeholder="---"
               title="Fondos"
-              @emit-values="async (values: any) => ((fundNames = values), await fetchFundsNames())"
+              @emit-values="async (values: any) => ((filter.funds = values), await fetchFundsNames())"
             />
             <InputMultiSelect
               :model-value="optionSelectUsername"
@@ -28,7 +28,7 @@
               :show-search="true"
               placeholder="---"
               title="Usuarios"
-              @emit-values="async (values: any) => ((usernames = values), await fetchUsersnames())"
+              @emit-values="async (values: any) => ((filter.users = values), await fetchUsernames())"
             />
           </div>
           <div class="flex max-sm:flex-col gap-4">
@@ -72,12 +72,12 @@
             :model-value="optionSelectOrderBy"
             :options="optionsOrderBy"
             title="Ordenar por"
-            @emit-value="(value: any) => (orderBy = value)"
+            @emit-value="(value: boolean) => (filter.amountOrCreateDate = value)"
           ></InputSelect>
           <CustomCheckBox
             title="Ordenar descendiente:"
-            :default-value="descending"
-            @return-value="(value: boolean) => descending = value"
+            :default-value="filter.desc"
+            @return-value="(value: boolean) => filter.desc = value"
           />
         </div>
         <div class="flex flex-col gap-2">
@@ -91,7 +91,7 @@
           >
           <button class="w-full bg-primary text-white" type="submit">FILTRAR</button>
           <div class="flex gap-3">
-            <button class="w-full bg-[#717ef5] text-white flex-1" type="button" @click="resetFilters()">
+            <button class="w-full bg-[#717ef5] text-white flex-1" type="button" @click="resetFilters">
               RESTABLECER
             </button>
             <button
@@ -109,35 +109,49 @@
 </template>
 
 <script lang="ts" setup>
-/* import */
 import { defineEmits, defineProps, onMounted, Ref, ref } from 'vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputMultiSelect from '@/components/InputMultiSelect.vue';
 import { currencyService, fundService } from '@/services';
-import { IFundDto } from '@/interfaces/dto';
+import { IFundDto, IFundLogsFilter, IUserDto } from '@/interfaces/dto';
 import CustomCheckBox from '@/components/CustomCheckBox.vue';
+import { userService } from '@/services/userService';
 
-/* filter model */
-const fundNames: Ref<string[]> = ref([]);
-const usernames: Ref<string[]> = ref([]);
-const currencies: Ref<string[]> = ref([]);
-const descending: Ref<boolean> = ref(true);
-const orderBy: Ref<boolean> = ref(false);
+defineProps<{
+  closeFilter: () => void;
+  showFilter: boolean;
+}>();
+const emit = defineEmits(['filterValue', 'restartFilterValue']);
 
-/* orderBy */
+const filter: Ref<IFundLogsFilter> = ref({ desc: true });
+const showErrorGeneral: Ref<boolean> = ref(false);
+const errorText: Ref<string> = ref('Hubo un error obteniendo los datos');
+interface option {
+  value: any;
+  text: string;
+}
+
+const optionSelectFundName: Ref<option[]> = ref([]);
+const optionsFundsNames: Ref<option[]> = ref([]);
+const optionSelectUsername: Ref<option[]> = ref([]);
+const optionsUsernames: Ref<option[]> = ref([]);
+const optionSelectCurrency: Ref<option[]> = ref([]);
+const optionsCurrencies: Ref<option[]> = ref([]);
 const optionSelectOrderBy: Ref<option> = ref({ value: false, text: 'Fecha' });
 const optionsOrderBy: Ref<option[]> = ref([
   { value: true, text: 'Monto' },
   { value: false, text: 'Fecha' },
 ]);
 
-/* fundsNames */
-const optionSelectFundName: Ref<option[]> = ref([]);
-const optionsFundsNames: Ref<option[]> = ref([]);
+onMounted(() => {
+  fetchCurrencies();
+  fetchFundsNames();
+  fetchUsernames();
+});
 
 const fetchFundsNames = async () => {
   try {
-    const res = await fundService.list({ fundNames: fundNames.value }, 0, 10);
+    const res = await fundService.list({ fundNames: filter.value.funds }, 0, 10);
     optionsFundsNames.value = res.data
       .map((fund: IFundDto) => ({
         value: fund.name,
@@ -150,18 +164,13 @@ const fetchFundsNames = async () => {
   }
 };
 
-/* usernames */
-const optionSelectUsername: Ref<option[]> = ref([]);
-const optionsUsernames: Ref<option[]> = ref([]);
-
-const fetchUsersnames = async () => {
+const fetchUsernames = async () => {
   try {
-    const res = await fundService.list({ usernames: usernames.value }, 0, 10);
-
+    const res = await userService.list(filter.value.users);
     optionsUsernames.value = res.data
-      .map((fund: IFundDto) => ({
-        value: fund.user?.username || '',
-        text: fund.user?.username || '',
+      .map((user: IUserDto) => ({
+        value: user.username,
+        text: user.username,
       }))
       .filter((option) => option.value !== '');
   } catch (error) {
@@ -169,10 +178,6 @@ const fetchUsersnames = async () => {
     console.error(error);
   }
 };
-
-/* currencies */
-const optionSelectCurrency: Ref<option[]> = ref([]);
-const optionsCurrencies: Ref<option[]> = ref([]);
 
 const fetchCurrencies = async () => {
   try {
@@ -189,30 +194,10 @@ const fetchCurrencies = async () => {
   }
 };
 
-/* Validation const */
-const showErrorGeneral: Ref<boolean> = ref(false);
-const errorText: Ref<string> = ref('Hubo un error obteniendo los datos');
-
-/* props and emits*/
-defineProps<{
-  closeFilter: () => void;
-  showFilter: boolean;
-}>();
-
-const emit = defineEmits(['filterValue', 'restartFilterValue']);
-
-/* Filter */
 const handleFilter = async () => {
   showErrorGeneral.value = false;
   try {
-    // const filterModel: IFundFilter = {
-    //   fundNames: fundNames.value,
-    //   usernames: usernames.value,
-    //   currencies: currencies.value,
-    //   descending: descending.value,
-    //   orderBy: orderBy.value,
-    // };
-    // emit('filterValue', filterModel);
+    emit('filterValue', filter.value);
   } catch (error) {
     showErrorGeneral.value = true;
     console.error(error);
@@ -220,30 +205,14 @@ const handleFilter = async () => {
 };
 
 const resetFilters = () => {
-  fundNames.value = [];
-  usernames.value = [];
-  currencies.value = [];
-  descending.value = true;
-  orderBy.value = false;
+  filter.value = { desc: true };
 
   optionSelectFundName.value = [];
   optionSelectUsername.value = [];
   optionSelectCurrency.value = [];
-  optionSelectOrderBy.value = { value: null, text: '' };
+  optionSelectOrderBy.value = { value: false, text: 'Fecha' };
 
   showErrorGeneral.value = false;
   emit('restartFilterValue', null);
 };
-
-/* hooks */
-onMounted(() => {
-  fetchCurrencies();
-  fetchFundsNames();
-  fetchUsersnames();
-});
-
-interface option {
-  value: any;
-  text: string;
-}
 </script>
