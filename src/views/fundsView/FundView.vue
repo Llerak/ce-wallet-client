@@ -31,7 +31,7 @@
         handleFilter(filters);
       }
     "
-    @restartfilter-value="(filters: IFundFilter) => handleResetFilter(filters)"
+    @restart-filter-value="(filters: IFundFilter) => handleResetFilter(filters)"
   />
   <AddFund v-if="showAdd" @fundAdded="handleFundAdded" :close-add="closeAddFunct" />
 </template>

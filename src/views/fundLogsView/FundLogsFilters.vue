@@ -123,7 +123,8 @@ defineProps<{
 }>();
 const emit = defineEmits(['filterValue', 'restartFilterValue']);
 
-const filter: Ref<IFundLogsFilter> = ref({ desc: true });
+const defaultFilter = { desc: true };
+const filter: Ref<IFundLogsFilter> = ref(defaultFilter);
 const showErrorGeneral: Ref<boolean> = ref(false);
 const errorText: Ref<string> = ref('Hubo un error obteniendo los datos');
 interface option {
@@ -203,7 +204,7 @@ const fetchCurrencies = async () => {
 };
 
 const resetFilters = () => {
-  filter.value = { desc: true };
+  filter.value = defaultFilter;
 
   optionSelectFundName.value = [];
   optionSelectUsername.value = [];
