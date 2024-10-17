@@ -3,7 +3,7 @@
     <div class="relative overflow-x-auto shadow-custom-shadow bg-white rounded-lg">
       <table class="w-full text-sm text-left min-h-[540px]">
         <thead class="text-[14px] text-[#344767] text-nowrap">
-          <tr>
+          <tr class="h-[50px]">
             <th
               v-for="(header, i) in headers"
               :key="i"
@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="data.length < 1">
+          <tr v-if="data.length < 1" class="h-[50px]">
             <td :colspan="headers.length" class="align-center">
               <div class="flex justify-center p-4">
                 <SpinnerLoanding v-if="loading" />
@@ -27,7 +27,7 @@
           </tr>
           <tr
             v-else
-            class="border-b cursor-pointer relative"
+            class="border-b cursor-pointer relative h-[50px]"
             v-for="(item, i) in data"
             :key="i"
             @click="watchClickInObject(item)"
@@ -49,7 +49,7 @@
             v-show="!props.loading && data.length > 0"
             v-for="i in 10 - data.length"
             :key="'empty-' + i"
-            class="border-b"
+            class="border-b h-[50px]"
           >
             <td :colspan="headers.length" class="px-6 py-4" />
           </tr>
