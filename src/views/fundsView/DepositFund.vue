@@ -49,7 +49,7 @@
 <script lang="ts" setup>
 /* import */
 import { defineEmits, defineProps, onMounted, Ref, ref, watch } from 'vue';
-import { currencyService } from '@/services';
+import { currencyService, fundService } from '@/services';
 import InputSelect from '@/components/InputSelect.vue';
 import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';

@@ -84,6 +84,7 @@ import ArrowDownIcon from './icons/ArrowDownIcon.vue';
 import SpinnerLoanding from '@/components/SpinnerLoanding.vue'; // Asegúrate de importar el componente SpinnerLoanding
 
 const emit = defineEmits(['returnId', 'returnItem']);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const watchClickInObject = (item: any) => {
   emit('returnId', item.id);
   emit('returnItem', item);
