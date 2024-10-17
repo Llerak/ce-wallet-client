@@ -58,13 +58,13 @@
             class="text-sm text-red-600 transition-all"
             >{{ errorText }}</span
           >
-          <button class="w-full bg-[#F58D71] text-white" type="submit">FILTRAR</button>
+          <button class="w-full bg-primary text-white" type="submit">FILTRAR</button>
           <div class="flex gap-3">
             <button class="w-full bg-[#717ef5] text-white flex-1" type="button" @click="resetFilters()">
               RESTABLECER
             </button>
             <button
-              class="w-full bg-white text-primary border-[#F58D71] border-solid border-[1px] text-nowrap flex-1"
+              class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap flex-1"
               type="button"
               @click="closeFilter"
             >

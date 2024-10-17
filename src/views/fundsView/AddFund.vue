@@ -26,11 +26,11 @@
             }"
             >{{ errorText }}</span
           >
-          <button type="submit" class="w-full bg-[#F58D71] text-white">AGREGAR</button>
+          <button class="w-full bg-primary text-white" type="submit">AGREGAR</button>
           <button
             @click="closeAdd"
             type="button"
-            class="w-full bg-white text-primary border-[#F58D71] border-solid border-[1px] text-nowrap"
+            class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap"
           >
             CERRAR
           </button>

@@ -35,7 +35,7 @@
             }"
             >Usuario o contraseña incorrecto</span
           >
-          <button type="submit" class="w-full bg-[#F58D71] text-white">INICIAR</button>
+          <button class="w-full bg-primary text-white" type="submit">INICIAR</button>
         </div>
       </div>
     </form>

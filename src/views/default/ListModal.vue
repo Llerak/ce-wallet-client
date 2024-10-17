@@ -82,14 +82,14 @@ const value = (item: any) => {
     <div class="flex flex-col gap-8 shadow-custom-shadow bg-white p-3 rounded-lg">
       <h4>{{ props.name }}</h4>
       <div class="flex w-full justify-between items-center flex-wrap gap-3">
-        <button @click="showAdd" v-if="props.addEnabled" class="bg-[#F58D71] text-white w-min text-nowrap">
+        <button v-if="props.addEnabled" class="bg-primary text-white w-min text-nowrap" @click="showAdd">
           {{ props.buttonLabel }}
         </button>
         <div class="flex gap-3 items-center flex-wrap">
           <!-- <InputCustom :placeholder="props.placeholder" type="text" />-->
           <button
             @click="showFilter"
-            class="bg-white text-primary border-[#F58D71] border-solid border-[1px] w-min text-nowrap"
+            class="bg-white text-primary border-primary border-solid border-[1px] w-min text-nowrap"
           >
             {{ props.filterLabel }}
           </button>

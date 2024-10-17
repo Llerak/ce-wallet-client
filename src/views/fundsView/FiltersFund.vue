@@ -58,7 +58,7 @@
             }"
             >{{ errorText }}</span
           >
-          <button type="submit" class="w-full bg-[#F58D71] text-white">FILTRAR</button>
+          <button class="w-full bg-primary text-white" type="submit">FILTRAR</button>
           <div class="flex gap-3">
             <button @click="resetFilters()" type="button" class="w-full bg-[#717ef5] text-white flex-1">
               RESTABLECER
@@ -66,7 +66,7 @@
             <button
               @click="closeFilter"
               type="button"
-              class="w-full bg-white text-primary border-[#F58D71] border-solid border-[1px] text-nowrap flex-1"
+              class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap flex-1"
             >
               CERRAR
             </button>
