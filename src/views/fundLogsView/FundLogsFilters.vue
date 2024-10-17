@@ -113,7 +113,7 @@ import { defineEmits, defineProps, onMounted, Ref, ref } from 'vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputMultiSelect from '@/components/InputMultiSelect.vue';
 import { currencyService, fundService } from '@/services';
-import { ActionType, IFundDto, IFundLogsFilter, IUserDto, TransactionType } from '@/interfaces/dto';
+import { ActionType, IFundLogsFilter, TransactionType } from '@/interfaces/dto';
 import CustomCheckBox from '@/components/CustomCheckBox.vue';
 import { userService } from '@/services/userService';
 
@@ -166,12 +166,10 @@ onMounted(() => {
 const fetchFundsNames = async () => {
   try {
     const res = await fundService.list({ fundNames: filter.value.funds }, 0, 10);
-    optionsFundsNames.value = res.data
-      .map((fund: IFundDto) => ({
-        value: fund.name,
-        text: fund.name,
-      }))
-      .filter((option) => option.value !== '');
+    optionsFundsNames.value = res.data.map((fund) => ({
+      value: fund.name,
+      text: fund.name,
+    }));
   } catch (error) {
     showErrorGeneral.value = true;
     console.error(error);
@@ -181,12 +179,10 @@ const fetchFundsNames = async () => {
 const fetchUsernames = async () => {
   try {
     const res = await userService.list(filter.value.users);
-    optionsUsernames.value = res.data
-      .map((user: IUserDto) => ({
-        value: user.username,
-        text: user.username,
-      }))
-      .filter((option) => option.value !== '');
+    optionsUsernames.value = res.data.map((user) => ({
+      value: user.username,
+      text: user.username,
+    }));
   } catch (error) {
     showErrorGeneral.value = true;
     console.error(error);
@@ -196,12 +192,10 @@ const fetchUsernames = async () => {
 const fetchCurrencies = async () => {
   try {
     const res = await currencyService.list();
-    optionsCurrencies.value = res
-      .map((currency) => ({
-        value: currency.id,
-        text: currency.currency,
-      }))
-      .filter((option) => option.value !== '');
+    optionsCurrencies.value = res.map((currency) => ({
+      value: currency.id,
+      text: currency.currency,
+    }));
   } catch (error) {
     showErrorGeneral.value = true;
     console.error(error);
