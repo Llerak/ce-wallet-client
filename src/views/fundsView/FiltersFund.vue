@@ -20,6 +20,7 @@
             title="Fondos"
             placeholder="Opciones"
             @emit-values="async (values) => ((fundNames = values), await fetchFundsNames())"
+            @update:model-value="(value) => (optionSelectFundName = value)"
           />
           <InputMultiSelect
             :model-value="optionSelectUsername"
@@ -28,6 +29,7 @@
             title="Nombres"
             placeholder="Opciones"
             @emit-values="async (valuess) => ((usernames = valuess), await fetchUsersnames())"
+            @update:model-value="(value) => (optionSelectUsername = value)"
           />
           <InputMultiSelect
             title="Monedas"
@@ -35,18 +37,21 @@
             :options="optionsCurrencies"
             placeholder="Opciones"
             @emit-values="(values) => (currencies = values)"
+            @update:model-value="(value) => (optionSelectCurrenci = value)"
           />
           <InputSelect
             title="Ordenar descendiente"
             :model-value="optionSelectDescending"
             :options="optionsDescending"
             @emit-value="(value) => (descending = value)"
+            @update:model-value="(value) => (optionSelectDescending = value)"
           ></InputSelect>
           <InputSelect
             title="Ordenar por"
             :model-value="optionSelectOrderBy"
             :options="optionsOrderBy"
             @emit-value="(value) => (orderBy = value)"
+            @update:model-value="(value) => (optionSelectOrderBy = value)"
           ></InputSelect>
         </div>
         <div class="flex flex-col gap-2">

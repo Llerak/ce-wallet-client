@@ -19,8 +19,8 @@
       :show-filter="showFilterFunct"
     />
     <section id="details" class="flex flex-wrap gap-6">
-      <DetailsFund :id="idFund" v-if="idFund !== ''" @fund-delete="fetchData(), (idFund = '')" />
-      <DepositFund :id="idFund" v-if="idFund !== ''" />
+      <DetailsFund :id="idFund" :key="detailsKey" v-if="idFund !== ''" @fund-delete="fetchData(), (idFund = '')" />
+      <DepositFund :id="idFund" v-if="idFund !== ''" @fund-deposit="fundDepositFunctional" />
     </section>
   </div>
   <FiltersFund
@@ -156,7 +156,14 @@ onMounted(async () => {
 
 /* emit test */
 const idFund = ref('');
+const detailsKey = ref(0);
 const idFundFunctional = (id: string) => {
   idFund.value = id;
+};
+
+/* deposit*/
+const fundDepositFunctional = async () => {
+  await fetchData();
+  detailsKey.value++; // Increment the key to force re-render
 };
 </script>

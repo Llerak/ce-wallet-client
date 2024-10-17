@@ -108,13 +108,13 @@ const checkDefaultValue = () => {
 };
 
 const handleClickOutside = (event: MouseEvent) => {
-  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
-    isOpen.value = false;
-    searchQuery.value = ''; // Vaciar el valor del input al ocultar la lista
+  if (dropdown.value && !dropdown.value.contains(event.target as Node) && isOpen.value) {
     emit(
       'emitValues',
       internalValue.value.map((values) => values.value)
     ); // Emitir solo los valores seleccionados
+    isOpen.value = false;
+    searchQuery.value = ''; // Vaciar el valor del input al ocultar la lista
   }
 };
 
