@@ -3,34 +3,49 @@
     class="fixed flex h-[100vh] w-[100vw] items-center justify-center p-4 z-50 top-0 left-0 backdrop-blur-[3px] bg-[rgba(0,0,0,0.4)]"
   >
     <form
+      class="flex w-[500px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
+      @submit.prevent="handleSubmit"
       autocomplete="off"
-      class="flex w-[360px] flex-col gap-6 bg-white p-12 shadow-custom-shadow rounded-lg"
-      @submit.prevent="handleAdd"
     >
       <div class="flex flex-col gap-2">
-        <h4 class="text-primary">Agregar Fondo</h4>
+        <h4 class="text-primary">Actualizar Fondo</h4>
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-4">
-          <InputCustom v-model="name" :show-error="showErrorFundName" placeholder="Nombre" title="Nombre" type="text" />
+          <InputCustom
+            v-model="model.name"
+            :show-error="showErrorFundName"
+            placeholder="---"
+            title="Nombre"
+            type="text"
+          />
           <!-- <InputCustom title="Localización" v-model="locationUrl" type="text" placeholder="Localización" /> -->
-          <InputCustom v-model="address" placeholder="Dirección" title="Dirección" type="text" />
-          <InputTextArea v-model="details" placeholder="Detalles" title="Detalles" />
+          <InputCustom v-model="model.address" placeholder="---" title="Dirección" type="text" />
+          <InputSelect
+            :model-value="userSelect.current"
+            :options="userSelect.data"
+            placeholder="---"
+            show-search
+            title="Asignar asesor"
+            @emit-values="(value: string[]) => fetchUsers(value)"
+            @update:modelValue="(value: any) => (userSelect.current = value)"
+          />
+          <InputTextArea v-model="model.details" placeholder="---" title="Detalles" />
         </div>
         <div class="flex flex-col gap-2">
           <span
+            class="text-sm text-red-600 transition-all"
             :class="{
               'scale-100': showErrorGeneral,
               'scale-0': !showErrorGeneral,
             }"
-            class="text-sm text-red-600 transition-all"
-            >{{ errorText }}</span
-          >
-          <button class="w-full bg-primary text-white" type="submit">AGREGAR</button>
+            >{{ errorText }}
+          </span>
+          <button class="w-full bg-primary text-white" type="submit">ACTUALIZAR</button>
           <button
             class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap"
             type="button"
-            @click="closeAdd"
+            @click="emit('close')"
           >
             CERRAR
           </button>
@@ -41,69 +56,69 @@
 </template>
 
 <script lang="ts" setup>
-/* import */
-import { defineEmits, defineProps, onBeforeMount, Ref, ref } from 'vue';
-import { fundService } from '@/services';
 import InputCustom from '@/components/InputCustom.vue';
+import InputSelect from '@/components/InputSelect.vue';
 import InputTextArea from '@/components/InputTextArea.vue';
-import { IFundInfo } from '@/interfaces/dto';
+import { defineEmits, defineProps, ref } from 'vue';
+import { IFundDto, IFundInfo, RoleType } from '@/interfaces/dto';
+import { ICustomSelectOption } from '@/interfaces';
+import { userService } from '@/services/userService';
+import { fundService } from '@/services';
 
-/* fund model */
-const name: Ref<string> = ref('');
-const showErrorFundName: Ref<boolean> = ref(false);
-const locationUrl: Ref<string> = ref('');
-const address: Ref<string> = ref('');
-const details: Ref<string> = ref('');
+const props = defineProps<{ fund: IFundDto }>();
+const emit = defineEmits(['onUpdate', 'close']);
+const showErrorFundName = ref(false);
+const showErrorGeneral = ref(false);
+const errorText = ref('');
+const model = ref<IFundInfo>({
+  name: props.fund.name,
+  address: props.fund.address || undefined,
+  details: props.fund.details || undefined,
+  locationUrl: props.fund.locationUrl || undefined,
+});
+const userSelect = ref<{ current: ICustomSelectOption<string>; data: ICustomSelectOption<string>[] }>({
+  current: { value: props.fund.user?.id || '', text: props.fund.user?.username || '' },
+  data: [],
+});
 
-/* Validation const */
-const showErrorGeneral: Ref<boolean> = ref(false);
-const errorText: Ref<string> = ref('Hubo un error creando el fondo');
+async function fetchUsers(search: string[]) {
+  const res = await userService.list(search, 0, 10, true).catch((error) => {
+    showErrorGeneral.value = true;
+    errorText.value = 'No se pudo obtener los datos de los usuarios';
+    console.error('user fetch failed:', error);
+    throw error;
+  });
+  userSelect.value.data = res.data
+    .filter((user) => user.role === RoleType.Assessor)
+    .map((user) => ({ text: user.username, value: user.id } as ICustomSelectOption<string>));
+}
 
-/* props and emits*/
-defineProps<{
-  closeAdd: () => void;
-}>();
-
-const emit = defineEmits(['fundAdded']);
-
-/* Add */
-const handleAdd = async () => {
+const handleSubmit = async () => {
   showErrorGeneral.value = false;
   if (validationFundCreate()) {
-    try {
-      const fund: IFundInfo = {
-        name: name.value,
-        locationUrl: locationUrl.value,
-        address: address.value,
-        details: details.value,
-      };
-      await fundService.create(fund);
-      emit('fundAdded');
-    } catch (error) {
+    const fund = await fundService.update(props.fund.id, model.value).catch((error) => {
       showErrorGeneral.value = true;
-      console.error('Create failed:', error);
+      errorText.value = 'Ocurrió un error actualizando el fondo';
+      console.error('Update failed:', error);
+      throw error;
+    });
+
+    const userId = userSelect.value.current.value;
+    if (userId !== '') {
+      await fundService.attachUser(fund.id, userId).catch((error) => {
+        showErrorGeneral.value = true;
+        errorText.value = 'Ocurrió un error asignando el usuario al fondo';
+        console.error('Attach User failed:', error);
+        throw error;
+      });
     }
+
+    emit('onUpdate');
   }
 };
 
-/* validation */
 function validationFundCreate() {
-  showErrorFundName.value = false;
-  if (name.value === '') {
-    showErrorFundName.value = true;
-  }
-
-  if (showErrorFundName.value) return false;
-  return true;
+  showErrorFundName.value = model.value.name === '';
+  return !showErrorFundName.value;
 }
-
-/* reset */
-onBeforeMount(() => {
-  name.value = '';
-  showErrorFundName.value = false;
-  showErrorGeneral.value = false;
-  locationUrl.value = '';
-  address.value = '';
-  details.value = '';
-});
 </script>

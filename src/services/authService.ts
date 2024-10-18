@@ -1,9 +1,10 @@
 import routeServices from '@/router/routeServices';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
 import { statusApi } from '@/store/global';
-import { IUserLogin } from '@/interfaces';
+import { IResponse, IUserLogin } from '@/interfaces';
 import { api } from '@/services';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
+import { IRegisterUserDto, IUserDto } from '@/interfaces/dto';
 
 class AuthService {
   async login(user: IUserLogin) {
@@ -44,6 +45,16 @@ class AuthService {
       console.error('Error during validation:', error);
       throw error;
     }
+  }
+
+  async register(info: IRegisterUserDto) {
+    return await api
+      .post(routeServices.auth.register, info)
+      .then((res: AxiosResponse<IResponse<IUserDto>>) => res.data.response)
+      .catch((err: AxiosError) => {
+        console.log(err.message, err);
+        throw err.message;
+      });
   }
 }
 export const authService = new AuthService();

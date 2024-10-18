@@ -6,8 +6,7 @@
         <div class="flex flex-wrap gap-3">
           <PostCustom title="Nombre" :content="data.username || 'No disponible'" />
           <PostCustom title="Usuario" :content="data.role || 'No disponible'" />
-          <PostCustom title="Usuario" :content="data.email || 'No disponible'" />
-          <PostCustom title="Creado en" :content="new Date(data.createAt).toLocaleString() || 'No disponible'" />
+          <PostCustom :content="longDate(data.createAt)" title="Creado en" />
         </div>
         <div class="flex flex-wrap gap-3 w-full justify-end">
           <i
@@ -44,6 +43,7 @@ import { IUserDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import { userService } from '@/services/userService';
+import { longDate } from '@/store/global';
 
 const isLoading: Ref<boolean> = ref(false);
 
