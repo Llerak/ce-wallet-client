@@ -32,19 +32,21 @@ const routeServices = {
     resetPassword: '/user/reset-password',
     delete: (id: string) => `/user/${id}`,
     find: (id?: string, name?: string, email?: string) => {
-      let route = '/user/find-by';
+      let route = `/user/find-by?`;
       let cond = true;
+
       if (id !== undefined) {
         cond = false;
-        route += `${first(cond)}id=${id}`;
+        route += `id=${id}`;
       }
       if (name !== undefined) {
+        route += `${cond ? '' : '&'}name=${name}`;
         cond = false;
-        route += `${first(cond)}name=${name}`;
       }
       if (email !== undefined) {
-        route += `${first(cond)}email=${email}`;
+        route += `${cond ? '' : '&'}email=${email}`;
       }
+
       return route;
     },
   },
