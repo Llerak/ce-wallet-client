@@ -7,6 +7,7 @@ import UnauthorizedView from '@/views/UnauthorizedView.vue';
 import { roleAndUserGlobal, roles } from '@/store/RolesAndPermission';
 import { statusApi, statusSideBar } from '@/store/global';
 import FundLogsView from '@/views/fundLogsView/FundLogsView.vue';
+import UsersView from '@/views/usersView/UsersView.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -49,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/users',
     name: 'users',
-    component: HomeView,
+    component: UsersView,
     meta: { roles: roles.admin },
     beforeEnter: authGuard,
   },
