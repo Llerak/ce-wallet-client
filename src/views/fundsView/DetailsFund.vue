@@ -6,10 +6,7 @@
         <div class="flex flex-wrap gap-3">
           <PostCustom title="Nombre" :content="data.name || 'No disponible'" />
           <PostCustom title="Usuario" :content="data.user?.username || 'No disponible'" />
-          <PostCustom
-            title="Creado en"
-            :content="new Date(data.createAt).toLocaleDateString('es-ES', locale) || 'No disponible'"
-          />
+          <PostCustom :content="longDate(data.createAt)" title="Creado en" />
           <PostCustom title="Dirección" :content="data.address || 'No disponible'" />
         </div>
         <div class="flex flex-wrap gap-3">
@@ -105,16 +102,8 @@ import WithdrawalIcon from '@/components/icons/WithdrawalIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import WithdrawlFund from './WithdrawlFund.vue';
 import EditFund from '@/views/fundsView/EditFund.vue';
+import { longDate } from '@/store/global';
 
-const locale: Intl.DateTimeFormatOptions = {
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: true,
-};
 const isLoading: Ref<boolean> = ref(false);
 
 const props = defineProps({

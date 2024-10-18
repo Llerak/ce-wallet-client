@@ -8,7 +8,7 @@
       <PostCustom v-if="data.transactionType" :content="data.transactionType" title="Transaccion" />
       <PostCustom v-if="data.currency" :content="data.currency" title="Moneda" />
       <PostCustom v-if="data.amount" :content="data.amount" title="Monto" />
-      <PostCustom :content="data.createdAt" title="Fecha" />
+      <PostCustom :content="longDate(data.createdAt)" title="Fecha" />
       <PostCustom :content="data.details || 'No disponible'" title="Detalles" />
     </div>
   </div>
@@ -18,6 +18,7 @@
 import PostCustom from '@/components/PostCustom.vue';
 import { defineProps, Ref, ref, watch } from 'vue';
 import { IFundLogDto } from '@/interfaces/dto';
+import { longDate } from '@/store/global';
 
 const props = defineProps<{ log: IFundLogDto }>();
 const data: Ref<IFundLogDto> = ref(props.log);
