@@ -63,10 +63,9 @@
             }"
             >{{ errorText }}
           </span>
-          <label>Los campos con ( * ) son opcionales.</label>
           <button class="w-full bg-primary text-white" type="submit">AGREGAR</button>
           <button
-            @click="closeAdd"
+            @click="emit('close')"
             type="button"
             class="w-full bg-white text-primary border-primary border-solid border-[1px] text-nowrap"
           >
@@ -79,14 +78,19 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmits, defineProps, onMounted, ref } from 'vue';
+import { defineEmits, onMounted, ref } from 'vue';
 import InputCustom from '@/components/InputCustom.vue';
 import InputSelect from '@/components/InputSelect.vue';
 import { IRegisterUserDto } from '@/interfaces/dto';
 import { authService, roleService } from '@/services';
+import { ICustomSelectOption } from '@/interfaces';
+
+const emit = defineEmits(['userAdded', 'close']);
 
 const model = ref<IRegisterUserDto>({ roleId: '', username: '', email: '', password: '', passwordConfirmation: '' });
-
+const errorText = ref('Hubo un error creando el usuario');
+const selectRole = ref<ICustomSelectOption<string>>();
+const optionsRoles = ref<ICustomSelectOption<string>[]>([]);
 const showError = ref({
   general: false,
   username: false,
@@ -95,7 +99,6 @@ const showError = ref({
   password: false,
   passwordConfirmation: false,
 });
-
 const errorMessages = ref({
   username: '',
   roleId: '',
@@ -103,11 +106,6 @@ const errorMessages = ref({
   password: '',
   passwordConfirmation: '',
 });
-
-const errorText = ref('Hubo un error creando el usuario');
-
-defineProps<{ closeAdd: () => void }>();
-const emit = defineEmits(['userAdded']);
 
 const handleAdd = async () => {
   showError.value.general = false;
@@ -121,20 +119,14 @@ const handleAdd = async () => {
     }
   }
 };
-
-const selectRole = ref<{ value: string; text: string }>();
-const optionsRoles = ref<{ value: string; text: string }[]>([]);
-
 const fetchRole = async () => {
-  try {
-    const res = await roleService.list();
-    optionsRoles.value = res.map((role) => ({ value: role.id, text: role.role }));
-  } catch (error) {
+  const res = await roleService.list().catch((error) => {
     showError.value.general = true;
     console.error('Error al obtener los roles:', error);
-  }
+    throw error;
+  });
+  optionsRoles.value = res.map((role) => ({ value: role.id, text: role.role }));
 };
-
 const validationUserCreate = () => {
   showError.value = {
     general: false,
@@ -148,7 +140,7 @@ const validationUserCreate = () => {
   if (!model.value.username) {
     errorMessages.value.username = 'Este campo es requerido';
     showError.value.username = true;
-  } else if (model.value.username.length <= 2) {
+  } else if (model.value.username.length < 2) {
     errorMessages.value.username = 'El nombre debe tener más de dos caracteres';
     showError.value.username = true;
   } else {
@@ -168,7 +160,7 @@ const validationUserCreate = () => {
   if (!model.value.password) {
     errorMessages.value.password = 'Este campo es requerido';
     showError.value.password = true;
-  } else if (model.value.password.length <= 8) {
+  } else if (model.value.password.length < 8) {
     errorMessages.value.password = 'La contraseña debe tener más de 8 caracteres';
     showError.value.password = true;
   } else {
@@ -193,11 +185,10 @@ const validationUserCreate = () => {
   }
 
   return !Object.values(showError.value).includes(true);
-};
-
-const validateEmail = (email: string) => {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
+  function validateEmail(email: string) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
 };
 
 onMounted(fetchRole);

@@ -2,12 +2,12 @@
   <div class="flex flex-col gap-3 w-full">
     <h4 class="flex">Detalles</h4>
     <div class="flex p-4 bg-custom-gradient-dark rounded-lg shadow-custom-shadow">
-      <div v-if="!isLoading" class="flex flex-col gap-4 w-full">
+      <div class="flex flex-col gap-4 w-full">
         <div class="flex flex-wrap gap-3">
-          <PostCustom title="Nombre" :content="data.name || 'No disponible'" />
+          <PostCustom :content="data.name" title="Nombre" />
           <PostCustom title="Usuario" :content="data.user?.username || 'No disponible'" />
           <PostCustom :content="longDate(data.createAt)" title="Creado en" />
-          <PostCustom title="Dirección" :content="data.address || 'No disponible'" />
+          <PostCustom :content="data.address" title="Dirección" />
         </div>
         <div class="flex flex-wrap gap-3">
           <PostCustom
@@ -55,32 +55,21 @@
           </i>
         </div>
       </div>
-      <div v-else class="flex justify-center items-center w-full h-full min-h-[320px]">
-        <div
-          class="inline-block h-8 w-8 animate-spin rounded-full border-2 border-solid border-primary border-r-transparent align-[-0.125em] text-primary motion-reduce:animate-[spin_1.5s_linear_infinite]"
-          role="status"
-        >
-          <span
-            class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-            >Loading...</span
-          >
-        </div>
-      </div>
     </div>
   </div>
   <EditFund v-if="showEdit" :fund="data" @close="showEdit = false" @onUpdate="onUpdate()" />
-  <DeleteFund v-if="showDelete" :id="id" :close-delete="closeDelete" @fund-delete="deleteEmit" />
-  <DepositFund v-if="showDeposit" :id="id" :close-deposit="closeDeposit" @fund-deposit="depositEmit" />
+  <DeleteFund v-if="showDelete" :id="data.id" :close-delete="closeDelete" @fund-delete="deleteEmit" />
+  <DepositFund v-if="showDeposit" :id="data.id" :close-deposit="closeDeposit" @fund-deposit="depositEmit" />
   <TransferFund
     v-if="showTransfer"
-    :id="id"
+    :id="data.id"
     :currencies="data.currencies"
     :close-transfer="closeTransfer"
     @fund-transfer="transferEmit"
   />
   <WithdrawlFund
     v-if="showWithdrawal"
-    :id="id"
+    :id="data.id"
     :currencies="data.currencies"
     :close-withdrawal="closeWithdrawal"
     @fund-withdrawal="withdrawalEmit"
@@ -89,8 +78,7 @@
 
 <script lang="ts" setup>
 import PostCustom from '@/components/PostCustom.vue';
-import { defineEmits, defineProps, onBeforeMount, ref, Ref, watch } from 'vue';
-import { fundService } from '@/services';
+import { defineEmits, defineProps, onMounted, ref, watch } from 'vue';
 import { IFundDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import DepositIcon from '@/components/icons/DepositIcon.vue';
@@ -104,38 +92,20 @@ import WithdrawlFund from './WithdrawlFund.vue';
 import EditFund from '@/views/fundsView/EditFund.vue';
 import { longDate } from '@/store/global';
 
-const isLoading: Ref<boolean> = ref(false);
-
-const props = defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-});
+const props = defineProps<{ fund: IFundDto }>();
 const emits = defineEmits(['fundDelete', 'refresh']);
 
-const data: Ref<IFundDto> = ref({} as IFundDto);
-
-const fetchData = async () => {
-  isLoading.value = true;
-  data.value = await fundService.getFund(props.id).catch((error) => {
-    console.log(error);
-    throw error;
-  });
-  window.location.href = `${window.location.pathname}#details`;
-  isLoading.value = false;
-};
-
-/* edit */
+const data = ref<IFundDto>(props.fund);
 const showEdit = ref(false);
-const onUpdate = () => {
-  emits('refresh');
-  fetchData();
-  showEdit.value = false;
-};
+const showDelete = ref(false);
+const showDeposit = ref(false);
+const showTransfer = ref(false);
+const showWithdrawal = ref(false);
 
-/* delete */
-const showDelete: Ref<boolean> = ref(false);
+const onUpdate = () => {
+  showEdit.value = false;
+  emits('refresh');
+};
 const closeDelete = () => {
   showDelete.value = false;
 };
@@ -143,51 +113,35 @@ const deleteEmit = () => {
   showDelete.value = false;
   emits('fundDelete');
 };
-
-/* deposit */
-const showDeposit: Ref<boolean> = ref(false);
 const closeDeposit = () => {
   showDeposit.value = false;
 };
 const depositEmit = async () => {
   showDeposit.value = false;
-  await fetchData();
   emits('refresh');
 };
-
-/* transfer */
-const showTransfer: Ref<boolean> = ref(false);
 const closeTransfer = () => {
   showTransfer.value = false;
 };
 const transferEmit = async () => {
   showTransfer.value = false;
-  await fetchData();
   emits('refresh');
 };
-
-/* withdrawal */
-const showWithdrawal: Ref<boolean> = ref(false);
 const closeWithdrawal = () => {
   showWithdrawal.value = false;
 };
 const withdrawalEmit = async () => {
   showWithdrawal.value = false;
-  await fetchData();
   emits('refresh');
 };
 
-onBeforeMount(() => {
-  fetchData();
+onMounted(() => {
+  window.location.href = `${window.location.pathname}#details`;
 });
-
-// Watch for changes in the id prop
 watch(
-  () => props.id,
-  (newId, oldId) => {
-    if (newId !== oldId) {
-      fetchData();
-    }
+  () => props.fund,
+  (newFund) => {
+    data.value = newFund;
   }
 );
 </script>

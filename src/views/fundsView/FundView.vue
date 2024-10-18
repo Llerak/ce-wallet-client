@@ -8,18 +8,23 @@
       :is-loading="loading"
       :header="header"
       :keys="keys"
-      :data="data"
+      :data="data.map(formatFundDataIntoTableInput)"
       :next-page="nextPage"
       :enabled-next="enabledNext"
       :enabled-back="enabledBack"
       :back-page="backPage"
       :page-current="pageCurrent"
-      button-label="AGREGAR FONDO"
-      @return-id="idFundFunctional"
       :show-filter="showFilterFunct"
+      button-label="AGREGAR FONDO"
+      @return-item="getFundfromId"
     />
     <section id="details" class="flex flex-wrap gap-6">
-      <DetailsFund :id="idFund" v-if="idFund !== ''" @fund-delete="fetchData(), (idFund = '')" @refresh="fetchData()" />
+      <DetailsFund
+        v-if="fundSelectd !== null"
+        :fund="fundSelectd"
+        @refresh="fetchData()"
+        @fund-delete="fetchData(), (fundSelectd = null)"
+      />
     </section>
   </div>
   <FiltersFund
@@ -36,17 +41,49 @@
 </template>
 
 <script lang="ts" setup>
-/* imports */
 import ListModal from '../default/ListModal.vue';
 import { IFundDto, IFundFilter } from '@/interfaces/dto';
-import { onMounted, Ref, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { currencyService, fundService } from '@/services';
 import AddFund from './AddFund.vue';
 import DetailsFund from './DetailsFund.vue';
 import FiltersFund from './FiltersFund.vue';
 
-/* add Functionality*/
-const showAdd: Ref<boolean> = ref(false);
+const showAdd = ref(false);
+const showFilter = ref(false);
+const data = ref<IFundDto[]>([]);
+const header = ref<string[]>([]);
+const keys = ref<string[]>([]);
+const loading = ref(false);
+const pageCurrent = ref(1);
+const totalPageCurrent = ref(0);
+const enabledNext = ref(false);
+const enabledBack = ref(false);
+const filter = ref<IFundFilter>({});
+const currencyName = ref<string[]>([]);
+const fundSelectd = ref<IFundDto | null>(null);
+
+const fetchData = async () => {
+  loading.value = true;
+  data.value = [];
+  await fetchDataCurrency();
+  const res = await fundService.list(filter.value, pageCurrent.value - 1);
+  if (res === undefined) return;
+  totalPageCurrent.value = Math.ceil(res.totalLenght / 10);
+  data.value = res.data;
+  enabledNext.value = pageCurrent.value < totalPageCurrent.value;
+  enabledBack.value = pageCurrent.value > 1;
+  loading.value = false;
+  fundSelectd.value !== null && getFundfromId(fundSelectd.value as { id: string });
+};
+const fetchDataCurrency = async () => {
+  currencyName.value = [];
+  const res = await currencyService.list();
+  if (res === undefined) return;
+  currencyName.value = res.map((res) => res.currency);
+  header.value = ['Fondo', 'Usuario', ...currencyName.value];
+  keys.value = ['name', 'user', ...currencyName.value];
+};
 const showAddFunct = () => {
   showAdd.value = true;
 };
@@ -57,9 +94,6 @@ const handleFundAdded = async () => {
   closeAddFunct();
   await fetchData();
 };
-
-/* filter Functionality*/
-const showFilter: Ref<boolean> = ref(false);
 const showFilterFunct = () => {
   showFilter.value = true;
 };
@@ -78,26 +112,6 @@ const handleResetFilter = async (filterValue: IFundFilter) => {
   pageCurrent.value = 1;
   await fetchData();
 };
-
-/* table Functionality*/
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const data = ref<any[]>([]);
-const header = ref<string[]>([]);
-const keys = ref<string[]>([]);
-const loading: Ref<boolean> = ref(false);
-
-const fetchData = async () => {
-  loading.value = true;
-  data.value = [];
-  await fetchDataCurrency();
-  const res = await fundService.list(filter.value, pageCurrent.value - 1);
-  if (res === undefined) return;
-  totalPageCurrent.value = Math.ceil(res.totalLenght / 10);
-  data.value = res.data.map(formatFundDataIntoTableInput);
-  enabledNext.value = pageCurrent.value < totalPageCurrent.value;
-  enabledBack.value = pageCurrent.value > 1;
-  loading.value = false;
-};
 const formatFundDataIntoTableInput = (data: IFundDto) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tableInput = { id: data.id, name: data.name, user: data.user?.username || ' --- ' } as any;
@@ -114,13 +128,6 @@ const formatFundDataIntoTableInput = (data: IFundDto) => {
 
   return tableInput;
 };
-
-/* pagination */
-const pageCurrent: Ref<number> = ref(1);
-const totalPageCurrent: Ref<number> = ref(0);
-const enabledNext: Ref<boolean> = ref(false);
-const enabledBack: Ref<boolean> = ref(false);
-
 const nextPage = () => {
   if (pageCurrent.value < totalPageCurrent.value) {
     pageCurrent.value++;
@@ -133,28 +140,10 @@ const backPage = () => {
     fetchData();
   }
 };
-/* filter */
-const filter: Ref<IFundFilter> = ref({});
+const getFundfromId = (value: { id: string }) =>
+  (fundSelectd.value = data.value.find((e: IFundDto) => e.id === value.id) || null);
 
-/* currency */
-const currencyName = ref<string[]>([]);
-const fetchDataCurrency = async () => {
-  currencyName.value = [];
-  const res = await currencyService.list();
-  if (res === undefined) return;
-  currencyName.value = res.map((res) => res.currency);
-  header.value = ['Fondo', 'Usuario', ...currencyName.value];
-  keys.value = ['name', 'user', ...currencyName.value];
-};
-
-/* hooks */
 onMounted(async () => {
   await fetchData();
 });
-
-/* emit test */
-const idFund = ref('');
-const idFundFunctional = (id: string) => {
-  idFund.value = id;
-};
 </script>

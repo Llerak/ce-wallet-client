@@ -3,22 +3,26 @@
     <ListModal
       name="Usuarios"
       :add-enabled="true"
-      :show-add="showAddFunct"
+      :data="data.map(formatFundDataIntoTableInput)"
       :is-loading="loading"
       :header="header"
       :keys="keys"
-      :data="data"
+      :show-add="showAddFunction"
       :next-page="nextPage"
       :enabled-next="enabledNext"
       :enabled-back="enabledBack"
       :back-page="backPage"
       :page-current="pageCurrent"
       button-label="AGREGAR USUARIO"
-      @return-id="idUserFunctional"
-      :show-filter="showFilterFunct"
+      :show-filter="showFilterFunction"
+      @return-item="(user: IUserDto) => userSelected = user"
     />
     <section id="details" class="flex flex-wrap gap-6">
-      <DetailsUser :id="idUser" v-if="idUser !== ''" @fund-delete="fetchData(), (idUser = '')" />
+      <DetailsUser
+        v-if="userSelected !== null"
+        :user="userSelected"
+        @fund-delete="fetchData(), (userSelected = null)"
+      />
     </section>
   </div>
   <!--  <FiltersFund
@@ -31,36 +35,72 @@
     "
     @restart-filter-value="(filters: IFundFilter) => handleResetFilter(filters)"
   />-->
-  <AddUser v-if="showAdd" @user-added="handleUserAdded" :close-add="closeAddFunct" />
+  <AddUser v-if="showAdd" @close="showAdd = false" @user-added="handleUserAdded" />
 </template>
 
 <script lang="ts" setup>
-/* imports */
 import ListModal from '../default/ListModal.vue';
 import { IUserDto } from '@/interfaces/dto';
-import { onMounted, Ref, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { userService } from '@/services/userService';
 import AddUser from './AddUser.vue';
 import DetailsUser from './DetailsUser.vue';
 
-/* add Functionality*/
-const showAdd: Ref<boolean> = ref(false);
-const showAddFunct = () => {
+const showAdd = ref(false);
+const showFilter = ref(false);
+const data = ref<IUserDto[]>([]);
+const header = ref<string[]>(['Usuario', 'Correo', 'Rol', 'Fecha']);
+const keys = ref<string[]>(['username', 'email', 'role', 'createAt']);
+const loading = ref(false);
+const pageCurrent = ref(1);
+const totalPageCurrent = ref(0);
+const enabledNext = ref(false);
+const enabledBack = ref(false);
+const userSelected = ref<IUserDto | null>(null);
+
+const showAddFunction = () => {
   showAdd.value = true;
 };
-const closeAddFunct = () => {
-  showAdd.value = false;
-};
 const handleUserAdded = async () => {
-  closeAddFunct();
+  showAdd.value = false;
   await fetchData();
 };
-
-/* filter Functionality*/
-const showFilter: Ref<boolean> = ref(false);
-const showFilterFunct = () => {
+const showFilterFunction = () => {
   showFilter.value = true;
 };
+const fetchData = async () => {
+  loading.value = true;
+  data.value = [];
+  const res = await userService.list(undefined, pageCurrent.value - 1, 10, true);
+  if (res === undefined) return;
+  totalPageCurrent.value = Math.ceil(res.totalLenght / 10);
+  data.value = res.data;
+  enabledNext.value = pageCurrent.value < totalPageCurrent.value;
+  enabledBack.value = pageCurrent.value > 1;
+  loading.value = false;
+};
+const formatFundDataIntoTableInput = (data: IUserDto) => {
+  return {
+    id: data.id,
+    username: data.username,
+    email: data.email,
+    role: data.role,
+    createAt: new Date(data.createAt).toLocaleString(),
+  };
+};
+const nextPage = () => {
+  if (pageCurrent.value < totalPageCurrent.value) {
+    pageCurrent.value++;
+    fetchData();
+  }
+};
+const backPage = () => {
+  if (pageCurrent.value > 1) {
+    pageCurrent.value--;
+    fetchData();
+  }
+};
+
 /* const closeFilterFunct = () => {
   showFilter.value = false;
 };
@@ -77,66 +117,7 @@ const handleResetFilter = async (filterValue: IFundFilter) => {
   await fetchData();
 }; */
 
-/* table Functionality*/
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const data = ref<any[]>([]);
-const header = ref<string[]>(['Usuario', 'Correo', 'Rol', 'Fecha']);
-const keys = ref<string[]>(['username', 'email', 'role', 'createAt']);
-const loading: Ref<boolean> = ref(false);
-
-const fetchData = async () => {
-  loading.value = true;
-  data.value = [];
-  const res = await userService.list(undefined, pageCurrent.value - 1, 10, true);
-  if (res === undefined) return;
-  totalPageCurrent.value = Math.ceil(res.totalLenght / 10);
-  data.value = res.data.map(formatFundDataIntoTableInput);
-  enabledNext.value = pageCurrent.value < totalPageCurrent.value;
-  enabledBack.value = pageCurrent.value > 1;
-  loading.value = false;
-};
-const formatFundDataIntoTableInput = (data: IUserDto) => {
-  const tableInput = {
-    id: data.id,
-    username: data.username,
-    email: data.email,
-    role: data.role,
-    createAt: new Date(data.createAt).toLocaleString(),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any;
-
-  return tableInput;
-};
-
-/* pagination */
-const pageCurrent: Ref<number> = ref(1);
-const totalPageCurrent: Ref<number> = ref(0);
-const enabledNext: Ref<boolean> = ref(false);
-const enabledBack: Ref<boolean> = ref(false);
-
-const nextPage = () => {
-  if (pageCurrent.value < totalPageCurrent.value) {
-    pageCurrent.value++;
-    fetchData();
-  }
-};
-const backPage = () => {
-  if (pageCurrent.value > 1) {
-    pageCurrent.value--;
-    fetchData();
-  }
-};
-/* filter */
-/* const filter: Ref<IFundFilter> = ref({}); */
-
-/* hooks */
 onMounted(async () => {
   await fetchData();
 });
-
-/* emit test */
-const idUser = ref('');
-const idUserFunctional = (id: string) => {
-  idUser.value = id;
-};
 </script>
