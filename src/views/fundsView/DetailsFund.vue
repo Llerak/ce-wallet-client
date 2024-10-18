@@ -46,6 +46,7 @@
           </i>
           <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-yellow-400 text-white h-min transition-all cursor-pointer hover:text-black"
+            @click="showEdit = true"
           >
             <EditIcon class="w-6 h-6" />
           </i>
@@ -70,6 +71,7 @@
       </div>
     </div>
   </div>
+  <EditFund v-if="showEdit" :fund="data" @close="showEdit = false" @onUpdate="onUpdate()" />
   <DeleteFund v-if="showDelete" :id="id" :close-delete="closeDelete" @fund-delete="deleteEmit" />
   <DepositFund v-if="showDeposit" :id="id" :close-deposit="closeDeposit" @fund-deposit="depositEmit" />
   <TransferFund
@@ -90,7 +92,7 @@
 
 <script lang="ts" setup>
 import PostCustom from '@/components/PostCustom.vue';
-import { defineEmits, defineProps, onMounted, ref, Ref, watch } from 'vue';
+import { defineEmits, defineProps, onBeforeMount, ref, Ref, watch } from 'vue';
 import { fundService } from '@/services';
 import { IFundDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
@@ -102,6 +104,7 @@ import TransferFund from './TransferFund.vue';
 import WithdrawalIcon from '@/components/icons/WithdrawalIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import WithdrawlFund from './WithdrawlFund.vue';
+import EditFund from '@/views/fundsView/EditFund.vue';
 
 const locale: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -119,26 +122,24 @@ const props = defineProps({
 });
 const emits = defineEmits(['fundDelete', 'refresh']);
 
-const data: Ref<IFundDto> = ref({
-  id: '',
-  name: '',
-  createAt: '',
-  locationUrl: null,
-  address: null,
-  details: null,
-  currencies: [],
-  user: null,
-});
+const data: Ref<IFundDto | null> = ref(null);
 
 const fetchData = async () => {
   isLoading.value = true;
-  const res = await fundService.getFund(props.id);
-  if (res) {
-    data.value = res;
-  }
+  data.value = await fundService.getFund(props.id).catch((error) => {
+    console.log(error);
+    throw error;
+  });
   window.location.href = `${window.location.pathname}#details`;
-
   isLoading.value = false;
+};
+
+/* edit */
+const showEdit = ref(false);
+const onUpdate = () => {
+  emits('refresh');
+  fetchData();
+  showEdit.value = false;
 };
 
 /* delete */
@@ -184,7 +185,7 @@ const withdrawalEmit = async () => {
   emits('refresh');
 };
 
-onMounted(() => {
+onBeforeMount(() => {
   fetchData();
 });
 
@@ -198,13 +199,3 @@ watch(
   }
 );
 </script>
-
-<style scoped>
-.bg-transfer:hover {
-  background: rgb(22, 163, 74);
-  background: linear-gradient(310deg, rgba(22, 163, 74, 1) 30%, rgba(245, 141, 113, 1) 70%);
-}
-.bg-image-none {
-  background-image: none;
-}
-</style>
