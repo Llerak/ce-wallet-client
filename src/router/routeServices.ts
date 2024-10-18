@@ -52,6 +52,4 @@ const routeServices = {
   },
 };
 
-const first = (cond: boolean) => (cond ? '?' : '&');
-
 export default routeServices;

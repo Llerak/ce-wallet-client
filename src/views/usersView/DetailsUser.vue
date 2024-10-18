@@ -6,6 +6,7 @@
         <div class="flex flex-wrap gap-3">
           <PostCustom title="Nombre" :content="data.username || 'No disponible'" />
           <PostCustom title="Usuario" :content="data.role || 'No disponible'" />
+          <PostCustom title="Usuario" :content="data.email || 'No disponible'" />
           <PostCustom title="Creado en" :content="new Date(data.createAt).toLocaleString() || 'No disponible'" />
         </div>
         <div class="flex flex-wrap gap-3 w-full justify-end">
@@ -56,6 +57,7 @@ const props = defineProps({
 const data: Ref<IUserDto> = ref({
   id: '',
   username: '',
+  email: '',
   role: '',
   createAt: '',
 });

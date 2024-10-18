@@ -81,7 +81,10 @@ const value = (item: any) => {
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-8 shadow-custom-shadow bg-white p-3 rounded-lg">
       <h4>{{ props.name }}</h4>
-      <div class="flex w-full justify-between items-center flex-wrap gap-3">
+      <div
+        class="flex w-full justify-between items-center flex-wrap gap-3"
+        :class="{ 'justify-between': showAdd, 'justify-end': showAdd }"
+      >
         <button v-if="props.addEnabled" class="bg-primary text-white w-min text-nowrap" @click="showAdd">
           {{ props.buttonLabel }}
         </button>

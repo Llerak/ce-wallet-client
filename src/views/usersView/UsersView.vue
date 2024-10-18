@@ -79,8 +79,8 @@ const handleResetFilter = async (filterValue: IFundFilter) => {
 /* table Functionality*/
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const data = ref<any[]>([]);
-const header = ref<string[]>(['Usuario', 'Rol', 'Fecha']);
-const keys = ref<string[]>(['username', 'role', 'createAt']);
+const header = ref<string[]>(['Usuario', 'Correo', 'Rol', 'Fecha']);
+const keys = ref<string[]>(['username', 'email', 'role', 'createAt']);
 const loading: Ref<boolean> = ref(false);
 
 const fetchData = async () => {
@@ -98,6 +98,7 @@ const formatFundDataIntoTableInput = (data: IUserDto) => {
   const tableInput = {
     id: data.id,
     username: data.username,
+    email: data.email,
     role: data.role,
     createAt: new Date(data.createAt).toLocaleString(),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
