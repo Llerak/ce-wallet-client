@@ -30,8 +30,8 @@
       }
     "
     @restart-filter-value="(filters: IFundFilter) => handleResetFilter(filters)"
-  />
-  <AddFund v-if="showAdd" @fundAdded="handleFundAdded" :close-add="closeAddFunct" /> -->
+  />-->
+  <AddUser v-if="showAdd" @user-added="handleUserAdded" :close-add="closeAddFunct" />
 </template>
 
 <script lang="ts" setup>
@@ -40,6 +40,7 @@ import ListModal from '../default/ListModal.vue';
 import { IUserDto } from '@/interfaces/dto';
 import { onMounted, Ref, ref } from 'vue';
 import { userService } from '@/services/userService';
+import AddUser from './AddUser.vue';
 import DetailsUser from './DetailsUser.vue';
 
 /* add Functionality*/
@@ -47,13 +48,13 @@ const showAdd: Ref<boolean> = ref(false);
 const showAddFunct = () => {
   showAdd.value = true;
 };
-/* const closeAddFunct = () => {
+const closeAddFunct = () => {
   showAdd.value = false;
 };
-const handleFundAdded = async () => {
+const handleUserAdded = async () => {
   closeAddFunct();
   await fetchData();
-}; */
+};
 
 /* filter Functionality*/
 const showFilter: Ref<boolean> = ref(false);

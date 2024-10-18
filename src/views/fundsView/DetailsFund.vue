@@ -114,7 +114,7 @@ const props = defineProps({
 });
 const emits = defineEmits(['fundDelete', 'refresh']);
 
-const data: Ref<IFundDto | null> = ref(null);
+const data: Ref<IFundDto> = ref({} as IFundDto);
 
 const fetchData = async () => {
   isLoading.value = true;
