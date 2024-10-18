@@ -91,7 +91,7 @@
           >
           <button class="w-full bg-primary text-white" type="submit">FILTRAR</button>
           <div class="flex gap-3">
-            <button class="w-full bg-[#717ef5] text-white flex-1" type="button" @click="resetFilters">
+            <button class="w-full bg-[#717ef5] text-white flex-1" type="button" @click="resetFilters()">
               RESTABLECER
             </button>
             <button
@@ -121,10 +121,9 @@ defineProps<{
   closeFilter: () => void;
   showFilter: boolean;
 }>();
-const emit = defineEmits(['filterValue', 'restartFilterValue']);
+const emit = defineEmits(['filterValue']);
 
-const defaultFilter = { desc: true };
-const filter: Ref<IFundLogsFilter> = ref(defaultFilter);
+const filter: Ref<IFundLogsFilter> = ref({ desc: true });
 const showErrorGeneral: Ref<boolean> = ref(false);
 const errorText: Ref<string> = ref('Hubo un error obteniendo los datos');
 interface option {
@@ -204,14 +203,13 @@ const fetchCurrencies = async () => {
 };
 
 const resetFilters = () => {
-  filter.value = defaultFilter;
-
+  filter.value = { desc: true };
   optionSelectFundName.value = [];
   optionSelectUsername.value = [];
   optionSelectCurrency.value = [];
   optionSelectOrderBy.value = { value: false, text: 'Fecha' };
 
   showErrorGeneral.value = false;
-  emit('restartFilterValue', null);
+  emit('filterValue', { desc: true });
 };
 </script>

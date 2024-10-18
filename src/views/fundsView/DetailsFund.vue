@@ -45,11 +45,6 @@
             <WithdrawalIcon class="w-6 h-6" />
           </i>
           <i
-            class="p-2 flex items-center justify-center rounded-lg hover:bg-blue-600 text-white h-min transition-all cursor-pointer hover:text-black"
-          >
-            <LinkUserIcon class="w-6 h-6" />
-          </i>
-          <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-yellow-400 text-white h-min transition-all cursor-pointer hover:text-black"
           >
             <EditIcon class="w-6 h-6" />
@@ -99,7 +94,6 @@ import { defineEmits, defineProps, onMounted, ref, Ref, watch } from 'vue';
 import { fundService } from '@/services';
 import { IFundDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import LinkUserIcon from '@/components/icons/LinkUserIcon.vue';
 import DepositIcon from '@/components/icons/DepositIcon.vue';
 import DeleteFund from './DeleteFund.vue';
 import DepositFund from './DepositFund.vue';

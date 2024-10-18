@@ -189,7 +189,6 @@ const fetchFundsNames = async () => {
   console.log(fundNamesRef.value);
   try {
     const res = await fundService.list({ fundNames: fundNamesRef.value }, 0, 10);
-    console.log(res.data);
     optionsFundsNames.value = res.data
       .map((fund: IFundDto) => ({
         value: fund.id,

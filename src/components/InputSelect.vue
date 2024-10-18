@@ -52,7 +52,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits, ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { defineEmits, defineProps, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { ICustomSelectOption } from '@/interfaces/ICustomSelectOption';
 
 const props = defineProps({
   title: {
@@ -65,7 +66,7 @@ const props = defineProps({
   },
   modelValue: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    type: Object as () => { value: any; text: string },
+    type: Object as () => ICustomSelectOption<string>,
     default: () => ({ value: '', text: '' }),
   },
   showError: {

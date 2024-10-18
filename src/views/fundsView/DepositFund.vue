@@ -57,6 +57,7 @@ import InputSelect from '@/components/InputSelect.vue';
 import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';
 import { ITransactionInfoDto } from '@/interfaces/dto';
+import { ICustomSelectOption } from '@/interfaces/ICustomSelectOption';
 
 /* Validation const */
 const showErrorGeneral: Ref<boolean> = ref(false);
@@ -122,13 +123,8 @@ const restart = () => {
 };
 
 /* currencies */
-interface option {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any;
-  text: string;
-}
-const optionSelectCurrenci: Ref<option> = ref({ value: '', text: '' });
-const optionsCurrencies: Ref<option[]> = ref([]);
+const optionSelectCurrenci: Ref<ICustomSelectOption<string>> = ref({ value: '', text: '' });
+const optionsCurrencies: Ref<ICustomSelectOption<string>[]> = ref([]);
 
 const fetchCurrencies = async () => {
   try {
