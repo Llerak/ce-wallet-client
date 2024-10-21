@@ -4,10 +4,10 @@ import LoginView from '@/views/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
 import FundView from '@/views/fundsView/FundView.vue';
 import UnauthorizedView from '@/views/UnauthorizedView.vue';
-import { roleAndUserGlobal, roles } from '@/store/RolesAndPermission';
 import { statusApi, statusSideBar } from '@/store/global';
 import FundLogsView from '@/views/fundLogsView/FundLogsView.vue';
 import UsersView from '@/views/usersView/UsersView.vue';
+import { RoleType } from '@/interfaces/dto';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -16,8 +16,6 @@ const routes: Array<RouteRecordRaw> = [
     component: LoginView,
     beforeEnter: () => {
       sessionStorage.clear();
-      roleAndUserGlobal.role = 'User';
-      roleAndUserGlobal.name = '';
       statusSideBar.visible = false;
     },
   },
@@ -30,42 +28,42 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'dashboard',
     component: HomeView,
-    meta: { roles: roles.admin },
+    meta: { roles: RoleType.Administrator },
     beforeEnter: authGuard,
   },
   {
     path: '/funds',
     name: 'funds',
     component: FundView,
-    meta: { roles: roles.admin },
+    meta: { roles: [RoleType.Supervisor, RoleType.Assessor, RoleType.Administrator] },
     beforeEnter: authGuard,
   },
   {
     path: '/register',
     name: 'register',
     component: FundLogsView,
-    meta: { roles: roles.admin },
+    meta: { roles: [RoleType.Administrator, RoleType.Supervisor, RoleType.Assessor] },
     beforeEnter: authGuard,
   },
   {
     path: '/users',
     name: 'users',
     component: UsersView,
-    meta: { roles: roles.admin },
+    meta: { roles: RoleType.Administrator },
     beforeEnter: authGuard,
   },
   {
     path: '/settings',
     name: 'settings',
     component: HomeView,
-    meta: { roles: roles.admin },
+    meta: { roles: [RoleType.Administrator, RoleType.Supervisor, RoleType.Assessor] },
     beforeEnter: authGuard,
   },
   {
     path: '/profile',
     name: 'profile',
     component: HomeView,
-    meta: { roles: roles.admin },
+    meta: { roles: [RoleType.Administrator, RoleType.Supervisor, RoleType.Assessor] },
     beforeEnter: authGuard,
   },
 ];
