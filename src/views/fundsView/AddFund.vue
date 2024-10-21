@@ -42,7 +42,12 @@
             >{{ errorText }}
           </span>
           <label>Los campos con ( * ) son opcionales.</label>
-          <button class="w-full bg-primary text-white" type="submit">AGREGAR</button>
+          <div class="flex items-center">
+            <button class="w-full bg-primary text-white" type="submit">AGREGAR</button>
+            <div v-if="isLoading" class="ml-2 transition">
+              <SpinnerLoading />
+            </div>
+          </div>
           <button
             @click="closeAdd"
             type="button"
@@ -66,6 +71,7 @@ import { IFundInfo, RoleType } from '@/interfaces/dto';
 import InputSelect from '@/components/InputSelect.vue';
 import { ICustomSelectOption } from '@/interfaces/ICustomSelectOption';
 import { userService } from '@/services/userService';
+import SpinnerLoading from '@/components/SpinnerLoading.vue';
 
 const model = ref<IFundInfo>({ name: '' });
 const userSelect = ref<{ current: ICustomSelectOption<string>; data: ICustomSelectOption<string>[] }>({
@@ -75,6 +81,7 @@ const userSelect = ref<{ current: ICustomSelectOption<string>; data: ICustomSele
 const showErrorFundName = ref(false);
 const showErrorGeneral = ref(false);
 const errorText = ref('Hubo un error creando el fondo');
+const isLoading = ref(false);
 
 defineProps<{
   closeAdd: () => void;
@@ -83,6 +90,7 @@ const emit = defineEmits(['fundAdded']);
 
 const handleAdd = async () => {
   showErrorGeneral.value = false;
+  isLoading.value = true;
   if (validationFundCreate()) {
     const fund = await fundService.create(model.value).catch((error) => {
       showErrorGeneral.value = true;
@@ -99,6 +107,7 @@ const handleAdd = async () => {
       });
     }
 
+    isLoading.value = false;
     emit('fundAdded');
   }
 };

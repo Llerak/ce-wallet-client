@@ -36,7 +36,12 @@
           }"
           >{{ errorText }}</span
         >
-        <button class="w-full bg-primary text-white" type="submit">DEPOSITAR</button>
+        <div class="flex items-center">
+          <button class="w-full bg-primary text-white" type="submit">DEPOSITAR</button>
+          <div v-if="isLoading" class="ml-2 transition">
+            <SpinnerLoading />
+          </div>
+        </div>
         <button
           @click="closeDeposit()"
           type="button"
@@ -58,6 +63,7 @@ import InputCustom from '@/components/InputCustom.vue';
 import InputTextArea from '@/components/InputTextArea.vue';
 import { ITransactionInfoDto } from '@/interfaces/dto';
 import { ICustomSelectOption } from '@/interfaces/ICustomSelectOption';
+import SpinnerLoading from '@/components/SpinnerLoading.vue';
 
 /* Validation const */
 const showErrorGeneral: Ref<boolean> = ref(false);

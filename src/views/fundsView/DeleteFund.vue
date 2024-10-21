@@ -22,7 +22,12 @@
           }"
           >{{ errorText }}</span
         >
-        <button class="w-full bg-primary text-white" type="submit">ELIMINAR</button>
+        <div class="flex items-center">
+          <button class="w-full bg-primary text-white" type="submit">ELIMINAR</button>
+          <div v-if="isLoading" class="ml-2 transition">
+            <SpinnerLoading />
+          </div>
+        </div>
         <button
           @click="closeDelete"
           type="button"
@@ -37,12 +42,14 @@
 
 <script lang="ts" setup>
 /* import */
-import { defineEmits, defineProps, ref, Ref } from 'vue';
+import { defineEmits, defineProps, ref } from 'vue';
 import { fundService } from '@/services';
+import SpinnerLoading from '@/components/SpinnerLoading.vue';
 
 /* Validation const */
-const showErrorGeneral: Ref<boolean> = ref(false);
-const errorText: Ref<string> = ref('Hubo un error eliminando el fondo');
+const showErrorGeneral = ref(false);
+const errorText = ref('Hubo un error eliminando el fondo');
+const isLoading = ref(false);
 
 /* props and emits*/
 const props = defineProps<{
@@ -55,7 +62,7 @@ const emit = defineEmits(['fundDelete']);
 /* Add */
 const handleDelete = async () => {
   showErrorGeneral.value = false;
-
+  isLoading.value = true;
   try {
     await fundService.delete(props.id);
     emit('fundDelete');
@@ -63,5 +70,6 @@ const handleDelete = async () => {
     showErrorGeneral.value = true;
     console.error('Create failed:', error);
   }
+  isLoading.value = false;
 };
 </script>

@@ -25,7 +25,7 @@
         <div class="flex items-center">
           <button class="w-full bg-primary text-white" type="submit">ELIMINAR</button>
           <div v-if="isLoading" class="ml-2 transition">
-            <SpinnerLoanding />
+            <SpinnerLoading />
           </div>
         </div>
         <button
@@ -43,7 +43,7 @@
 <script lang="ts" setup>
 import { defineEmits, defineProps, ref } from 'vue';
 import { userService } from '@/services/userService';
-import SpinnerLoanding from '@/components/SpinnerLoanding.vue';
+import SpinnerLoading from '@/components/SpinnerLoading.vue';
 
 const props = defineProps<{ userId: string }>();
 const emit = defineEmits(['close', 'onDeleted']);

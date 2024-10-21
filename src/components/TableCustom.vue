@@ -20,7 +20,7 @@
           <tr v-if="data.length < 1" class="h-[50px]">
             <td :colspan="headers.length" class="align-center">
               <div class="flex justify-center p-4">
-                <SpinnerLoanding v-if="loading" />
+                <SpinnerLoading v-if="loading" />
                 <p v-else>{{ props.noDataMessage || 'No data available' }}</p>
               </div>
             </td>
@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { defineEmits, defineProps } from 'vue';
 import ArrowDownIcon from './icons/ArrowDownIcon.vue';
-import SpinnerLoanding from '@/components/SpinnerLoanding.vue'; // Asegúrate de importar el componente SpinnerLoanding
+import SpinnerLoading from '@/components/SpinnerLoading.vue'; // Asegúrate de importar el componente SpinnerLoanding
 
 const emit = defineEmits(['returnId', 'returnItem']);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
