@@ -24,19 +24,20 @@
           <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-blue-600 text-white h-min transition-all cursor-pointer hover:text-black"
             @click="showTransfer = true"
-            v-if="data.currencies && data.currencies?.length > 0"
+            v-if="data.currencies && data.currencies?.length > 0 && hasPermission(permissions.actionTransf)"
           >
             <TransferIcon class="w-6 h-6" />
           </i>
           <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-green-600 text-white h-min transition-all cursor-pointer hover:text-black"
             @click="showDeposit = true"
+            v-if="hasPermission(permissions.actionDeposit)"
           >
             <DepositIcon class="w-6 h-6" />
           </i>
           <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-primary text-white h-min transition-all cursor-pointer hover:text-black"
-            v-if="data.currencies && data.currencies?.length > 0"
+            v-if="data.currencies && data.currencies?.length > 0 && hasPermission(permissions.actionWithdrawl)"
             @click="showWithdrawal = true"
           >
             <WithdrawalIcon class="w-6 h-6" />
@@ -44,12 +45,14 @@
           <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-yellow-400 text-white h-min transition-all cursor-pointer hover:text-black"
             @click="showEdit = true"
+            v-if="hasPermission(permissions.actionEdit)"
           >
             <EditIcon class="w-6 h-6" />
           </i>
           <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-red-600 text-white h-min transition-all cursor-pointer hover:text-black"
             @click="showDelete = true"
+            v-if="hasPermission(permissions.actionDelete)"
           >
             <DeleteIcon class="w-6 h-6" />
           </i>
@@ -91,6 +94,7 @@ import EditIcon from '@/components/icons/EditIcon.vue';
 import WithdrawlFund from './WithdrawlFund.vue';
 import EditFund from '@/views/fundsView/EditFund.vue';
 import { longDate } from '@/store/global';
+import { permissions, hasPermission } from '@/store/RolesAndPermission';
 
 const props = defineProps<{ fund: IFundDto }>();
 const emits = defineEmits(['fundDelete', 'refresh']);

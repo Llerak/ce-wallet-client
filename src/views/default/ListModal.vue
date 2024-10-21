@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TableCustom from '@/components/TableCustom.vue';
-import { defineEmits, defineProps } from 'vue';
+import { defineEmits, defineProps, ref, watch } from 'vue';
+import { hasPermission, permissions } from '@/store/RolesAndPermission';
 
 const props = defineProps({
   name: {
@@ -67,14 +68,33 @@ const props = defineProps({
   },
 });
 
+const showFilterInternal = ref(true);
+const hiddeTable = ref(false);
+
 const emit = defineEmits(['returnId', 'returnItem']);
 const idValue = (id: string) => {
   emit('returnId', id);
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const value = (item: any) => {
-  // console.log(item);
   emit('returnItem', item);
 };
+
+watch(
+  () => props.data,
+  (newData) => {
+    if (newData.length == 1) {
+      showFilterInternal.value = false;
+      hiddeTable.value = true;
+      let item = newData[0];
+      emit('returnId', item.id);
+      emit('returnItem', item);
+    } else {
+      (showFilterInternal.value = true), (hiddeTable.value = false);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -82,10 +102,17 @@ const value = (item: any) => {
     <div class="flex flex-col gap-8 shadow-custom-shadow bg-white p-3 rounded-lg">
       <h4>{{ props.name }}</h4>
       <div
-        class="flex w-full justify-between items-center flex-wrap gap-3"
-        :class="{ 'justify-between': showAdd, 'justify-end': showAdd }"
+        class="flex w-full items-center flex-wrap gap-3"
+        :class="{
+          'justify-between': props.addEnabled && hasPermission(permissions.add),
+          'justify-end': !props.addEnabled || !hasPermission(permissions.add),
+        }"
       >
-        <button v-if="props.addEnabled" class="bg-primary text-white w-min text-nowrap" @click="showAdd">
+        <button
+          v-if="props.addEnabled && hasPermission(permissions.add)"
+          class="bg-primary text-white w-min text-nowrap"
+          @click="showAdd"
+        >
           {{ props.buttonLabel }}
         </button>
         <div class="flex gap-3 items-center flex-wrap">
@@ -93,9 +120,11 @@ const value = (item: any) => {
           <button
             @click="showFilter"
             class="bg-white text-primary border-primary border-solid border-[1px] w-min text-nowrap"
+            v-if="showFilterInternal"
           >
             {{ props.filterLabel }}
           </button>
+          <div v-else />
         </div>
       </div>
     </div>
@@ -112,6 +141,7 @@ const value = (item: any) => {
       :enabled-back="enabledBack"
       @return-id="idValue"
       @return-item="value"
+      v-if="!hiddeTable"
     />
   </div>
 </template>

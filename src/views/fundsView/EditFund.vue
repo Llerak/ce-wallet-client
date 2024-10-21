@@ -78,7 +78,7 @@ const model = ref<IFundInfo>({
 });
 const userSelect = ref<{ current: ICustomSelectOption<string>; data: ICustomSelectOption<string>[] }>({
   current: { value: props.fund.user?.id || '', text: props.fund.user?.username || '' },
-  data: [],
+  data: [{ value: '00000000-0000-0000-0000-000000000000', text: 'Desasignar' }],
 });
 
 async function fetchUsers(search: string[]) {

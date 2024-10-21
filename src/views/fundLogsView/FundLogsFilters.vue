@@ -127,6 +127,7 @@ const filter: Ref<IFundLogsFilter> = ref({ desc: true });
 const showErrorGeneral: Ref<boolean> = ref(false);
 const errorText: Ref<string> = ref('Hubo un error obteniendo los datos');
 interface option {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
   text: string;
 }

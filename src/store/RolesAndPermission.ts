@@ -8,13 +8,42 @@ export const roleAndUserGlobal = reactive({
 
 export const permissions = {
   viewDashboard: 'viewDashboard',
-  editSettings: 'editSettings',
+  viewFund: 'viewFund',
+  viewRegister: 'viewRegister',
+  viewUser: 'viewUser',
+  viewSettings: 'viewSettings',
+  viewAll: 'viewAll',
+  add: 'add',
+  actionTransf: 'actionTransf',
+  actionDeposit: 'actionDeposit',
+  actionWithdrawl: 'actionWithdrawl',
+  actionEdit: 'actionEdit',
+  actionDelete: 'actionDelete',
 };
 
 export const permissionsRole: { [p: string]: string[] } = {
-  [RoleType.Administrator]: [permissions.viewDashboard, permissions.editSettings],
-  [RoleType.Supervisor]: [],
-  [RoleType.Assessor]: [],
+  [RoleType.Administrator]: [
+    permissions.viewDashboard,
+    permissions.viewFund,
+    permissions.viewRegister,
+    permissions.viewUser,
+    permissions.viewSettings,
+    permissions.viewAll,
+    permissions.add,
+    permissions.actionDelete,
+    permissions.actionDeposit,
+    permissions.actionEdit,
+    permissions.actionTransf,
+    permissions.actionWithdrawl,
+  ],
+  [RoleType.Supervisor]: [
+    permissions.viewFund,
+    permissions.viewRegister,
+    permissions.viewAll,
+    permissions.actionTransf,
+    permissions.actionWithdrawl,
+  ],
+  [RoleType.Assessor]: [permissions.viewFund, permissions.viewAll, permissions.actionWithdrawl],
 };
 
 export function hasPermission(permission: string) {
