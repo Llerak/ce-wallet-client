@@ -15,7 +15,7 @@
       :page-current="pageCurrent"
       button-label="AGREGAR USUARIO"
       :show-filter="showFilterFunction"
-      @return-item="(user: IUserDto) => userSelected = user"
+      @return-item="(user: any) => userSelected = data.find((u: IUserDto)=> u.id == user.id)"
     />
     <section id="details" class="flex flex-wrap gap-6">
       <DetailsUser v-if="userSelected !== null" :user="userSelected" @onDeleted="fetchData()" @on-edit="fetchData()" />
