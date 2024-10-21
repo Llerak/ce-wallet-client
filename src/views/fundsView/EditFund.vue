@@ -88,9 +88,9 @@ async function fetchUsers(search: string[]) {
     console.error('user fetch failed:', error);
     throw error;
   });
-  userSelect.value.data = res.data
-    .filter((user) => user.role === RoleType.Assessor)
-    .map((user) => ({ text: user.username, value: user.id } as ICustomSelectOption<string>));
+  userSelect.value.data = userSelect.value.data.concat(
+    res.data.filter((user) => user.role === RoleType.Assessor).map((user) => ({ text: user.username, value: user.id }))
+  );
 }
 
 const handleSubmit = async () => {
