@@ -2,7 +2,7 @@ import routeServices from '@/router/routeServices';
 import { api } from '@/services/axiosInterceptor';
 import { AxiosError, AxiosResponse } from 'axios';
 import { IPagination, IResponse } from '@/interfaces';
-import { IRegisterUserDto, IResetPasswordDto, IUserDto } from '@/interfaces/dto';
+import { IEditUserDto, IRegisterUserDto, IResetPasswordDto, IUserDto } from '@/interfaces/dto';
 
 class Service {
   async list(keywords: string[] | undefined, page = 0, size = 10, role = false) {
@@ -23,7 +23,7 @@ class Service {
         throw err.message;
       });
   }
-  async update(info: IRegisterUserDto) {
+  async update(info: IEditUserDto) {
     return await api
       .put(routeServices.users.root, info)
       .then((res: AxiosResponse<IResponse<IUserDto>>) => res.data.response)

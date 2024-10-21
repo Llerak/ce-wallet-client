@@ -18,7 +18,7 @@
       @return-item="(user: IUserDto) => userSelected = user"
     />
     <section id="details" class="flex flex-wrap gap-6">
-      <DetailsUser v-if="userSelected !== null" :user="userSelected" @onDeleted="fetchData()" />
+      <DetailsUser v-if="userSelected !== null" :user="userSelected" @onDeleted="fetchData()" @on-edit="fetchData()" />
     </section>
   </div>
   <!--  <FiltersFund

@@ -12,6 +12,7 @@
         <div class="flex flex-wrap gap-3 w-full justify-end">
           <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-yellow-400 text-white h-min transition-all cursor-pointer hover:text-black"
+            @click="showEdit = true"
           >
             <EditIcon class="w-6 h-6" />
           </i>
@@ -31,21 +32,34 @@
     @close="showDelete = false"
     @onDeleted="emit('onDeleted'), (showDelete = false)"
   />
+  <EditUser
+    v-if="showEdit"
+    :data="updateModel"
+    @close="showEdit = false"
+    @user-edit="emit('onEdit'), (showEdit = false)"
+  />
 </template>
 
 <script lang="ts" setup>
 import PostCustom from '@/components/PostCustom.vue';
-import { defineEmits, defineProps, onMounted, ref } from 'vue';
-import { IUserDto } from '@/interfaces/dto';
+import { defineEmits, defineProps, onMounted, ref, Ref } from 'vue';
+import { IEditUserDto, IUserDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import { longDate } from '@/store/global';
 import DeleteUser from '@/views/usersView/DeleteUser.vue';
+import EditUser from './EditUser.vue';
 
 const props = defineProps<{ user: IUserDto }>();
-const emit = defineEmits(['onDeleted']);
+const updateModel: Ref<IEditUserDto> = ref({
+  id: props.user.id,
+  username: props.user.username,
+  email: props.user.email,
+});
+const emit = defineEmits(['onDeleted', 'onEdit']);
 
 const showDelete = ref(false);
+const showEdit = ref(false);
 
 onMounted(() => {
   window.location.href = `${window.location.pathname}#details`;

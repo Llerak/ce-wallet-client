@@ -14,6 +14,12 @@ export interface IRegisterUserDto {
   passwordConfirmation: string;
 }
 
+export interface IEditUserDto {
+  id: string;
+  username: string;
+  email: string;
+}
+
 export interface IResetPasswordDto {
   userId: string;
   oldPassword: string;
