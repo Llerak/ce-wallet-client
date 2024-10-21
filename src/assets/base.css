@@ -8,7 +8,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-section {
+* {
   -webkit-user-select: none;
   user-select: none;
 }
@@ -20,9 +20,12 @@ h4,
 h5,
 h6,
 p,
+tr,
+td,
+th,
+label,
 pre,
-span,
-a {
+span {
   -webkit-user-select: text;
   user-select: text;
 }
