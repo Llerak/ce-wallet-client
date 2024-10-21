@@ -12,6 +12,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  filterEnabled: {
+    type: Boolean,
+    default: true,
+  },
   enabledNext: {
     type: Boolean,
   },
@@ -120,7 +124,7 @@ watch(
           <button
             @click="showFilter"
             class="bg-white text-primary border-primary border-solid border-[1px] w-min text-nowrap"
-            v-if="showFilterInternal"
+            v-if="showFilterInternal && props.filterEnabled"
           >
             {{ props.filterLabel }}
           </button>

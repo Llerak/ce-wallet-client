@@ -15,6 +15,7 @@
       :page-current="pageCurrent"
       button-label="AGREGAR USUARIO"
       :show-filter="showFilterFunction"
+      :filter-enabled="false"
       @return-item="(user: IUserDto) => userSelected = user"
     />
     <section id="details" class="flex flex-wrap gap-6">
