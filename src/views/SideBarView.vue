@@ -12,6 +12,7 @@
             :text="item.text"
             :is-active="router.currentRoute.value.name === item.link"
             :link="item.link"
+            v-if="hasPermission(item.permission)"
           />
           <template v-if="index === links.length - 2">
             <label class="pl-4 mb-1 mt-4 opacity-[0.6]">PERFIL</label>
@@ -45,15 +46,15 @@ import RegisterIcon from '@/components/icons/RegisterIcon.vue';
 import SettingIcon from '@/components/icons/SettingIcon.vue';
 import UsersIcon from '@/components/icons/UsersIcon.vue';
 import router from '@/router';
-import { roleAndUserGlobal } from '@/store/RolesAndPermission';
+import { roleAndUserGlobal, permissions, hasPermission } from '@/store/RolesAndPermission';
 import { statusSideBar } from '@/store/global';
 
 const links = ref([
-  { icon: markRaw(DashBoardIcon), text: 'Dashboard', link: 'dashboard' },
-  { icon: markRaw(BankIcon), text: 'Fondos', link: 'funds' },
-  { icon: markRaw(RegisterIcon), text: 'Registro', link: 'register' },
-  { icon: markRaw(UsersIcon), text: 'Usuarios', link: 'users' },
-  { icon: markRaw(SettingIcon), text: 'Configuraciones', link: 'settings' },
-  { icon: markRaw(ProfileIcon), text: 'Opciones de usuario', link: 'profile' },
+  { icon: markRaw(DashBoardIcon), text: 'Dashboard', link: 'dashboard', permission: permissions.viewDashboard },
+  { icon: markRaw(BankIcon), text: 'Fondos', link: 'funds', permission: permissions.viewFund },
+  { icon: markRaw(RegisterIcon), text: 'Registro', link: 'register', permission: permissions.viewRegister },
+  { icon: markRaw(UsersIcon), text: 'Usuarios', link: 'users', permission: permissions.viewUser },
+  { icon: markRaw(SettingIcon), text: 'Configuraciones', link: 'settings', permission: permissions.viewSettings },
+  { icon: markRaw(ProfileIcon), text: 'Opciones de usuario', link: 'profile', permission: permissions.viewAll },
 ]);
 </script>
