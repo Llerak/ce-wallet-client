@@ -1,22 +1,20 @@
 import { reactive } from 'vue';
+import { RoleType } from '@/interfaces/dto';
 
 export const roleAndUserGlobal = reactive({
-  role: 'User',
+  role: '',
   name: '',
 });
-export const roles = {
-  admin: 'Administrador',
-  user: 'User',
-};
 
 export const permissions = {
   viewDashboard: 'viewDashboard',
   editSettings: 'editSettings',
 };
 
-export const permissionsRole = {
-  [roles.admin]: [permissions.viewDashboard, permissions.editSettings],
-  [roles.user]: [],
+export const permissionsRole: { [p: string]: string[] } = {
+  [RoleType.Administrator]: [permissions.viewDashboard, permissions.editSettings],
+  [RoleType.Supervisor]: [],
+  [RoleType.Assessor]: [],
 };
 
 export function hasPermission(permission: string) {
