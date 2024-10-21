@@ -14,9 +14,9 @@
             :link="item.link"
             v-if="hasPermission(item.permission)"
           />
-          <template v-if="index === links.length - 2">
+          <!--     <template v-if="index === links.length - 2">
             <label class="pl-4 mb-1 mt-4 opacity-[0.6]">PERFIL</label>
-          </template>
+          </template> -->
         </template>
       </div>
     </div>
@@ -39,22 +39,22 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue';
 import LinkCustom from '@/components/LinkCustom.vue';
-import ProfileIcon from '@/components/icons/ProfileIcon.vue';
+/* import ProfileIcon from '@/components/icons/ProfileIcon.vue';
 import DashBoardIcon from '@/components/icons/DashBoardIcon.vue';
+import SettingIcon from '@/components/icons/SettingIcon.vue'; */
 import BankIcon from '@/components/icons/BankIcon.vue';
 import RegisterIcon from '@/components/icons/RegisterIcon.vue';
-import SettingIcon from '@/components/icons/SettingIcon.vue';
 import UsersIcon from '@/components/icons/UsersIcon.vue';
 import router from '@/router';
 import { roleAndUserGlobal, permissions, hasPermission } from '@/store/RolesAndPermission';
 import { statusSideBar } from '@/store/global';
 
 const links = ref([
-  { icon: markRaw(DashBoardIcon), text: 'Dashboard', link: 'dashboard', permission: permissions.viewDashboard },
+  /* { icon: markRaw(DashBoardIcon), text: 'Dashboard', link: 'dashboard', permission: permissions.viewDashboard }, */
   { icon: markRaw(BankIcon), text: 'Fondos', link: 'funds', permission: permissions.viewFund },
   { icon: markRaw(RegisterIcon), text: 'Registro', link: 'register', permission: permissions.viewRegister },
   { icon: markRaw(UsersIcon), text: 'Usuarios', link: 'users', permission: permissions.viewUser },
-  { icon: markRaw(SettingIcon), text: 'Configuraciones', link: 'settings', permission: permissions.viewSettings },
-  { icon: markRaw(ProfileIcon), text: 'Opciones de usuario', link: 'profile', permission: permissions.viewAll },
+  /*   { icon: markRaw(SettingIcon), text: 'Configuraciones', link: 'settings', permission: permissions.viewSettings },
+  { icon: markRaw(ProfileIcon), text: 'Opciones de usuario', link: 'profile', permission: permissions.viewAll }, */
 ]);
 </script>
