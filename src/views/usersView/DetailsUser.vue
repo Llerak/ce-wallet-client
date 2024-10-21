@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import PostCustom from '@/components/PostCustom.vue';
-import { defineEmits, defineProps, onMounted, ref, Ref } from 'vue';
+import { defineEmits, defineProps, onMounted, ref, Ref, watch } from 'vue';
 import { IEditUserDto, IUserDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
@@ -64,4 +64,11 @@ const showEdit = ref(false);
 onMounted(() => {
   window.location.href = `${window.location.pathname}#details`;
 });
+
+watch(
+  () => props.user,
+  (newValue) => {
+    updateModel.value = { id: newValue.id, email: newValue.email, username: newValue.username };
+  }
+);
 </script>

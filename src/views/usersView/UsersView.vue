@@ -15,22 +15,17 @@
       :page-current="pageCurrent"
       button-label="AGREGAR USUARIO"
       :show-filter="showFilterFunction"
-      @return-item="(user: any) => userSelected = data.find((u: IUserDto)=> u.id == user.id)"
+      @return-item="getUserFromId"
     />
     <section id="details" class="flex flex-wrap gap-6">
-      <DetailsUser v-if="userSelected !== null" :user="userSelected" @onDeleted="fetchData()" @on-edit="fetchData()" />
+      <DetailsUser
+        v-if="userSelected !== null"
+        :user="userSelected"
+        @onDeleted="fetchData(), (userSelected = null)"
+        @onEdit="fetchData()"
+      />
     </section>
   </div>
-  <!--  <FiltersFund
-    :show-filter="showFilter"
-    :close-filter="closeFilterFunct"
-    @filter-value="
-      (filters: any) => {
-        handleFilter(filters);
-      }
-    "
-    @restart-filter-value="(filters: IFundFilter) => handleResetFilter(filters)"
-  />-->
   <AddUser v-if="showAdd" @close="showAdd = false" @user-added="handleUserAdded" />
 </template>
 
@@ -74,6 +69,7 @@ const fetchData = async () => {
   enabledNext.value = pageCurrent.value < totalPageCurrent.value;
   enabledBack.value = pageCurrent.value > 1;
   loading.value = false;
+  userSelected.value !== null && getUserFromId(userSelected.value as { id: string });
 };
 const formatFundDataIntoTableInput = (data: IUserDto) => {
   return {
@@ -96,22 +92,8 @@ const backPage = () => {
     fetchData();
   }
 };
-
-/* const closeFilterFunct = () => {
-  showFilter.value = false;
-};
-const handleFilter = async (filterValue: IFundFilter) => {
-  closeFilterFunct();
-  filter.value = filterValue;
-  pageCurrent.value = 1;
-  await fetchData();
-};
-const handleResetFilter = async (filterValue: IFundFilter) => {
-  closeFilterFunct();
-  filter.value = filterValue;
-  pageCurrent.value = 1;
-  await fetchData();
-}; */
+const getUserFromId = (user: { id: string }) =>
+  (userSelected.value = data.value.find((u: IUserDto) => u.id == user.id) || null);
 
 onMounted(async () => {
   await fetchData();
