@@ -17,6 +17,7 @@
           </i>
           <i
             class="p-2 flex items-center justify-center rounded-lg hover:bg-red-600 text-white h-min transition-all cursor-pointer hover:text-black"
+            @click="showDelete = true"
           >
             <DeleteIcon class="w-6 h-6" />
           </i>
@@ -24,23 +25,27 @@
       </div>
     </div>
   </div>
+  <DeleteUser
+    v-if="showDelete"
+    :user-id="props.user.id"
+    @close="showDelete = false"
+    @onDeleted="emit('onDeleted'), (showDelete = false)"
+  />
 </template>
 
 <script lang="ts" setup>
 import PostCustom from '@/components/PostCustom.vue';
-import { defineProps, onMounted } from 'vue';
+import { defineEmits, defineProps, onMounted, ref } from 'vue';
 import { IUserDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import { longDate } from '@/store/global';
+import DeleteUser from '@/views/usersView/DeleteUser.vue';
 
 const props = defineProps<{ user: IUserDto }>();
+const emit = defineEmits(['onDeleted']);
 
-/* delete */
-/* const showDelete: Ref<boolean> = ref(false);
-const closeDelete = () => {
-  showDelete.value = false;
-}; */
+const showDelete = ref(false);
 
 onMounted(() => {
   window.location.href = `${window.location.pathname}#details`;
