@@ -12,11 +12,11 @@
       </div>
       <div class="flex flex-col gap-4">
         <InputSelect
-          :model-value="optionSelectCurrenci"
+          :model-value="optionSelectCurrency"
           :options="optionsCurrencies"
           title="Moneda"
           :show-error="showErrorSelectCurrency"
-          @update:model-value="(value) => (optionSelectCurrenci = value)"
+          @update:model-value="(value) => (optionSelectCurrency = value)"
         />
         <InputCustom
           v-model="inputCurrency"
@@ -56,7 +56,7 @@
 
 <script lang="ts" setup>
 /* import */
-import { defineEmits, defineProps, onMounted, Ref, ref, watch } from 'vue';
+import { defineEmits, defineProps, onMounted, ref, watch } from 'vue';
 import { currencyService, fundService } from '@/services';
 import InputSelect from '@/components/InputSelect.vue';
 import InputCustom from '@/components/InputCustom.vue';
@@ -66,8 +66,8 @@ import { ICustomSelectOption } from '@/interfaces/ICustomSelectOption';
 import SpinnerLoading from '@/components/SpinnerLoading.vue';
 
 /* Validation const */
-const showErrorGeneral: Ref<boolean> = ref(false);
-const errorText: Ref<string> = ref('Ocurrio un error');
+const showErrorGeneral = ref(false);
+const errorText = ref('Ocurrio un error');
 const inputCurrency = ref(0);
 const showErrorInputCurrency = ref(false);
 const showErrorSelectCurrency = ref(false);
@@ -80,16 +80,19 @@ const props = defineProps<{
   id: string;
 }>();
 
+const isLoading = ref(false);
+
 const emit = defineEmits(['fundDeposit']);
 
 /* Deposit */
 const handleDeposit = async () => {
   showErrorGeneral.value = false;
+  isLoading.value = true;
   if (validation()) {
     try {
       const transaction: ITransactionInfoDto = {
         source: props.id,
-        currency: optionSelectCurrenci.value.value,
+        currency: optionSelectCurrency.value.value,
         details: details.value == '' ? null : details.value,
         amount: inputCurrency.value,
       };
@@ -103,6 +106,7 @@ const handleDeposit = async () => {
       console.error('Deposit failed:', error);
     }
   }
+  isLoading.value = false;
 };
 
 const validation = () => {
@@ -113,7 +117,7 @@ const validation = () => {
     showErrorInputCurrency.value = true;
     inputCurrency.value = 0;
   }
-  if (optionSelectCurrenci.value.value == '') {
+  if (optionSelectCurrency.value.value == '') {
     showErrorSelectCurrency.value = true;
   }
   return !(showErrorInputCurrency.value || showErrorSelectCurrency.value);
@@ -124,13 +128,13 @@ const restart = () => {
   showErrorInputCurrency.value = false;
   showErrorSelectCurrency.value = false;
   details.value = '';
-  optionSelectCurrenci.value = { value: '', text: '' };
+  optionSelectCurrency.value = { value: '', text: '' };
   showErrorGeneral.value = false;
 };
 
 /* currencies */
-const optionSelectCurrenci: Ref<ICustomSelectOption<string>> = ref({ value: '', text: '' });
-const optionsCurrencies: Ref<ICustomSelectOption<string>[]> = ref([]);
+const optionSelectCurrency = ref<ICustomSelectOption<string>>({ value: '', text: '' });
+const optionsCurrencies = ref<ICustomSelectOption<string>[]>([]);
 
 const fetchCurrencies = async () => {
   try {
