@@ -2,7 +2,7 @@ import { reactive } from 'vue';
 
 export const status = reactive({ isApiLoading: false, isPageLoaded: false });
 export const statusSideBar = reactive({ visible: false });
-export const longDate = reactive((date: string) =>
+export const longDate = (date: string) =>
   new Date(date).toLocaleDateString('es-ES', {
     weekday: 'long',
     day: 'numeric',
@@ -11,5 +11,4 @@ export const longDate = reactive((date: string) =>
     hour: '2-digit',
     minute: '2-digit',
     hour12: true,
-  })
-);
+  });
