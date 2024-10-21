@@ -1,8 +1,8 @@
 <template>
-  <LoadingView />
+  <LoadingView v-if="!status.isPageLoaded && status.isApiLoading" />
   <div class="flex w-[100vw] min-h-[100vh] h-auto relative bg-[#f8f9fa]">
     <SideBarView
-      v-if="hasPermission(permissions.viewDashboard) && !isLoginRoute"
+      v-if="!isLoginRoute"
       class="fixed top-0 min-[1200px]:left-0 z-50 transition-all"
       :class="{
         '-left-full': !statusSideBar.visible,
@@ -23,20 +23,25 @@
       }"
     >
       <HeaderView v-if="!isLoginRoute" />
-
-      <router-view />
+      <LoadingView v-show="status.isApiLoading" />
+      <div v-show="!status.isApiLoading">
+        <RouterView />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { hasPermission, permissions } from './store/RolesAndPermission';
 import SideBarView from './views/SideBarView.vue';
 import LoadingView from './views/LoadingView.vue';
 import HeaderView from './views/HeaderView.vue';
 import router from './router';
-import { ref, watch } from 'vue';
-import { statusSideBar } from './store/global';
+import { onMounted, ref, watch } from 'vue';
+import { status, statusSideBar } from './store/global';
+
+onMounted(() => {
+  status.isPageLoaded = true;
+});
 
 watch(
   () => router.currentRoute.value.name,

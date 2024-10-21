@@ -4,7 +4,7 @@ import LoginView from '@/views/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
 import FundView from '@/views/fundsView/FundView.vue';
 import UnauthorizedView from '@/views/UnauthorizedView.vue';
-import { statusApi, statusSideBar } from '@/store/global';
+import { status, statusSideBar } from '@/store/global';
 import FundLogsView from '@/views/fundLogsView/FundLogsView.vue';
 import UsersView from '@/views/usersView/UsersView.vue';
 import { RoleType } from '@/interfaces/dto';
@@ -75,12 +75,12 @@ const router = createRouter({
 
 // Gancho de navegación global para establecer statusApi.isLoading
 router.beforeEach((to, from, next) => {
-  statusApi.isLoading = true;
+  status.isApiLoading = true;
   next();
 });
 
 router.afterEach(() => {
-  statusApi.isLoading = false;
+  status.isApiLoading = false;
 });
 
 // Redirección a la ruta anterior si la ruta no existe

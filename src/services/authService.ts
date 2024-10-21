@@ -1,6 +1,6 @@
 import routeServices from '@/router/routeServices';
 import { roleAndUserGlobal } from '@/store/RolesAndPermission';
-import { statusApi } from '@/store/global';
+import { status } from '@/store/global';
 import { IResponse, IUserLogin } from '@/interfaces';
 import { api } from '@/services';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -8,7 +8,7 @@ import { IRegisterUserDto, IUserDto } from '@/interfaces/dto';
 
 class AuthService {
   async login(user: IUserLogin) {
-    statusApi.isLoading = true;
+    status.isApiLoading = true;
     let response: AxiosResponse;
     try {
       response = await api.post(routeServices.auth.login, {
@@ -17,10 +17,10 @@ class AuthService {
       });
     } catch (error) {
       console.error('Error during login:', error);
-      statusApi.isLoading = false;
+      status.isApiLoading = false;
       throw error;
     }
-    statusApi.isLoading = false;
+    status.isApiLoading = false;
 
     if (response.data) {
       const data = response.data.response;

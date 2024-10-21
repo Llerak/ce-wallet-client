@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="fixed flex items-center justify-center z-[100] top-0 left-0 w-[100vw] h-[100vh] bg-[rgba(255,255,255)]"
-    v-show="statusApi.isLoading"
-  >
+  <div class="flex items-center justify-center z-[100] top-0 left-0 w-full h-full">
     <ul>
       <li></li>
       <li></li>
@@ -11,9 +8,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { statusApi } from '@/store/global';
-</script>
+<script lang="ts" setup></script>
 
 <style scoped>
 @keyframes loading {

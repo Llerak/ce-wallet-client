@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 
-export const statusApi = reactive({ isLoading: false });
+export const status = reactive({ isApiLoading: false, isPageLoaded: false });
 export const statusSideBar = reactive({ visible: false });
 export const longDate = reactive((date: string) =>
   new Date(date).toLocaleDateString('es-ES', {
