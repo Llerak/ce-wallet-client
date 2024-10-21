@@ -43,7 +43,12 @@ export const permissionsRole: { [p: string]: string[] } = {
     permissions.actionTransf,
     permissions.actionWithdrawl,
   ],
-  [RoleType.Assessor]: [permissions.viewFund, permissions.viewAll, permissions.actionWithdrawl],
+  [RoleType.Assessor]: [
+    permissions.viewFund,
+    permissions.viewAll,
+    permissions.actionWithdrawl,
+    permissions.viewRegister,
+  ],
 };
 
 export function hasPermission(permission: string) {
