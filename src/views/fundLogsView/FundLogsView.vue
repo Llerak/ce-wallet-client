@@ -11,6 +11,9 @@
       :next-page="nextPage"
       :page-current="pageCurrent"
       :show-filter="showFilterFunct"
+      :total-page="totalPageCurrent"
+      :start-page="startPage"
+      :end-page="endPage"
       name="Registro de las actividades de los fondos"
       @return-item="emitFund"
     />
@@ -91,6 +94,15 @@ const nextPage = () => {
     pageCurrent.value++;
     fetchData();
   }
+};
+const startPage = () => {
+  pageCurrent.value = 1;
+  fetchData();
+};
+
+const endPage = () => {
+  pageCurrent.value = totalPageCurrent.value;
+  fetchData();
 };
 const backPage = () => {
   if (pageCurrent.value > 1) {

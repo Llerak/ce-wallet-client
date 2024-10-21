@@ -2,7 +2,7 @@ import routeServices from '@/router/routeServices';
 import { api } from '@/services/axiosInterceptor';
 import { AxiosError, AxiosResponse } from 'axios';
 import { IPagination, IResponse } from '@/interfaces';
-import { IEditUserDto, IRegisterUserDto, IResetPasswordDto, IUserDto } from '@/interfaces/dto';
+import { IEditUserDto, IResetPasswordDto, IUserDto } from '@/interfaces/dto';
 
 class Service {
   async list(keywords: string[] | undefined, page = 0, size = 10, role = false) {

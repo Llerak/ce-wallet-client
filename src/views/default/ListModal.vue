@@ -30,6 +30,12 @@ const props = defineProps({
   backPage: {
     type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
   },
+  startPage: {
+    type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
+  },
+  endPage: {
+    type: Function as unknown as () => ((payload: MouseEvent) => void) | undefined,
+  },
   header: {
     type: Array as () => string[],
     required: true,
@@ -43,6 +49,9 @@ const props = defineProps({
     default: Array as () => number[],
   },
   pageCurrent: {
+    type: Number,
+  },
+  totalPage: {
     type: Number,
   },
   data: {
@@ -84,8 +93,8 @@ watch(
   () => props.data,
   (newData) => {
     if (newData.length == 1) {
-      showFilterInternal.value = false;
-      hiddeTable.value = true;
+      showFilterInternal.value = false && props.pageCurrent == 1;
+      hiddeTable.value = true && props.pageCurrent == 1;
       let item = newData[0];
       emit('returnId', item.id);
       emit('returnItem', item);
@@ -99,10 +108,10 @@ watch(
 
 <template>
   <div class="flex flex-col gap-6">
-    <div class="flex flex-col gap-8 shadow-custom-shadow bg-white p-3 rounded-lg">
+    <div class="flex justify-between items-center gap-8 shadow-custom-shadow bg-white p-3 rounded-lg flex-wrap">
       <h4>{{ props.name }}</h4>
       <div
-        class="flex w-full items-center flex-wrap gap-3"
+        class="flex items-center flex-wrap gap-3"
         :class="{
           'justify-between': props.addEnabled && hasPermission(permissions.add),
           'justify-end': !props.addEnabled || !hasPermission(permissions.add),
@@ -135,7 +144,10 @@ watch(
       :loading="props.isLoading"
       :hidden-mobile="props.hiddenMobile"
       :next-page="nextPage"
+      :start-page="startPage"
       :back-page="backPage"
+      :end-page="endPage"
+      :total-page="totalPage"
       :page-current="pageCurrent"
       :enabled-next="enabledNext"
       :enabled-back="enabledBack"

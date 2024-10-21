@@ -14,6 +14,9 @@
       :back-page="backPage"
       :page-current="pageCurrent"
       button-label="AGREGAR USUARIO"
+      :total-page="totalPageCurrent"
+      :start-page="startPage"
+      :end-page="endPage"
       :show-filter="showFilterFunction"
       @return-item="getUserFromId"
     />
@@ -91,6 +94,15 @@ const backPage = () => {
     pageCurrent.value--;
     fetchData();
   }
+};
+const startPage = () => {
+  pageCurrent.value = 1;
+  fetchData();
+};
+
+const endPage = () => {
+  pageCurrent.value = totalPageCurrent.value;
+  fetchData();
 };
 const getUserFromId = (user: { id: string }) =>
   (userSelected.value = data.value.find((u: IUserDto) => u.id == user.id) || null);

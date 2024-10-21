@@ -15,6 +15,9 @@
       :back-page="backPage"
       :page-current="pageCurrent"
       :show-filter="showFilterFunct"
+      :total-page="totalPageCurrent"
+      :start-page="startPage"
+      :end-page="endPage"
       button-label="AGREGAR FONDO"
       @return-item="getFundfromId"
     />
@@ -139,6 +142,15 @@ const backPage = () => {
     pageCurrent.value--;
     fetchData();
   }
+};
+const startPage = () => {
+  pageCurrent.value = 1;
+  fetchData();
+};
+
+const endPage = () => {
+  pageCurrent.value = totalPageCurrent.value;
+  fetchData();
 };
 const getFundfromId = (value: { id: string }) =>
   (fundSelectd.value = data.value.find((e: IFundDto) => e.id === value.id) || null);

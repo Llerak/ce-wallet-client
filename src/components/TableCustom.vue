@@ -56,7 +56,17 @@
         </tbody>
       </table>
     </div>
-    <div class="w-full justify-end flex">
+    <div class="w-full justify-end flex gap-3">
+      <div class="shadow-custom-shadow bg-white w-min flex flex-row items-center rounded-lg">
+        <button
+          @click="startPage"
+          class="text-[#344767] flex px-4"
+          :class="{ 'opacity-60 cursor-default pointer-events-none': !enabledBack }"
+        >
+          <ArrowDownIcon class="rotate-90 w-4 h-4" />
+          <ArrowDownIcon class="rotate-90 w-4 h-4" />
+        </button>
+      </div>
       <div class="shadow-custom-shadow bg-white w-min flex flex-row items-center rounded-lg">
         <button
           @click="backPage"
@@ -65,12 +75,26 @@
         >
           <ArrowDownIcon class="rotate-90 w-4 h-4" />
         </button>
-        <span>{{ pageCurrent }}</span>
+        <div class="flex flex-nowrap gap-2">
+          <span class="text-nowrap">{{ pageCurrent }}</span>
+          <span class="text-nowrap">{{ ' / ' }}</span>
+          <span class="text-nowrap font-bold">{{ totalPage || 0 }}</span>
+        </div>
         <button
           @click="nextPage"
           class="text-[#344767]"
           :class="{ 'opacity-60 cursor-default pointer-events-none': !enabledNext }"
         >
+          <ArrowDownIcon class="-rotate-90 w-4 h-4" />
+        </button>
+      </div>
+      <div class="shadow-custom-shadow bg-white w-min flex flex-row items-center rounded-lg">
+        <button
+          @click="endPage"
+          class="text-[#344767] flex px-4"
+          :class="{ 'opacity-60 cursor-default pointer-events-none': !enabledNext }"
+        >
+          <ArrowDownIcon class="-rotate-90 w-4 h-4" />
           <ArrowDownIcon class="-rotate-90 w-4 h-4" />
         </button>
       </div>
@@ -95,10 +119,13 @@ const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   pageCurrent?: number;
+  totalPage?: number;
   enabledNext: boolean;
   enabledBack: boolean;
   nextPage: ((payload: MouseEvent) => void) | undefined;
   backPage: ((payload: MouseEvent) => void) | undefined;
+  startPage: ((payload: MouseEvent) => void) | undefined;
+  endPage: ((payload: MouseEvent) => void) | undefined;
   keys: string[];
   noDataMessage?: string;
   loading: boolean;
