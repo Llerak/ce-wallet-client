@@ -18,6 +18,7 @@
       :start-page="startPage"
       :end-page="endPage"
       :show-filter="showFilterFunction"
+      :filter-enabled="false"
       @return-item="getUserFromId"
     />
     <section id="details" class="flex flex-wrap gap-6">

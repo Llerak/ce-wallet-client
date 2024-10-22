@@ -4,7 +4,7 @@ import { authService } from '@/services';
 
 const authGuard = async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const roles = to.meta.roles as string[];
-  roleAndUserGlobal.role = sessionStorage.getItem('Role') || 'User';
+
   try {
     const isValidToken = await authService.validationToken();
     if (!isValidToken) {

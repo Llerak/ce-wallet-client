@@ -33,10 +33,6 @@ class AuthService {
     return response.data;
   }
 
-  logout() {
-    sessionStorage.clear();
-  }
-
   async validationToken() {
     try {
       const response = await api.get(routeServices.auth.validate);

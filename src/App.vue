@@ -1,5 +1,4 @@
 <template>
-  <LoadingView v-if="!status.isPageLoaded && status.isApiLoading" />
   <div class="flex w-[100vw] min-h-[100vh] h-auto relative bg-[#f8f9fa]">
     <SideBarView
       v-if="!isLoginRoute"
