@@ -40,6 +40,7 @@ import { onMounted, ref } from 'vue';
 import { userService } from '@/services/userService';
 import AddUser from './AddUser.vue';
 import DetailsUser from './DetailsUser.vue';
+import { UseLocaleTimeZone } from '@/helpers';
 
 const showAdd = ref(false);
 const showFilter = ref(false);
@@ -81,7 +82,7 @@ const formatFundDataIntoTableInput = (data: IUserDto) => {
     username: data.username,
     email: data.email,
     role: data.role,
-    createAt: new Date(data.createAt).toLocaleString(),
+    createAt: UseLocaleTimeZone.shortDate(data.createAt),
   };
 };
 const nextPage = () => {

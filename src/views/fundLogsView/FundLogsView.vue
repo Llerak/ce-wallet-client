@@ -36,6 +36,7 @@ import { onMounted, Ref, ref } from 'vue';
 import { fundLogsService } from '@/services';
 import FiltersFund from './FundLogsFilters.vue';
 import FundLogDetails from '@/views/fundLogsView/FundLogDetails.vue';
+import { UseLocaleTimeZone } from '@/helpers';
 
 /* filter Functionality*/
 const showFilter: Ref<boolean> = ref(false);
@@ -79,7 +80,7 @@ const formatFundDataIntoTableInput = (data: IFundLogDto) => {
     transaction: data.transactionType || '---',
     currency: data.currency || '---',
     amount: data.amount || 0,
-    date: new Date(data.createdAt).toLocaleString(),
+    date: UseLocaleTimeZone.shortDate(data.createdAt),
   };
   return tableInput;
 };

@@ -7,7 +7,7 @@
           <PostCustom :content="props.user.username" title="Nombre" />
           <PostCustom :content="props.user.role" title="Role" />
           <PostCustom :content="props.user.email" title="Correo" />
-          <PostCustom :content="longDate(props.user.createAt)" title="Creado en" />
+          <PostCustom :content="UseLocaleTimeZone.longDate(props.user.createAt)" title="Creado en" />
         </div>
         <div class="flex flex-wrap gap-3 w-full justify-end">
           <i
@@ -46,9 +46,9 @@ import { defineEmits, defineProps, onMounted, ref, Ref, watch } from 'vue';
 import { IEditUserDto, IUserDto } from '@/interfaces/dto';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { longDate } from '@/store/global';
 import DeleteUser from '@/views/usersView/DeleteUser.vue';
 import EditUser from './EditUser.vue';
+import { UseLocaleTimeZone } from '@/helpers';
 
 const props = defineProps<{ user: IUserDto }>();
 const updateModel: Ref<IEditUserDto> = ref({
