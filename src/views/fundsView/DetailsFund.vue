@@ -7,7 +7,7 @@
           <PostCustom :content="data.name" title="Nombre" />
           <PostCustom title="Usuario" :content="data.user?.username || 'No disponible'" />
           <PostCustom :content="longDate(data.createAt)" title="Creado en" />
-          <PostCustom :content="data.address" title="Dirección" />
+          <PostCustom :content="data.address || 'No disponible'" title="Dirección" />
         </div>
         <div class="flex flex-wrap gap-3">
           <PostCustom
@@ -94,7 +94,7 @@ import EditIcon from '@/components/icons/EditIcon.vue';
 import WithdrawlFund from './WithdrawlFund.vue';
 import EditFund from '@/views/fundsView/EditFund.vue';
 import { longDate } from '@/store/global';
-import { permissions, hasPermission } from '@/store/RolesAndPermission';
+import { hasPermission, permissions } from '@/store/RolesAndPermission';
 
 const props = defineProps<{ fund: IFundDto }>();
 const emits = defineEmits(['fundDelete', 'refresh']);
