@@ -15,6 +15,7 @@
       :back-page="backPage"
       :page-current="pageCurrent"
       :show-filter="showFilterFunct"
+      :filter-enabled="data.length > 1"
       :total-page="totalPageCurrent"
       :start-page="startPage"
       :end-page="endPage"

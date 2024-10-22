@@ -10,6 +10,7 @@
       :keys="keys"
       :next-page="nextPage"
       :page-current="pageCurrent"
+      :filter-enabled="data.length > 1"
       :show-filter="showFilterFunct"
       :total-page="totalPageCurrent"
       :start-page="startPage"

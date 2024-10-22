@@ -52,7 +52,6 @@ export const permissionsRole: { [p: string]: string[] } = {
 };
 
 export function hasPermission(permission: string) {
-  console.log(permission);
   const rolePermissions = permissionsRole[roleAndUserGlobal.role] || [];
   return rolePermissions.includes(permission);
 }
